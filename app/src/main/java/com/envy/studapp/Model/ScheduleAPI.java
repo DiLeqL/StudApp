@@ -12,6 +12,6 @@ import retrofit2.http.GET;
 
 public interface ScheduleAPI {
 
-    @GET("/JSON/schedule.json")
-    public Call<List<ScheduleModel>> getSchedule();
+    @GET("/json/schedule.json")
+    Call<String> getSchedule();
 }

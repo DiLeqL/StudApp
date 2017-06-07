@@ -17,9 +17,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by ENVY on 06.06.2017.
  */
 
-public class Schedule implements Callback<List<ScheduleModel>>{
+public class Schedule implements Callback<String>{
 
-    public static final String ROOT_URL = "https://JSON/schedule.json/";
+    public static final String ROOT_URL = "http://10.0.3.2:3000/";
 
     public static final String KEY_TEACHER_ID = "key_teacher_id";
     public static final String KEY_TEACHER_NAME = "key_teacher_name";
@@ -42,36 +42,36 @@ public class Schedule implements Callback<List<ScheduleModel>>{
 
 
     public void start() {
-        Gson gson = new GsonBuilder()
+        /*Gson gson = new GsonBuilder()
                 .setLenient()
-                .create();
+                .create();*/
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ROOT_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         ScheduleAPI scheduleAPI = retrofit.create(ScheduleAPI.class);
 
-        Call<List<ScheduleModel>> call = scheduleAPI.getSchedule();
-        call.enqueue(this);
+        Call<String> scheduleModel = scheduleAPI.getSchedule();
+        scheduleModel.enqueue(this);
     }
 
     @Override
-    public void onResponse(Call<List<ScheduleModel>> call, retrofit2.Response<List<ScheduleModel>> response) {
+    public void onResponse(Call<String> call, retrofit2.Response<String> response) {
         if(response.isSuccessful()) {
-            List<ScheduleModel> scheduleList = response.body();
-            for (ScheduleModel scheduleItem: scheduleList) {
+            String scheduleList = response.body();
+            Log.d("jsonLog", scheduleList);
+            /*for (String scheduleItem: scheduleList) {
                 Log.d("JSONLog", scheduleItem.toString());
-            }
+            }*/
         } else {
             Log.d("JSONLog", response.errorBody().toString());
         }
     }
 
     @Override
-    public void onFailure(Call<List<ScheduleModel>> call, Throwable t) {
-
+    public void onFailure(Call<String> call, Throwable t) {
+            Log.d("jsonLog", "failed");
     }
-
 }
