@@ -4,7 +4,7 @@ package com.envy.studapp.Model;
  * Created by ENVY on 06.06.2017.
  */
 
-public class ScheduleModel {
+public class SubjectModel {
 
     int subjectId;
     String subjectName;

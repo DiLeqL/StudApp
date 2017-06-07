@@ -3,11 +3,8 @@ package com.envy.studapp.Entity;
 import android.util.Log;
 
 import com.envy.studapp.HTTPAPIInterface.StudServiceAPI;
-import com.envy.studapp.Model.ScheduleModel;
+import com.envy.studapp.Model.SubjectModel;
 
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -15,7 +12,7 @@ import retrofit2.Callback;
  * Created by ENVY on 06.06.2017.
  */
 
-public class Schedule {
+public class Subject {
 
 //    public static final String ROOT_URL = "http://10.0.3.2:3000/";
 
@@ -42,16 +39,16 @@ public class Schedule {
     public void getSchedule() {
 
         StudServiceAPI studServiceApi = StudServiceAPI.retrofit.create(StudServiceAPI.class);
-        final Call<ScheduleModel> call = studServiceApi.getSchedule();
+        final Call<SubjectModel> call = studServiceApi.getSubject();
 
-        call.enqueue(new Callback<ScheduleModel>() {
+        call.enqueue(new Callback<SubjectModel>() {
             @Override
-            public void onResponse(Call<ScheduleModel> call, retrofit2.Response<ScheduleModel> response) {
+            public void onResponse(Call<SubjectModel> call, retrofit2.Response<SubjectModel> response) {
 
             }
 
             @Override
-            public void onFailure(Call<ScheduleModel> call, Throwable t) {
+            public void onFailure(Call<SubjectModel> call, Throwable t) {
                 Log.d("jsonLog", "failed");
             }
         });

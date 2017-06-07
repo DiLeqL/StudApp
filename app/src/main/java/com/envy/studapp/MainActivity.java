@@ -3,7 +3,7 @@ package com.envy.studapp;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.envy.studapp.Entity.Schedule;
+import com.envy.studapp.Entity.Subject;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Schedule schedule = new Schedule();
-        schedule.getSchedule();
+        Subject subject = new Subject();
+        subject.getSchedule();
     }
 }
