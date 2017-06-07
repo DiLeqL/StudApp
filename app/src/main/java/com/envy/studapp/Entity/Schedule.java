@@ -1,21 +1,15 @@
-package com.envy.studapp.Model;
+package com.envy.studapp.Entity;
 
 import android.util.Log;
-import android.widget.TextView;
 
-import com.envy.studapp.R;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.envy.studapp.HTTPAPIInterface.StudServiceAPI;
+import com.envy.studapp.Model.ScheduleModel;
 
 import java.io.IOException;
-import java.util.List;
 
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by ENVY on 06.06.2017.
@@ -45,24 +39,19 @@ public class Schedule {
 //    public static final String KEY_ROOM_NUM = "key_room_num";
 
 
-    public void start() {
+    public void getSchedule() {
 
-        ScheduleAPI scheduleApi = ScheduleAPI.retrofit.create(ScheduleAPI.class);
-        final Call<ResponseBody> call = scheduleApi.getSchedule();
+        StudServiceAPI studServiceApi = StudServiceAPI.retrofit.create(StudServiceAPI.class);
+        final Call<ScheduleModel> call = studServiceApi.getSchedule();
 
-        call.enqueue(new Callback<ResponseBody>() {
+        call.enqueue(new Callback<ScheduleModel>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                try{
-                    Log.d("jsonLog", response.body().string());
-                }
-                catch (IOException e){
-                    Log.d("jsonLog", "IO exeption");
-                }
+            public void onResponse(Call<ScheduleModel> call, retrofit2.Response<ScheduleModel> response) {
+
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<ScheduleModel> call, Throwable t) {
                 Log.d("jsonLog", "failed");
             }
         });
