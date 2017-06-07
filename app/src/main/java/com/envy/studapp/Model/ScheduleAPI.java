@@ -2,6 +2,7 @@ package com.envy.studapp.Model;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -15,9 +16,9 @@ import retrofit2.http.GET;
 public interface ScheduleAPI {
 
     @GET("/json/schedule.json")
-    Call<List<ScheduleModel>> getSchedule();
+    Call<ResponseBody> getSchedule();
 
-    public static final Retrofit retrofit = new Retrofit.Builder()
+    public final Retrofit retrofit = new Retrofit.Builder()
             .baseUrl("http://10.0.3.2:3000/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();

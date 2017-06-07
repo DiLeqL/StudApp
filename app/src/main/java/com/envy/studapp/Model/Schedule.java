@@ -7,6 +7,7 @@ import com.envy.studapp.R;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.util.List;
 
 import okhttp3.Response;
@@ -47,16 +48,21 @@ public class Schedule {
     public void start() {
 
         ScheduleAPI scheduleApi = ScheduleAPI.retrofit.create(ScheduleAPI.class);
-        final Call<List<ScheduleModel>> call = scheduleApi.getSchedule();
+        final Call<ResponseBody> call = scheduleApi.getSchedule();
 
-        call.enqueue(new Callback<List<ScheduleModel>>() {
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<List<ScheduleModel>> call, retrofit2.Response<List<ScheduleModel>> response) {
-                Log.d("jsonLog", response.body().toString());
+            public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
+                try{
+                    Log.d("jsonLog", response.body().string());
+                }
+                catch (IOException e){
+                    Log.d("jsonLog", "IO exeption");
+                }
             }
 
             @Override
-            public void onFailure(Call<List<ScheduleModel>> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.d("jsonLog", "failed");
             }
         });
