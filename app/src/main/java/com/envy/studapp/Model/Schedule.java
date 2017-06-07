@@ -1,6 +1,9 @@
 package com.envy.studapp.Model;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
@@ -14,9 +17,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by ENVY on 06.06.2017.
  */
 
-public class Schedule {
+public class Schedule implements Callback<List<ScheduleModel>>{
 
-    public static final String ROOT_URL = "/JSON/schedule.json";
+    public static final String ROOT_URL = "https://JSON/schedule.json/";
 
     public static final String KEY_TEACHER_ID = "key_teacher_id";
     public static final String KEY_TEACHER_NAME = "key_teacher_name";
@@ -37,32 +40,38 @@ public class Schedule {
     public static final String KEY_ROOM_ID = "key_room_id";
     public static final String KEY_ROOM_NUM = "key_room_num";
 
-    private Call<List<ScheduleModel>> schedule;
 
-    private void getSchedule(){
+    public void start() {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
 
-        //Creating a rest adapter
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(ROOT_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
-        //Creating an object of our api interface
-        ScheduleAPI api = retrofit.create(ScheduleAPI.class);
+        ScheduleAPI scheduleAPI = retrofit.create(ScheduleAPI.class);
 
-        //Defining the method
-        api.getSchedule(new Callback<List<ScheduleModel>>() {
-            @Override
-            public void onResponse(Call<List<ScheduleModel>> call, retrofit2.Response<List<ScheduleModel>> response) {
-                //Storing the data in our list
-                schedule = call;
+        Call<List<ScheduleModel>> call = scheduleAPI.getSchedule();
+        call.enqueue(this);
+    }
+
+    @Override
+    public void onResponse(Call<List<ScheduleModel>> call, retrofit2.Response<List<ScheduleModel>> response) {
+        if(response.isSuccessful()) {
+            List<ScheduleModel> scheduleList = response.body();
+            for (ScheduleModel scheduleItem: scheduleList) {
+                Log.d("JSONLog", scheduleItem.toString());
             }
+        } else {
+            Log.d("JSONLog", response.errorBody().toString());
+        }
+    }
 
-            @Override
-            public void onFailure(Call<List<ScheduleModel>> call, Throwable t) {
+    @Override
+    public void onFailure(Call<List<ScheduleModel>> call, Throwable t) {
 
-            }
-        });
     }
 
 }

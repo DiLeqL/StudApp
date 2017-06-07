@@ -2,6 +2,7 @@ package com.envy.studapp.Model;
 
 import java.util.List;
 
+import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.http.GET;
 
@@ -12,5 +13,5 @@ import retrofit2.http.GET;
 public interface ScheduleAPI {
 
     @GET("/JSON/schedule.json")
-    public void getSchedule(Callback<List<ScheduleModel>> response);
+    public Call<List<ScheduleModel>> getSchedule();
 }
