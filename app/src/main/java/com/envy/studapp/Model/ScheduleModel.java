@@ -137,4 +137,27 @@ public class ScheduleModel {
         this.roomNum = roomNum;
     }
 
+    @Override
+    public String toString() {
+        return teacherId + " " +teacherName + " " + groupId + " " +
+                groupName + " " + subjectId;
+        /*String teacherName;
+
+        String groupId;
+        String groupName;
+
+        int subjectId;
+        String subjectName;
+        int subjectTeacher;
+        int subjectTime;
+        int subjectRoom;
+        int subjectStudGroup;
+
+        int timeId;
+        String time;
+
+        int roomId;
+        String roomNum;*/
+    }
+
 }

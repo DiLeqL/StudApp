@@ -4,6 +4,8 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 
 /**
@@ -13,5 +15,10 @@ import retrofit2.http.GET;
 public interface ScheduleAPI {
 
     @GET("/json/schedule.json")
-    Call<String> getSchedule();
+    Call<List<ScheduleModel>> getSchedule();
+
+    public static final Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl("http://10.0.3.2:3000/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
 }
