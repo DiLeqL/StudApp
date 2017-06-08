@@ -1,4 +1,4 @@
-package com.envy.studapp.HTTPAPIInterface;
+package com.envy.studapp.HttpAPIInterface;
 
 import javax.inject.Singleton;
 
@@ -22,5 +22,11 @@ public class NetWorkModule {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return retrofit;
+    }
+
+    @Provides
+    @Singleton
+    public StudServiceAPI provideStudServiceAPI(Retrofit retrofit){
+        return retrofit.create(StudServiceAPI.class);
     }
 }

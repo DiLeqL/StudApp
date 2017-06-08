@@ -1,4 +1,4 @@
-package com.envy.studapp.HTTPAPIInterface;
+package com.envy.studapp.HttpAPIInterface;
 
 import com.envy.studapp.MainActivity;
 
@@ -9,7 +9,6 @@ import dagger.Component;
 /**
  * Created by ENVY on 08.06.2017.
  */
-
 
 @Singleton
 @Component(modules = {NetWorkModule.class})

@@ -3,9 +3,10 @@ package com.envy.studapp;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.envy.studapp.HTTPAPIInterface.DaggerInjectorInterface;
-import com.envy.studapp.HTTPAPIInterface.InjectorInterface;
-import com.envy.studapp.HTTPAPIInterface.StudServiceAPI;
+import com.envy.studapp.Entity.ReadingData;
+import com.envy.studapp.HttpAPIInterface.DaggerInjectorInterface;
+import com.envy.studapp.HttpAPIInterface.InjectorInterface;
+import com.envy.studapp.HttpAPIInterface.StudServiceAPI;
 
 import javax.inject.Inject;
 
@@ -13,6 +14,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Inject
     StudServiceAPI studServiceAPI;
+
+    InjectorInterface injectorInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +25,9 @@ public class MainActivity extends AppCompatActivity {
         /*Subject subject = new Subject();
         subject.getSchedule();*/
 
-        InjectorInterface.inject(this);
+        DaggerInjectorInterface.builder().build().inject(this);
+
+        ReadingData readingData = new ReadingData(studServiceAPI);
 
     }
 }

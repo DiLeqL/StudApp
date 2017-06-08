@@ -1,4 +1,4 @@
-package com.envy.studapp.HTTPAPIInterface;
+package com.envy.studapp.HttpAPIInterface;
 
 import com.envy.studapp.Model.BeginningTimeModel;
 import com.envy.studapp.Model.ClassroomModel;
@@ -6,16 +6,15 @@ import com.envy.studapp.Model.GroupModel;
 import com.envy.studapp.Model.SubjectModel;
 import com.envy.studapp.Model.TeacherModel;
 
+import dagger.Module;
 import retrofit2.Call;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 
 /**
  * Created by ENVY on 06.06.2017.
  */
 
+@Module
 public interface StudServiceAPI {
 
     @GET("/json/subjects.json")
