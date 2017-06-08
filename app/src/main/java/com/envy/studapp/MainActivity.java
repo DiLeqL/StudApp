@@ -29,5 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
         ReadingData readingData = new ReadingData(studServiceAPI);
 
+        readingData.getTeacher();
     }
 }

@@ -9,6 +9,9 @@ import com.envy.studapp.Model.ClassroomModel;
 import com.envy.studapp.Model.GroupModel;
 import com.envy.studapp.Model.SubjectModel;
 import com.envy.studapp.Model.TeacherModel;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,6 +25,7 @@ public class ReadingData {
 
     StudServiceAPI studServiceAPI;
 
+
     public ReadingData(StudServiceAPI studServiceAPI){
 
         this.studServiceAPI = studServiceAPI;
@@ -29,18 +33,24 @@ public class ReadingData {
 
     public void getTeacher() {
 
-        final Call<TeacherModel> call = studServiceAPI.getTeacher();
+        final Call<List<TeacherModel>> call = studServiceAPI.getTeacher();
 
-        call.enqueue(new Callback<TeacherModel>() {
+        call.enqueue(new Callback<List<TeacherModel>>() {
 
             @Override
-            public void onResponse(Call<TeacherModel> call, Response<TeacherModel> response) {
+            public void onResponse(Call<List<TeacherModel>> call, Response<List<TeacherModel>> response) {
+
+                Log.d("json", response.body().toString());
+                List<TeacherModel> teacherList = response.body();
+                for (TeacherModel teacherModel: teacherList) {
+                    Log.d("json", teacherModel.getTeacherName());
+                }
 
             }
 
             @Override
-            public void onFailure(Call<TeacherModel> call, Throwable t) {
-
+            public void onFailure(Call<List<TeacherModel>> call, Throwable t) {
+                Log.d("json", "something went wrong or u forgot create localhost");
             }
         });
     }

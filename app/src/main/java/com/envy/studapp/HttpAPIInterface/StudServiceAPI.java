@@ -6,6 +6,8 @@ import com.envy.studapp.Model.GroupModel;
 import com.envy.studapp.Model.SubjectModel;
 import com.envy.studapp.Model.TeacherModel;
 
+import java.util.List;
+
 import dagger.Module;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -21,7 +23,7 @@ public interface StudServiceAPI {
     Call<SubjectModel> getSubject();
 
     @GET("/json/teachers.json")
-    Call<TeacherModel> getTeacher();
+    Call<List<TeacherModel>> getTeacher();
 
     @GET("/json/beginningTime.json")
     Call<BeginningTimeModel> getBeginningTime();
