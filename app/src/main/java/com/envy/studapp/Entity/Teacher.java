@@ -2,6 +2,8 @@ package com.envy.studapp.Entity;
 
 import android.util.Log;
 
+import com.envy.studapp.HTTPAPIInterface.NetWorkModule;
+import com.envy.studapp.HTTPAPIInterface.NetWorkModule_ProvideRetrofitFactory;
 import com.envy.studapp.HTTPAPIInterface.StudServiceAPI;
 import com.envy.studapp.Model.GroupModel;
 import com.envy.studapp.Model.TeacherModel;
@@ -16,8 +18,6 @@ import retrofit2.Response;
 
 public class Teacher {
 
-    StudServiceAPI studServiceApi = StudServiceAPI.retrofit.create(StudServiceAPI.class);
-    final Call<TeacherModel> call = studServiceApi.getTeacher();
 
     public void getGroup() {
 
