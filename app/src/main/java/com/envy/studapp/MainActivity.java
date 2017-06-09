@@ -15,10 +15,6 @@ public class MainActivity extends AppCompatActivity {
     @Inject
     ScheduleDownloaderUseCase scheduleDownloaderUseCase;
 
-    StudServiceAPI studServiceAPI;
-
-    ScheduleComponent scheduleComponent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
 
         DaggerScheduleComponent.builder().build().inject(this);
 
-        ScheduleDownloaderUseCase scheduleDownloaderUseCase = new ScheduleDownloaderUseCase(studServiceAPI);
         scheduleDownloaderUseCase.getTeacher();
     }
 }
