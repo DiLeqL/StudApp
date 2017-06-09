@@ -1,10 +1,10 @@
 package com.envy.studapp.HttpAPIInterface;
 
-import com.envy.studapp.Model.BeginningTimeModel;
-import com.envy.studapp.Model.ClassroomModel;
-import com.envy.studapp.Model.GroupModel;
-import com.envy.studapp.Model.SubjectModel;
-import com.envy.studapp.Model.TeacherModel;
+import com.envy.studapp.Schedule.Data.BeginningTimeModel;
+import com.envy.studapp.Schedule.Data.ClassroomModel;
+import com.envy.studapp.Schedule.Data.GroupModel;
+import com.envy.studapp.Schedule.Data.SubjectModel;
+import com.envy.studapp.Schedule.Data.TeacherModel;
 
 import java.util.List;
 

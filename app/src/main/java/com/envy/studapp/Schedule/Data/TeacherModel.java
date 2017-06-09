@@ -1,4 +1,4 @@
-package com.envy.studapp.Model;
+package com.envy.studapp.Schedule.Data;
 
 import com.google.gson.annotations.SerializedName;
 

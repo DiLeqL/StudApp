@@ -3,7 +3,7 @@ package com.envy.studapp;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.envy.studapp.Entity.ReadingData;
+import com.envy.studapp.Schedule.Data.Domain.ReadingData;
 import com.envy.studapp.HttpAPIInterface.DaggerInjectorInterface;
 import com.envy.studapp.HttpAPIInterface.InjectorInterface;
 import com.envy.studapp.HttpAPIInterface.StudServiceAPI;

@@ -1,4 +1,4 @@
-package com.envy.studapp.Model;
+package com.envy.studapp.Schedule.Data;
 
 /**
  * Created by ENVY on 07.06.2017.

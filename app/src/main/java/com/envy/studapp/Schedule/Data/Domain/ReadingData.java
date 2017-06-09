@@ -1,15 +1,13 @@
-package com.envy.studapp.Entity;
+package com.envy.studapp.Schedule.Data.Domain;
 
 import android.util.Log;
 
-import com.envy.studapp.HttpAPIInterface.NetWorkModule;
 import com.envy.studapp.HttpAPIInterface.StudServiceAPI;
-import com.envy.studapp.Model.BeginningTimeModel;
-import com.envy.studapp.Model.ClassroomModel;
-import com.envy.studapp.Model.GroupModel;
-import com.envy.studapp.Model.SubjectModel;
-import com.envy.studapp.Model.TeacherModel;
-import com.google.gson.annotations.SerializedName;
+import com.envy.studapp.Schedule.Data.BeginningTimeModel;
+import com.envy.studapp.Schedule.Data.ClassroomModel;
+import com.envy.studapp.Schedule.Data.GroupModel;
+import com.envy.studapp.Schedule.Data.SubjectModel;
+import com.envy.studapp.Schedule.Data.TeacherModel;
 
 import java.util.List;
 
