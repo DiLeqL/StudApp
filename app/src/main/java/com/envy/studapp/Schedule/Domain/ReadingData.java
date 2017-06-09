@@ -1,4 +1,4 @@
-package com.envy.studapp.Schedule.Data.Domain;
+package com.envy.studapp.Schedule.Domain;
 
 import android.util.Log;
 
