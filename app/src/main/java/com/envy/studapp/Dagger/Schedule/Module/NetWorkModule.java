@@ -1,4 +1,6 @@
-package com.envy.studapp.HttpAPIInterface;
+package com.envy.studapp.Dagger.Schedule.Module;
+
+import com.envy.studapp.Schedule.Data.HttpAPIInterface.StudServiceAPI;
 
 import javax.inject.Singleton;
 

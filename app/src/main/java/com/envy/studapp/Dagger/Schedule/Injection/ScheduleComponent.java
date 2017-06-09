@@ -1,6 +1,7 @@
-package com.envy.studapp.HttpAPIInterface;
+package com.envy.studapp.Dagger.Schedule.Injection;
 
 import com.envy.studapp.MainActivity;
+import com.envy.studapp.Dagger.Schedule.Module.NetWorkModule;
 
 import javax.inject.Singleton;
 
@@ -12,7 +13,7 @@ import dagger.Component;
 
 @Singleton
 @Component(modules = {NetWorkModule.class})
-public interface InjectorInterface {
+public interface ScheduleComponent {
 
     void inject(MainActivity activity);
 }

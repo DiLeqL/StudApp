@@ -2,7 +2,7 @@ package com.envy.studapp.Schedule.Domain;
 
 import android.util.Log;
 
-import com.envy.studapp.HttpAPIInterface.StudServiceAPI;
+import com.envy.studapp.Schedule.Data.HttpAPIInterface.StudServiceAPI;
 import com.envy.studapp.Schedule.Data.BeginningTimeModel;
 import com.envy.studapp.Schedule.Data.ClassroomModel;
 import com.envy.studapp.Schedule.Data.GroupModel;
@@ -11,6 +11,9 @@ import com.envy.studapp.Schedule.Data.TeacherModel;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
+import dagger.Provides;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,12 +22,13 @@ import retrofit2.Response;
  * Created by ENVY on 08.06.2017.
  */
 
-public class ReadingData {
+
+public class ScheduleDownloaderUseCase {
 
     StudServiceAPI studServiceAPI;
 
-
-    public ReadingData(StudServiceAPI studServiceAPI){
+    @Inject
+    public ScheduleDownloaderUseCase(StudServiceAPI studServiceAPI){
 
         this.studServiceAPI = studServiceAPI;
     }

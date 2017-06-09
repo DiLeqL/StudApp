@@ -1,4 +1,4 @@
-package com.envy.studapp.HttpAPIInterface;
+package com.envy.studapp.Schedule.Data.HttpAPIInterface;
 
 import com.envy.studapp.Schedule.Data.BeginningTimeModel;
 import com.envy.studapp.Schedule.Data.ClassroomModel;
