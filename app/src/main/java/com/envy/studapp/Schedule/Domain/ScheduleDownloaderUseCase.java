@@ -14,10 +14,12 @@ import java.util.List;
 import java.util.Observable;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.Observer;
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -40,10 +42,16 @@ public class ScheduleDownloaderUseCase {
     io.reactivex.Observable<List<TeacherModel>> observable;
     List<TeacherModel> teacherModelList;
 
+    @Named("backgroundScheduler") Scheduler backgroundScheduler;
+    @Named("mainScheduler") Scheduler mainScheduler;
+
     @Inject
-    public ScheduleDownloaderUseCase(StudServiceAPI studServiceAPI) {
+    public ScheduleDownloaderUseCase(StudServiceAPI studServiceAPI, Scheduler backgroundScheduler,
+                                     Scheduler mainScheduler) {
 
         this.studServiceAPI = studServiceAPI;
+        this.mainScheduler = mainScheduler;
+        this.backgroundScheduler = backgroundScheduler;
     }
 
     public Observer<List<TeacherModel>> getObserver() {
@@ -61,7 +69,7 @@ public class ScheduleDownloaderUseCase {
 
             @Override
             public void onNext(List<TeacherModel> value) {
-                Log.d("json", "onNext");
+                teacherModelList = value;
             }
 
             @Override
@@ -76,8 +84,8 @@ public class ScheduleDownloaderUseCase {
 
         final io.reactivex.Observable<List<TeacherModel>> call = studServiceAPI.getTeacher();
 
-        call.subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+        call.subscribeOn(backgroundScheduler)
+            .observeOn(mainScheduler)
             .subscribe(getObserver());
 
     }
