@@ -9,15 +9,24 @@ import com.envy.studapp.Schedule.Data.GroupModel;
 import com.envy.studapp.Schedule.Data.SubjectModel;
 import com.envy.studapp.Schedule.Data.TeacherModel;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Observable;
 
 import javax.inject.Inject;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by ENVY on 08.06.2017.
@@ -28,35 +37,52 @@ public class ScheduleDownloaderUseCase {
 
     StudServiceAPI studServiceAPI;
 
+    io.reactivex.Observable<List<TeacherModel>> observable;
+    List<TeacherModel> teacherModelList;
+
     @Inject
-    public ScheduleDownloaderUseCase(StudServiceAPI studServiceAPI){
+    public ScheduleDownloaderUseCase(StudServiceAPI studServiceAPI) {
 
         this.studServiceAPI = studServiceAPI;
     }
 
+    public Observer<List<TeacherModel>> getObserver() {
+        return new Observer<List<TeacherModel>>() {
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(List<TeacherModel> value) {
+                Log.d("json", "onNext");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+        };
+    }
+
     public void getTeacher() {
 
-        final Call<List<TeacherModel>> call = studServiceAPI.getTeacher();
+        final io.reactivex.Observable<List<TeacherModel>> call = studServiceAPI.getTeacher();
 
-        call.enqueue(new Callback<List<TeacherModel>>() {
+        call.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(getObserver());
 
-            @Override
-            public void onResponse(Call<List<TeacherModel>> call, Response<List<TeacherModel>> response) {
-
-                Log.d("json", response.body().toString());
-                List<TeacherModel> teacherList = response.body();
-                for (TeacherModel teacherModel: teacherList) {
-                    Log.d("json", teacherModel.getTeacherName());
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<TeacherModel>> call, Throwable t) {
-                Log.d("json", "something went wrong or u forgot create localhost");
-            }
-        });
     }
+
+
 
     public void getSubject() {
 

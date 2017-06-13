@@ -9,6 +9,7 @@ import com.envy.studapp.Schedule.Data.TeacherModel;
 import java.util.List;
 
 import dagger.Module;
+import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.GET;
 
@@ -23,7 +24,7 @@ public interface StudServiceAPI {
     Call<SubjectModel> getSubject();
 
     @GET("/json/teachers.json")
-    Call<List<TeacherModel>> getTeacher();
+    Observable<List<TeacherModel>> getTeacher();
 
     @GET("/json/beginningTime.json")
     Call<BeginningTimeModel> getBeginningTime();

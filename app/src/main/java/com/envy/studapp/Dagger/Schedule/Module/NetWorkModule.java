@@ -2,6 +2,7 @@ package com.envy.studapp.Dagger.Schedule.Module;
 
 import com.envy.studapp.Schedule.Data.HttpAPIInterface.StudServiceAPI;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import javax.inject.Singleton;
 
@@ -10,9 +11,7 @@ import dagger.Provides;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
- * Created by ENVY on 08.06.2017.
- */
+
 
 @Module
 public class NetWorkModule {
@@ -24,6 +23,7 @@ public class NetWorkModule {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.3.2:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
         return retrofit;
     }
@@ -39,7 +39,6 @@ public class NetWorkModule {
     @Singleton
     public ScheduleDownloaderUseCase provideScheduleDownloaderUseCase(StudServiceAPI studServiceAPI){
 
-        ScheduleDownloaderUseCase scheduleDownloaderUseCase = new ScheduleDownloaderUseCase(studServiceAPI);
-        return scheduleDownloaderUseCase;
+        return new ScheduleDownloaderUseCase(studServiceAPI);
     }
 }

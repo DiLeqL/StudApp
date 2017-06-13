@@ -2,6 +2,8 @@ package com.envy.studapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
 
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
