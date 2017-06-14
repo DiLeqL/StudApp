@@ -4,7 +4,7 @@ package com.envy.studapp.Schedule.Data;
  * Created by ENVY on 07.06.2017.
  */
 
-public class GroupModel {
+public class GroupNumModel {
 
     String groupId;
     String groupName;

@@ -2,7 +2,8 @@ package com.envy.studapp.Schedule.Data.HttpAPIInterface;
 
 import com.envy.studapp.Schedule.Data.BeginningTimeModel;
 import com.envy.studapp.Schedule.Data.ClassroomModel;
-import com.envy.studapp.Schedule.Data.GroupModel;
+import com.envy.studapp.Schedule.Data.GroupNumModel;
+import com.envy.studapp.Schedule.Data.ScheduleResponse;
 import com.envy.studapp.Schedule.Data.SubjectModel;
 import com.envy.studapp.Schedule.Data.TeacherModel;
 
@@ -33,6 +34,9 @@ public interface StudServiceAPI {
     Call<ClassroomModel> getClassroom();
 
     @GET("/json/groups.json")
-    Call<GroupModel> getGroup();
+    Call<GroupNumModel> getGroup();
+
+    @GET("/json/schedule.json")
+    Observable<ScheduleResponse> getSchedule();
 
 }

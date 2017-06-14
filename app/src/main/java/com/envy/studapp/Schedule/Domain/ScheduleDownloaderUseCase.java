@@ -2,44 +2,38 @@ package com.envy.studapp.Schedule.Domain;
 
 import android.util.Log;
 
+import com.envy.studapp.BaseUseCase;
 import com.envy.studapp.Schedule.Data.HttpAPIInterface.StudServiceAPI;
 import com.envy.studapp.Schedule.Data.BeginningTimeModel;
 import com.envy.studapp.Schedule.Data.ClassroomModel;
-import com.envy.studapp.Schedule.Data.GroupModel;
+import com.envy.studapp.Schedule.Data.GroupNumModel;
+import com.envy.studapp.Schedule.Data.ScheduleResponse;
 import com.envy.studapp.Schedule.Data.SubjectModel;
 import com.envy.studapp.Schedule.Data.TeacherModel;
+import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Observable;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import dagger.Module;
-import dagger.Provides;
+import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 
-import static android.content.ContentValues.TAG;
-
-/**
- * Created by ENVY on 08.06.2017.
- */
 
 
-public class ScheduleDownloaderUseCase {
+public class ScheduleDownloaderUseCase extends BaseUseCase<ScheduleResponse,
+                                               Object>{
 
     StudServiceAPI studServiceAPI;
 
-    io.reactivex.Observable<List<TeacherModel>> observable;
+
     List<TeacherModel> teacherModelList;
 
     @Named("backgroundScheduler") Scheduler backgroundScheduler;
@@ -47,11 +41,23 @@ public class ScheduleDownloaderUseCase {
 
     @Inject
     public ScheduleDownloaderUseCase(StudServiceAPI studServiceAPI, Scheduler backgroundScheduler,
-                                     Scheduler mainScheduler) {
+                                     Scheduler uiScheduler) {
 
+        super(backgroundScheduler, uiScheduler);
         this.studServiceAPI = studServiceAPI;
-        this.mainScheduler = mainScheduler;
-        this.backgroundScheduler = backgroundScheduler;
+    }
+
+
+    @Override
+    public Observable<ScheduleResponse> buildObservable(Object object) {
+        return studServiceAPI.getSchedule();
+    }
+
+    public void subscribe(Observable<ScheduleResponse> observable,
+                          Observer<ScheduleResponse> subscriber) {
+        SchedulePresenter schedulePresenter = new SchedulePresenter();
+        subscriber = schedulePresenter.getScheduleObserver();
+        super.subscribe(observable, subscriber);
     }
 
     public Observer<List<TeacherModel>> getObserver() {
@@ -111,16 +117,16 @@ public class ScheduleDownloaderUseCase {
 
     public void getGroup() {
 
-        final Call<GroupModel> call = studServiceAPI.getGroup();
+        final Call<GroupNumModel> call = studServiceAPI.getGroup();
 
-        call.enqueue(new Callback<GroupModel>() {
+        call.enqueue(new Callback<GroupNumModel>() {
             @Override
-            public void onResponse(Call<GroupModel> call, Response<GroupModel> response) {
+            public void onResponse(Call<GroupNumModel> call, Response<GroupNumModel> response) {
 
             }
 
             @Override
-            public void onFailure(Call<GroupModel> call, Throwable t) {
+            public void onFailure(Call<GroupNumModel> call, Throwable t) {
 
             }
         });
@@ -160,5 +166,7 @@ public class ScheduleDownloaderUseCase {
             }
         });
     }
+
+
 
 }
