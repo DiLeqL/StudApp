@@ -33,6 +33,6 @@ public abstract class BaseUseCase<OT, IT> {
                 .subscribeOn(backgroundScheduler)
                 .observeOn(uiScheduler)
                 .subscribe(subscriber);
-    };
+    }
 
 }

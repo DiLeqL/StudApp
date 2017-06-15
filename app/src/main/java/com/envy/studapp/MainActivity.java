@@ -15,15 +15,23 @@ import android.view.MenuItem;
 import android.widget.Button;
 
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
+import com.envy.studapp.Schedule.Data.ScheduleResponse;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
 import com.envy.studapp.Dagger.Schedule.Injection.ScheduleComponent;
 import com.envy.studapp.Schedule.Data.HttpAPIInterface.StudServiceAPI;
 import com.envy.studapp.Schedule.Fragment.ScheduleFragment;
+import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
+
+    Observable<ScheduleResponse> observable;
+    Observer<ScheduleResponse> subscriber;
 
     @Inject
     ScheduleDownloaderUseCase scheduleDownloaderUseCase;
@@ -35,7 +43,9 @@ public class MainActivity extends AppCompatActivity
 
         DaggerScheduleComponent.builder().build().inject(this);
 
-        //scheduleDownloaderUseCase.getTeacher();
+        scheduleDownloaderUseCase.subscribe(observable, subscriber);
+        SchedulePresenter schedulePresenter = new SchedulePresenter();
+        Log.d("response", schedulePresenter.getScheduleResponse().toString());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -48,17 +58,21 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        //showFragment(ScheduleFragment.class);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
         int id = item.getItemId();
+
+        item.setChecked(true);
 
         Class fragment = null;
 
         if (id == R.id.nav_schedule) {
+
             showFragment(ScheduleFragment.class);
+
         } else if (id == R.id.nav_teacher_schedule){
 
         }

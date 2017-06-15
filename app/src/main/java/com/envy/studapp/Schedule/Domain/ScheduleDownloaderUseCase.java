@@ -60,6 +60,7 @@ public class ScheduleDownloaderUseCase extends BaseUseCase<ScheduleResponse,
         super.subscribe(observable, subscriber);
     }
 
+
     public Observer<List<TeacherModel>> getObserver() {
         return new Observer<List<TeacherModel>>() {
 
@@ -86,15 +87,15 @@ public class ScheduleDownloaderUseCase extends BaseUseCase<ScheduleResponse,
         };
     }
 
-    public void getTeacher() {
-
-        final io.reactivex.Observable<List<TeacherModel>> call = studServiceAPI.getTeacher();
-
-        call.subscribeOn(backgroundScheduler)
-            .observeOn(mainScheduler)
-            .subscribe(getObserver());
-
-    }
+//    public void getTeacher() {
+//
+//        final io.reactivex.Observable<List<TeacherModel>> call = studServiceAPI.getTeacher();
+//
+//        call.subscribeOn(backgroundScheduler)
+//            .observeOn(mainScheduler)
+//            .subscribe(getObserver());
+//
+//    }
 
 
 

@@ -38,4 +38,8 @@ public class SchedulePresenter extends BasePresenter{
         return scheduleResponseObserver;
     }
 
+    public ScheduleResponse getScheduleResponse(){
+        return scheduleResponse;
+    }
+
 }
