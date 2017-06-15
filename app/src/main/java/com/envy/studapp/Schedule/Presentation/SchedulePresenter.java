@@ -37,4 +37,5 @@ public class SchedulePresenter extends BasePresenter{
         };
         return scheduleResponseObserver;
     }
+
 }

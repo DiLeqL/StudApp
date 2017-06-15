@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_schedule"
+            android:icon="@drawable/ic_menu_schedule"
+            android:title="@string/nav_schedule" />
+        <item
+            android:id="@+id/nav_teacher_schedule"
+            android:icon="@drawable/ic_menu_teachers"
+            android:title="@string/nav_teachers" />
+        <item
+            android:id="@+id/nav_arrears"
+            android:icon="@drawable/ic_menu_arrears"
+            android:title="@string/nav_arrears" />
+        <item
+            android:id="@+id/nav_exams"
+            android:icon="@drawable/ic_menu_exams"
+            android:title="@string/nav_exams" />
+
+    </group>
+
+    <item android:title="@string/nav_profile">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_menu_logout"
+                android:title="@string/nav_logout" />
+        </menu>
+    </item>
+
+</menu>
