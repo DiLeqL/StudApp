@@ -7,5 +7,6 @@ package com.envy.studapp.Schedule.Presentation;
 public interface ScheduleView {
 
     void showError();
+
     void showResult();
 }

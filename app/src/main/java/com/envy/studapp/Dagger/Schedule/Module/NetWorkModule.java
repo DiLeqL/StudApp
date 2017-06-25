@@ -2,6 +2,7 @@ package com.envy.studapp.Dagger.Schedule.Module;
 
 import com.envy.studapp.Schedule.Data.HttpAPIInterface.StudServiceAPI;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
+import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import javax.inject.Named;
@@ -35,28 +36,7 @@ public class NetWorkModule {
     @Provides
     @Singleton
     public StudServiceAPI provideStudServiceAPI(Retrofit retrofit){
-
         return retrofit.create(StudServiceAPI.class);
     }
 
-    @Provides
-    @Named("mainScheduler")
-    public Scheduler provideMainScheduler(){
-        return AndroidSchedulers.mainThread();
-    }
-
-    @Provides
-    @Named("backgroundScheduler")
-    public Scheduler provideBackgroundScheduler(){
-        return Schedulers.io();
-    }
-
-    @Provides
-    @Singleton
-    public ScheduleDownloaderUseCase provideScheduleDownloaderUseCase(StudServiceAPI studServiceAPI,
-                                                                      @Named("backgroundScheduler")Scheduler backgroundScheduler,
-                                                                      @Named("mainScheduler")Scheduler mainScheduler){
-
-        return new ScheduleDownloaderUseCase(studServiceAPI, backgroundScheduler, mainScheduler);
-    }
 }

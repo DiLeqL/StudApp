@@ -3,6 +3,7 @@ package com.envy.studapp;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -33,20 +34,14 @@ public class MainActivity extends AppCompatActivity
     Observable<ScheduleResponse> observable;
     Observer<ScheduleResponse> subscriber;
 
-    @Inject
-    ScheduleDownloaderUseCase scheduleDownloaderUseCase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DaggerScheduleComponent.builder().build().inject(this);
-
-        scheduleDownloaderUseCase.subscribe(observable, subscriber);
-        SchedulePresenter schedulePresenter = new SchedulePresenter();
-        Log.d("response", schedulePresenter.getScheduleResponse().toString());
-
+        //nav menu
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -104,7 +99,7 @@ public class MainActivity extends AppCompatActivity
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
     }
 }

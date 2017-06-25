@@ -4,6 +4,8 @@ import com.envy.studapp.Schedule.Data.TeacherModel;
 
 import java.util.List;
 
+import javax.inject.Named;
+
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
@@ -16,8 +18,9 @@ import io.reactivex.Scheduler;
 
 public abstract class BaseUseCase<OT, IT> {
 
-    Scheduler backgroundScheduler;
-    Scheduler uiScheduler;
+
+    @Named("backgroundScheduler") Scheduler backgroundScheduler;
+    @Named("mainScheduler") Scheduler uiScheduler;
 
     public BaseUseCase(Scheduler backgroundScheduler, Scheduler uiScheduler){
 

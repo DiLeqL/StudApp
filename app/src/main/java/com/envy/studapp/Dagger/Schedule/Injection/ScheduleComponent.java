@@ -1,8 +1,11 @@
 package com.envy.studapp.Dagger.Schedule.Injection;
 
+import com.envy.studapp.Dagger.Schedule.Module.AppModule;
+import com.envy.studapp.Dagger.Schedule.Module.ScheduleModule;
 import com.envy.studapp.MainActivity;
 import com.envy.studapp.Dagger.Schedule.Module.NetWorkModule;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
+import com.envy.studapp.Schedule.Fragment.ScheduleFragment;
 
 import javax.inject.Singleton;
 
@@ -13,8 +16,8 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {NetWorkModule.class})
+@Component(modules = {NetWorkModule.class, ScheduleModule.class, AppModule.class})
 public interface ScheduleComponent {
 
-    void inject(MainActivity activity);
+    void inject(ScheduleFragment fragment);
 }

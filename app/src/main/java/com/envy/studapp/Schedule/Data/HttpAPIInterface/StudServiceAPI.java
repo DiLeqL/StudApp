@@ -21,7 +21,7 @@ import retrofit2.http.GET;
 @Module
 public interface StudServiceAPI {
 
-    @GET("/json/subjects.json")
+    /*@GET("/json/subjects.json")
     Call<SubjectModel> getSubject();
 
     @GET("/json/teachers.json")
@@ -34,7 +34,7 @@ public interface StudServiceAPI {
     Call<ClassroomModel> getClassroom();
 
     @GET("/json/groups.json")
-    Call<GroupNumModel> getGroup();
+    Call<GroupNumModel> getGroup();*/
 
     @GET("/json/schedule.json")
     Observable<ScheduleResponse> getSchedule();
