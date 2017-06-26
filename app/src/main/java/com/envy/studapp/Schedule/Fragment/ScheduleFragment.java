@@ -88,6 +88,6 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
 
     @Override
     public void updateSchedule(ScheduleResponse scheduleResponse) {
-        Log.d("response", scheduleResponse.toString());
+        scheduleResponse.getTeacherNames();
     }
 }
