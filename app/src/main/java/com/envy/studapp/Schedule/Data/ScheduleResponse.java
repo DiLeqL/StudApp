@@ -6,6 +6,6 @@ package com.envy.studapp.Schedule.Data;
 
 public class ScheduleResponse {
 
-
+    
 
 }

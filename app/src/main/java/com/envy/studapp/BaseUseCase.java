@@ -9,7 +9,7 @@ import javax.inject.Named;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
-
+import io.reactivex.disposables.Disposable;
 
 
 /**

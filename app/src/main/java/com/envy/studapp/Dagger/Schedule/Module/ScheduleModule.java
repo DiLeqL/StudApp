@@ -1,7 +1,9 @@
 package com.envy.studapp.Dagger.Schedule.Module;
 
 import com.envy.studapp.Schedule.Data.HttpAPIInterface.StudServiceAPI;
+import com.envy.studapp.Schedule.Data.ScheduleResponse;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
+import com.envy.studapp.Schedule.Fragment.ScheduleFragment;
 import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
 
 import javax.inject.Named;
@@ -9,6 +11,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.Observer;
 import io.reactivex.Scheduler;
 
 /**
@@ -31,4 +34,5 @@ public class ScheduleModule {
     public SchedulePresenter provideSchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase){
         return new SchedulePresenter(scheduleDownloaderUseCase);
     }
+
 }

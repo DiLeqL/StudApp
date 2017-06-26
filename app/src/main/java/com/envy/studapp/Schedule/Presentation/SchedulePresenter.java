@@ -1,10 +1,11 @@
 package com.envy.studapp.Schedule.Presentation;
 
+import android.app.Fragment;
 import android.util.Log;
 
-import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
 import com.envy.studapp.Schedule.Data.ScheduleResponse;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
+import com.envy.studapp.Schedule.Fragment.ScheduleFragment;
 
 import javax.inject.Inject;
 
@@ -30,6 +31,7 @@ public class SchedulePresenter extends BasePresenter{
 
     public Observer<ScheduleResponse> getScheduleObserver(){
         Observer<ScheduleResponse> observer = new Observer<ScheduleResponse>() {
+
             @Override
             public void onSubscribe(Disposable d) {
 
@@ -43,8 +45,16 @@ public class SchedulePresenter extends BasePresenter{
                 else {
                     Log.d("val", value.toString());
                 }
-                scheduleResponse = value;
+                ScheduleFragment scheduleFragment = ScheduleFragment.newInstance();
+                onCreateView(scheduleFragment, null);
+                if (isVisibleView()){
+
+                    scheduleFragment.updateSchedule(value);
+                }
+
+                //setScheduleResponse(value);
                 //Log.d("onNext", scheduleResponse.toString());
+                //scheduleResponse = value;
             }
 
 
@@ -62,15 +72,14 @@ public class SchedulePresenter extends BasePresenter{
         return observer;
     }
 
-    public Observer<ScheduleResponse> createRx(){
+    public ScheduleResponse getScheduleResponse(){
         Observer<ScheduleResponse> subscriber = getScheduleObserver();
         scheduleDownloaderUseCase.subscribe(object, subscriber);
-        return subscriber;
+        return scheduleResponse;
     }
 
-    public ScheduleResponse getScheduleResponse(){
-
-        return scheduleResponse;
+    public void setScheduleResponse(ScheduleResponse response){
+        this.scheduleResponse = response;
     }
 
 }

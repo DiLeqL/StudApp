@@ -14,6 +14,7 @@ import com.envy.studapp.R;
 public class BasePresenter<T> {
 
     boolean isVisible;
+
     T view;
 
 
