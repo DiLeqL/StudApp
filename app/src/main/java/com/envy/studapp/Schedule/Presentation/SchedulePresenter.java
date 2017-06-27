@@ -17,7 +17,7 @@ import io.reactivex.disposables.Disposable;
  * Created by ENVY on 14.06.2017.
  */
 
-public class SchedulePresenter extends BasePresenter{
+public class SchedulePresenter extends BasePresenter<ScheduleView>{
 
     ScheduleResponse scheduleResponse;
 
@@ -45,11 +45,11 @@ public class SchedulePresenter extends BasePresenter{
                 else {
                     Log.d("val", value.toString());
                 }
-                ScheduleFragment scheduleFragment = ScheduleFragment.newInstance();
-                onCreateView(scheduleFragment, null);
+
                 if (isVisibleView()){
 
-                    scheduleFragment.updateSchedule(value);
+                    view.updateSchedule(value);
+
                 }
 
                 //setScheduleResponse(value);

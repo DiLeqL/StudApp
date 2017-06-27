@@ -53,8 +53,10 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
         //Log.d("presenter", schedulePresenter.createRx().toString());
 
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
-        TextView textView = (TextView) view.findViewById(R.id.textView2);
+        //TextView textView = (TextView) view.findViewById(R.id.textView2);
         //textView.setText(schedulePresenter.getScheduleResponse().toString());
+
+        schedulePresenter.onCreateView(this, null);
         return view;
     }
 
