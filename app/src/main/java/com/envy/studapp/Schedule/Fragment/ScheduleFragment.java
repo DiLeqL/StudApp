@@ -1,6 +1,7 @@
 package com.envy.studapp.Schedule.Fragment;
 
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
 import com.envy.studapp.R;
+import com.envy.studapp.Schedule.Data.DataBase.ScheduleDBHelper;
 import com.envy.studapp.Schedule.Data.ScheduleResponse;
 import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
 import com.envy.studapp.Schedule.Presentation.ScheduleView;
@@ -41,16 +43,16 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         DaggerScheduleComponent.builder().build().inject(this);
+
         schedulePresenter.getScheduleResponse();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
-        //Log.d("presenter", schedulePresenter.createRx().toString());
 
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
         //TextView textView = (TextView) view.findViewById(R.id.textView2);
