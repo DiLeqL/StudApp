@@ -11,30 +11,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 
-import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
 import com.envy.studapp.Schedule.Data.DataBase.ScheduleContract;
-import com.envy.studapp.Schedule.Data.ScheduleResponse;
-import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
-import com.envy.studapp.Dagger.Schedule.Injection.ScheduleComponent;
-import com.envy.studapp.Schedule.Data.HttpAPIInterface.StudServiceAPI;
+
 import com.envy.studapp.Schedule.Fragment.ScheduleFragment;
-import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
 
-import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
-
-    Observable<ScheduleResponse> observable;
-    Observer<ScheduleResponse> subscriber;
-
 
 
     @Override
@@ -110,4 +97,5 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
     }
+
 }

@@ -1,6 +1,8 @@
 package com.envy.studapp.Schedule.Fragment;
 
 
+import android.app.Activity;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -14,13 +16,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
+import com.envy.studapp.MainActivity;
 import com.envy.studapp.R;
 import com.envy.studapp.Schedule.Data.DataBase.ScheduleDBHelper;
 import com.envy.studapp.Schedule.Data.ScheduleResponse;
 import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
 import com.envy.studapp.Schedule.Presentation.ScheduleView;
+import com.squareup.sqlbrite.BriteDatabase;
+import com.squareup.sqlbrite.SqlBrite;
 
 import javax.inject.Inject;
+
+import rx.schedulers.Schedulers;
 
 
 public class ScheduleFragment extends Fragment implements ScheduleView{
@@ -28,6 +35,7 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
     @Inject
     SchedulePresenter schedulePresenter;
 
+    private static Context context;
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -44,9 +52,12 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ScheduleFragment.context = getContext();
+
         DaggerScheduleComponent.builder().build().inject(this);
 
         schedulePresenter.getScheduleResponse();
+        //Log.d("response", scheduleResponse.toString());
     }
 
     @Override
@@ -93,5 +104,9 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
     @Override
     public void updateSchedule(ScheduleResponse scheduleResponse) {
         scheduleResponse.getTeacherNames();
+    }
+
+    public static Context getFragmentContext() {
+        return ScheduleFragment.context;
     }
 }

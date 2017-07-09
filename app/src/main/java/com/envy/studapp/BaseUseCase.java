@@ -6,10 +6,11 @@ import java.util.List;
 
 import javax.inject.Named;
 
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.Scheduler;
-import io.reactivex.disposables.Disposable;
+
+import rx.Observable;
+import rx.Observer;
+import rx.Scheduler;
+import rx.schedulers.Schedulers;
 
 
 /**
@@ -19,8 +20,11 @@ import io.reactivex.disposables.Disposable;
 public abstract class BaseUseCase<OT, IT> {
 
 
-    @Named("backgroundScheduler") Scheduler backgroundScheduler;
-    @Named("mainScheduler") Scheduler uiScheduler;
+    @Named("backgroundScheduler")
+    Scheduler backgroundScheduler;
+
+    @Named("mainScheduler")
+    Scheduler uiScheduler;
 
     public BaseUseCase(Scheduler backgroundScheduler, Scheduler uiScheduler){
 

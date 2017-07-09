@@ -11,8 +11,8 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import io.reactivex.Observer;
-import io.reactivex.Scheduler;
+import rx.Scheduler;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by ENVY on 19.06.2017.
@@ -24,7 +24,7 @@ public class ScheduleModule {
     @Provides
     @Singleton
     public ScheduleDownloaderUseCase provideScheduleDownloaderUseCase(StudServiceAPI studServiceAPI,
-                                                                      @Named("backgroundScheduler")Scheduler backgroundScheduler,
+                                                                      @Named("backgroundScheduler") Scheduler backgroundScheduler,
                                                                       @Named("mainScheduler")Scheduler mainScheduler){
         return new ScheduleDownloaderUseCase(studServiceAPI, backgroundScheduler, mainScheduler);
     }
