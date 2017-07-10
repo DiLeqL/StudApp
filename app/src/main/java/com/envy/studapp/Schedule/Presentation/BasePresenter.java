@@ -21,6 +21,7 @@ public class BasePresenter<T> {
     public void onCreateView(T view,
                              Bundle savedInstanceState) {
         this.view = view;
+
     }
 
 

@@ -1,5 +1,6 @@
 package com.envy.studapp.Dagger.Schedule.Module;
 
+import com.envy.studapp.Schedule.Data.DataBase.ScheduleSQLBrite;
 import com.envy.studapp.Schedule.Data.HttpAPIInterface.StudServiceAPI;
 import com.envy.studapp.Schedule.Data.ScheduleResponse;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
@@ -31,8 +32,9 @@ public class ScheduleModule {
 
     @Provides
     @Singleton
-    public SchedulePresenter provideSchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase){
-        return new SchedulePresenter(scheduleDownloaderUseCase);
+    public SchedulePresenter provideSchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase,
+                                                      ScheduleSQLBrite scheduleSQLBrite){
+        return new SchedulePresenter(scheduleDownloaderUseCase, scheduleSQLBrite);
     }
 
 }

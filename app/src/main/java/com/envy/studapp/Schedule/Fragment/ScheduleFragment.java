@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
+import com.envy.studapp.Dagger.Schedule.Module.DBModule;
 import com.envy.studapp.MainActivity;
 import com.envy.studapp.R;
 import com.envy.studapp.Schedule.Data.DataBase.ScheduleDBHelper;
@@ -27,6 +28,7 @@ import com.squareup.sqlbrite.SqlBrite;
 
 import javax.inject.Inject;
 
+import rx.Observer;
 import rx.schedulers.Schedulers;
 
 
@@ -34,8 +36,6 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
 
     @Inject
     SchedulePresenter schedulePresenter;
-
-    private static Context context;
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -52,24 +52,18 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ScheduleFragment.context = getContext();
+        DaggerScheduleComponent.builder().dBModule(new DBModule(getContext())).build().inject(this);
 
-        DaggerScheduleComponent.builder().build().inject(this);
-
-        schedulePresenter.getScheduleResponse();
-        //Log.d("response", scheduleResponse.toString());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
-        //TextView textView = (TextView) view.findViewById(R.id.textView2);
-        //textView.setText(schedulePresenter.getScheduleResponse().toString());
 
         schedulePresenter.onCreateView(this, null);
+
         return view;
     }
 
@@ -104,9 +98,5 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
     @Override
     public void updateSchedule(ScheduleResponse scheduleResponse) {
         scheduleResponse.getTeacherNames();
-    }
-
-    public static Context getFragmentContext() {
-        return ScheduleFragment.context;
     }
 }

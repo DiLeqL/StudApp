@@ -23,30 +23,24 @@ import rx.schedulers.Schedulers;
 
 public class ScheduleSQLBrite {
 
-    @SerializedName("subjects")
-    List<SubjectModel> responseSubjectModelList;
-
     List<SubjectModel> dbSubjectModelList;
-
-    SQLiteDatabase sqLiteDatabase;
 
     private Cursor cursor;
 
     BriteDatabase briteDatabase;
 
 
-
-    public ScheduleSQLBrite(){
-        this.briteDatabase = createBriteDatabase();
+    public ScheduleSQLBrite(BriteDatabase briteDatabase){
+        this.briteDatabase = briteDatabase;
     }
 
 
-    private BriteDatabase createBriteDatabase(){
+    /*private BriteDatabase createBriteDatabase(){
         SqlBrite sqlBrite = new SqlBrite.Builder().build();
         ScheduleDBHelper scheduleDBHelper = new ScheduleDBHelper(ScheduleFragment.getFragmentContext());
         BriteDatabase db = sqlBrite.wrapDatabaseHelper(scheduleDBHelper, Schedulers.io());
         return db;
-    }
+    }*/
 
     private void addTeachers(ScheduleResponse scheduleResponse){
         List<TeacherModel> teacherModelList = scheduleResponse.getTeacherList();

@@ -1,6 +1,7 @@
 package com.envy.studapp.Dagger.Schedule.Injection;
 
 import com.envy.studapp.Dagger.Schedule.Module.AppModule;
+import com.envy.studapp.Dagger.Schedule.Module.DBModule;
 import com.envy.studapp.Dagger.Schedule.Module.ScheduleModule;
 import com.envy.studapp.MainActivity;
 import com.envy.studapp.Dagger.Schedule.Module.NetWorkModule;
@@ -16,7 +17,7 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {NetWorkModule.class, ScheduleModule.class, AppModule.class})
+@Component(modules = {NetWorkModule.class, ScheduleModule.class, AppModule.class, DBModule.class})
 public interface ScheduleComponent {
 
     void inject(ScheduleFragment fragment);

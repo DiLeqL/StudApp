@@ -1,6 +1,7 @@
 package com.envy.studapp.Schedule.Presentation;
 
 import android.app.Fragment;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.envy.studapp.Schedule.Data.DataBase.ScheduleSQLBrite;
@@ -22,11 +23,16 @@ public class SchedulePresenter extends BasePresenter<ScheduleView>{
 
     ScheduleDownloaderUseCase scheduleDownloaderUseCase;
 
-    public SchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase){
-        this.scheduleDownloaderUseCase = scheduleDownloaderUseCase;
-    }
+    ScheduleSQLBrite scheduleSQLBrite;
 
     Object object;
+
+    public SchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase,
+                             ScheduleSQLBrite scheduleSQLBrite){
+        this.scheduleDownloaderUseCase = scheduleDownloaderUseCase;
+        this.scheduleSQLBrite = scheduleSQLBrite;
+    }
+
 
     public Observer<ScheduleResponse> getScheduleObserver(){
         Observer<ScheduleResponse> observer = new Observer<ScheduleResponse>() {
@@ -34,7 +40,6 @@ public class SchedulePresenter extends BasePresenter<ScheduleView>{
             @Override
             public void onNext(ScheduleResponse value) {
 
-                ScheduleSQLBrite scheduleSQLBrite = new ScheduleSQLBrite();
                 scheduleSQLBrite.updateScheduleDB(value);
                 scheduleSQLBrite.getTeacherModelList();
 
@@ -65,11 +70,10 @@ public class SchedulePresenter extends BasePresenter<ScheduleView>{
         return observer;
     }
 
-    public ScheduleResponse getScheduleResponse(){
+    @Override
+    public void onCreateView(ScheduleView view, Bundle savedInstanceState) {
+        super.onCreateView(view, savedInstanceState);
         Observer<ScheduleResponse> subscriber = getScheduleObserver();
         scheduleDownloaderUseCase.subscribe(object, subscriber);
-        return scheduleResponse;
     }
-
-
 }
