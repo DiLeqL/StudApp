@@ -10,10 +10,11 @@ public class ScheduleContract {
 
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ", ";
+    private static final String DOT_SEP = ".";
 
     public static final class SubjectEntry implements BaseColumns{
 
-        public static final String TABLE_SCHEDULE ="schedule";
+        public static final String TABLE_SUBJECTS ="subjects";
 
         public static final String COLUMN_SUBJECT_ID = "subjectID";
         public static final String COLUMN_SUBJECT_DAY = "subjectDay";
@@ -24,15 +25,42 @@ public class ScheduleContract {
         public static final String COLUMN_SUBJECT_STUD_GROUP = "subjectStudGroup";
 
         public static final String SQL_CREATE_SUBJECT_TABLE =
-                "CREATE TABLE " + TABLE_SCHEDULE + " (" + _ID + " INTEGER PRIMARY KEY, " +
+                "CREATE TABLE " + TABLE_SUBJECTS + " (" + _ID + " INTEGER PRIMARY KEY, " +
                      COLUMN_SUBJECT_ID + TEXT_TYPE + COMMA_SEP + COLUMN_SUBJECT_DAY +
                         TEXT_TYPE + COMMA_SEP + COLUMN_SUBJECT_NAME + TEXT_TYPE + COMMA_SEP +
                         COLUMN_SUBJECT_TEACHER + TEXT_TYPE + COMMA_SEP + COLUMN_SUBJECT_TIME +
                         TEXT_TYPE + COMMA_SEP + COLUMN_SUBJECT_ROOM + TEXT_TYPE + COMMA_SEP +
                         COLUMN_SUBJECT_STUD_GROUP + TEXT_TYPE + ")";
 
-        public static final String SQL_DELETE_SCHEDULE_TABLE =
-                "DROP TABLE IF EXISTS " + TABLE_SCHEDULE;
+        public static final String SQL_DELETE_SUBJECT_TABLE =
+                "DROP TABLE IF EXISTS " + TABLE_SUBJECTS;
+
+        public static final String SQL_SELECT_SUBJECTS = "SELECT subjectid, day, subjectName, name," +
+                " groupName, roomNum, time from subjects inner join teachers on " +
+                "subjects.subjectTeacher = teachers.teacherId inner join groups on " +
+                "subjects.subjectStudGroup = groups.groupId inner join classrooms \n" +
+                "on subjects.subjectRoom = classrooms.roomId inner join beginningTimes " +
+                "on subjects.subjectTime = beginningTimes.timeId inner join weekdays " +
+                "on subjects.subjectDay = weekdays.weekdayId";
+
+        public static final String SQL_SELECT_SUBJECTSS = "SELECT " + COLUMN_SUBJECT_ID + COMMA_SEP +
+                WeekdaysEntry.COLUMN_DAY + COMMA_SEP + COLUMN_SUBJECT_NAME + COMMA_SEP +
+                TeachersEntry.COLUMN_TEACHER_NAME + COMMA_SEP + GroupsEntry.COLUMN_GROUP_NAME +
+                COMMA_SEP + ClassroomsEntry.COLUMN_CLASSROOM_NUM + COMMA_SEP +
+                BeginningTimesEntry.COLUMN_TIME + " FROM " + TABLE_SUBJECTS + " INNER JOIN " +
+                TeachersEntry.TABLE_TEACHERS + " ON " + TABLE_SUBJECTS + DOT_SEP +
+                COLUMN_SUBJECT_TEACHER + " = " + TeachersEntry.TABLE_TEACHERS + DOT_SEP +
+                TeachersEntry.COLUMN_TEACHER_ID + " INNER JOIN " + GroupsEntry.TABLE_GROUPS +
+                " ON " + TABLE_SUBJECTS + DOT_SEP + COLUMN_SUBJECT_STUD_GROUP + " = " +
+                GroupsEntry.TABLE_GROUPS + DOT_SEP + GroupsEntry.COLUMN_GROUP_ID + " INNER JOIN " +
+                ClassroomsEntry.TABLE_CLASSROOMS + " ON " + TABLE_SUBJECTS + DOT_SEP +
+                COLUMN_SUBJECT_ROOM + " = " + ClassroomsEntry.TABLE_CLASSROOMS + DOT_SEP +
+                ClassroomsEntry.COLUMN_CLASSROOM_ID + " INNER JOIN " +
+                BeginningTimesEntry.TABLE_BEGINNING_TIMES + " ON " + TABLE_SUBJECTS + DOT_SEP +
+                COLUMN_SUBJECT_TIME + " = " + BeginningTimesEntry.TABLE_BEGINNING_TIMES + DOT_SEP +
+                BeginningTimesEntry.COLUMN_TIME_ID + " INNER JOIN " + WeekdaysEntry.TABLE_WEEKDAYS +
+                " ON " + TABLE_SUBJECTS + DOT_SEP + COLUMN_SUBJECT_DAY + " = " +
+                WeekdaysEntry.TABLE_WEEKDAYS + DOT_SEP + WeekdaysEntry.COLUMN_WEEKDAY_ID;
     }
 
     public static final class TeachersEntry implements BaseColumns{

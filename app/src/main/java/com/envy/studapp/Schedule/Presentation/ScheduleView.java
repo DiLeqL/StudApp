@@ -1,6 +1,6 @@
 package com.envy.studapp.Schedule.Presentation;
 
-import com.envy.studapp.Schedule.Data.ScheduleResponse;
+import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 
 /**
  * Created by ENVY on 14.06.2017.

@@ -1,4 +1,6 @@
-package com.envy.studapp.Schedule.Data;
+package com.envy.studapp.Schedule.Data.Model;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by ENVY on 06.06.2017.
@@ -6,12 +8,27 @@ package com.envy.studapp.Schedule.Data;
 
 public class SubjectModel {
 
+    @SerializedName("subjectId")
     int subjectId;
+
+    @SerializedName("subjectDay")
+    String subjectDay;
+
+    @SerializedName("subjectName")
     String subjectName;
+
+    @SerializedName("subjectTeacher")
     int subjectTeacher;
+
+    @SerializedName("subjectTime")
     int subjectTime;
+
+    @SerializedName("subjectRoom")
     int subjectRoom;
+
+    @SerializedName("subjectStudGroup")
     int subjectStudGroup;
+
 
     public int getSubjectId() {
         return subjectId;
@@ -59,6 +76,14 @@ public class SubjectModel {
 
     public void setSubjectStudGroup(int subjectStudGroup) {
         this.subjectStudGroup = subjectStudGroup;
+    }
+
+    public String getSubjectDay() {
+        return subjectDay;
+    }
+
+    public void setSubjectDay(String subjectDay) {
+        this.subjectDay = subjectDay;
     }
 
 }

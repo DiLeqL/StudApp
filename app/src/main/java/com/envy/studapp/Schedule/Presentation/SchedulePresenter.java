@@ -1,15 +1,11 @@
 package com.envy.studapp.Schedule.Presentation;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.envy.studapp.Schedule.Data.DataBase.ScheduleSQLBrite;
-import com.envy.studapp.Schedule.Data.ScheduleResponse;
+import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
-import com.envy.studapp.Schedule.Fragment.ScheduleFragment;
-
-import javax.inject.Inject;
 
 import rx.Observer;
 
@@ -42,6 +38,7 @@ public class SchedulePresenter extends BasePresenter<ScheduleView>{
 
                 scheduleSQLBrite.updateScheduleDB(value);
                 scheduleSQLBrite.getTeacherModelList();
+                //scheduleSQLBrite.getSubjectModelList();
 
                 if (value == null){
                     Log.d("val", "value is null");

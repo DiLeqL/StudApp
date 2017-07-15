@@ -1,35 +1,21 @@
 package com.envy.studapp.Schedule.Fragment;
 
 
-import android.app.Activity;
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.support.annotation.CallSuper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
 import com.envy.studapp.Dagger.Schedule.Module.DBModule;
-import com.envy.studapp.MainActivity;
 import com.envy.studapp.R;
-import com.envy.studapp.Schedule.Data.DataBase.ScheduleDBHelper;
-import com.envy.studapp.Schedule.Data.ScheduleResponse;
+import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
 import com.envy.studapp.Schedule.Presentation.ScheduleView;
-import com.squareup.sqlbrite.BriteDatabase;
-import com.squareup.sqlbrite.SqlBrite;
 
 import javax.inject.Inject;
-
-import rx.Observer;
-import rx.schedulers.Schedulers;
 
 
 public class ScheduleFragment extends Fragment implements ScheduleView{

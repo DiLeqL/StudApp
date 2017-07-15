@@ -1,16 +1,11 @@
 package com.envy.studapp;
 
-import com.envy.studapp.Schedule.Data.TeacherModel;
-
-import java.util.List;
-
 import javax.inject.Named;
 
 
 import rx.Observable;
 import rx.Observer;
 import rx.Scheduler;
-import rx.schedulers.Schedulers;
 
 
 /**

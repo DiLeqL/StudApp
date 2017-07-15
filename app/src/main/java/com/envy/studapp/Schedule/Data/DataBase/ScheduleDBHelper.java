@@ -34,7 +34,7 @@ public class ScheduleDBHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
-        db.execSQL(ScheduleContract.SubjectEntry.SQL_DELETE_SCHEDULE_TABLE);
+        db.execSQL(ScheduleContract.SubjectEntry.SQL_DELETE_SUBJECT_TABLE);
         db.execSQL(ScheduleContract.TeachersEntry.SQL_DELETE_TEACHER_TABLE);
         db.execSQL(ScheduleContract.GroupsEntry.SQL_DELETE_GROUP_TABLE);
         db.execSQL(ScheduleContract.ClassroomsEntry.SQL_DELETE_CLASSROOM_TABLE);

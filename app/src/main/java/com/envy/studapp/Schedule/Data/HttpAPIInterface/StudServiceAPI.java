@@ -1,13 +1,10 @@
 package com.envy.studapp.Schedule.Data.HttpAPIInterface;
 
 
-import com.envy.studapp.Schedule.Data.ScheduleResponse;
+import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 
-
-import java.util.List;
 
 import dagger.Module;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import rx.Observable;
 

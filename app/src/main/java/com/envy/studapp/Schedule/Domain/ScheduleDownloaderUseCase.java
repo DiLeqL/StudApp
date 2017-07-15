@@ -4,13 +4,10 @@ package com.envy.studapp.Schedule.Domain;
 import com.envy.studapp.BaseUseCase;
 import com.envy.studapp.Schedule.Data.HttpAPIInterface.StudServiceAPI;
 
-import com.envy.studapp.Schedule.Data.ScheduleResponse;
-
 import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Scheduler;
-import rx.schedulers.Schedulers;
 
 
 public class ScheduleDownloaderUseCase extends BaseUseCase<ScheduleResponse,

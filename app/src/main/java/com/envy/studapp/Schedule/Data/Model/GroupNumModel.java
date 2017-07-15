@@ -1,4 +1,6 @@
-package com.envy.studapp.Schedule.Data;
+package com.envy.studapp.Schedule.Data.Model;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by ENVY on 07.06.2017.
@@ -6,7 +8,10 @@ package com.envy.studapp.Schedule.Data;
 
 public class GroupNumModel {
 
+    @SerializedName("groupId")
     String groupId;
+
+    @SerializedName("groupName")
     String groupName;
 
     public String getGroupId() {

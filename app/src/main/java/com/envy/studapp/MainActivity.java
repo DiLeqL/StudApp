@@ -41,12 +41,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        Log.d("sql", ScheduleContract.SubjectEntry.SQL_CREATE_SUBJECT_TABLE);
-        Log.d("sql", ScheduleContract.TeachersEntry.SQL_CREATE_TEACHER_TABLE);
-        Log.d("sql", ScheduleContract.GroupsEntry.SQL_CREATE_GROUP_TABLE);
-        Log.d("sql", ScheduleContract.ClassroomsEntry.SQL_CREATE_CLASSROOM_TABLE);
-        Log.d("sql", ScheduleContract.BeginningTimesEntry.SQL_CREATE_BEGINNIG_TIMES_TABLE);
-        Log.d("sql", ScheduleContract.WeekdaysEntry.SQL_CREATE_WEEKDAYS_TABLE);
         showFragment(ScheduleFragment.class);
     }
 

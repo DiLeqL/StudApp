@@ -1,4 +1,4 @@
-package com.envy.studapp.Schedule.Data;
+package com.envy.studapp.Schedule.Data.Model;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -10,6 +10,7 @@ public class TeacherModel {
 
     @SerializedName("teacherId")
     int teacherId;
+
     @SerializedName("name")
     String teacherName;
 
