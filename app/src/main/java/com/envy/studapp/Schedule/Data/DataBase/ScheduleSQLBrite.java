@@ -18,7 +18,9 @@ import com.squareup.sqlbrite.SqlBrite;
 import java.util.List;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 
 public class ScheduleSQLBrite {
@@ -136,9 +138,11 @@ public class ScheduleSQLBrite {
 
     public void getSubjectModelList(){
         //TODO change query
-        Observable<SqlBrite.Query> subjects = briteDatabase.createQuery("subjects", "SELECT * FROM subjects INNER JOIN" +
-                "teachers ON ");
-        subjects.subscribe(new Action1<SqlBrite.Query>() {
+        Observable<SqlBrite.Query> subjects = briteDatabase.createQuery(
+                ScheduleContract.SubjectEntry.TABLE_SUBJECTS, ScheduleContract.SubjectEntry.SQL_SELECT_SUBJECTSS);
+        subjects.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<SqlBrite.Query>() {
             @Override public void call(SqlBrite.Query query) {
                 cursor = query.run();
                 if (cursor != null) {
@@ -150,8 +154,9 @@ public class ScheduleSQLBrite {
                                     str = str.concat(columnName + " = " +
                                             cursor.getString(cursor.getColumnIndex(columnName)) + "; ");
                                 }
-                                Log.d("bd", str);
+                                str = str.concat("\n");
                             } while (cursor.moveToNext());
+                            Log.d("bd", str);
                         }
                     } finally {
                         cursor.close();
@@ -171,6 +176,7 @@ public class ScheduleSQLBrite {
             @Override
             public void call(SqlBrite.Query query) {
                 cursor = query.run();
+                Log.d("times", "times");
                 if (cursor != null) {
                     try {
                         String str = "";

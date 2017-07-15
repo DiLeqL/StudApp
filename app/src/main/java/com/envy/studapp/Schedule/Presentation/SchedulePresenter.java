@@ -37,9 +37,8 @@ public class SchedulePresenter extends BasePresenter<ScheduleView>{
             public void onNext(ScheduleResponse value) {
 
                 scheduleSQLBrite.updateScheduleDB(value);
-                scheduleSQLBrite.getTeacherModelList();
-                //scheduleSQLBrite.getSubjectModelList();
-
+                //scheduleSQLBrite.getTeacherModelList();
+                scheduleSQLBrite.getSubjectModelList();
                 if (value == null){
                     Log.d("val", "value is null");
                 }
