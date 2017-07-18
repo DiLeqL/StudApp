@@ -35,13 +35,6 @@ public class ScheduleContract {
         public static final String SQL_DELETE_SUBJECT_TABLE =
                 "DROP TABLE IF EXISTS " + TABLE_SUBJECTS;
 
-        public static final String SQL_SELECT_SUBJECTS = "SELECT subjectid, day, subjectName, name," +
-                " groupName, roomNum, time from subjects inner join teachers on " +
-                "subjects.subjectTeacher = teachers.teacherId inner join groups on " +
-                "subjects.subjectStudGroup = groups.groupId inner join classrooms \n" +
-                "on subjects.subjectRoom = classrooms.roomId inner join beginningTimes " +
-                "on subjects.subjectTime = beginningTimes.timeId inner join weekdays " +
-                "on subjects.subjectDay = weekdays.weekdayId";
 
         public static final String SQL_SELECT_SUBJECTSS = "SELECT " + COLUMN_SUBJECT_ID + COMMA_SEP +
                 WeekdaysEntry.COLUMN_DAY + COMMA_SEP + COLUMN_SUBJECT_NAME + COMMA_SEP +

@@ -4,6 +4,8 @@ package com.envy.studapp.Schedule.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +13,29 @@ import android.view.ViewGroup;
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
 import com.envy.studapp.Dagger.Schedule.Module.DBModule;
 import com.envy.studapp.R;
+import com.envy.studapp.Schedule.Adapter.ScheduleRecycleViewAdapter;
+import com.envy.studapp.Schedule.Data.Model.SubjectModel;
 import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
 import com.envy.studapp.Schedule.Presentation.ScheduleView;
 
+import java.util.List;
+
 import javax.inject.Inject;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class ScheduleFragment extends Fragment implements ScheduleView{
 
     @Inject
     SchedulePresenter schedulePresenter;
+
+    @BindView(R.id.schedule_rv)
+    RecyclerView rvSchedule;
+
+    private List<SubjectModel> subjectModelList;
 
     public ScheduleFragment() {
         // Required empty public constructor
@@ -50,6 +64,14 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
 
         schedulePresenter.onCreateView(this, null);
 
+        ButterKnife.bind(this, view);
+
+        LinearLayoutManager llm = new LinearLayoutManager(this.getContext());
+        rvSchedule.setLayoutManager(llm);
+        //TODO second param should use from presenter and provide correct list
+        ScheduleRecycleViewAdapter adapter = new ScheduleRecycleViewAdapter(
+                getContext(), subjectModelList);
+        //rvSchedule.setAdapter(adapter);
         return view;
     }
 

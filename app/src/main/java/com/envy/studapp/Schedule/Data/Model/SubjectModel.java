@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
 public class SubjectModel {
 
     @SerializedName("subjectId")
-    int subjectId;
+    String subjectId;
 
     @SerializedName("subjectDay")
     String subjectDay;
@@ -18,24 +18,43 @@ public class SubjectModel {
     String subjectName;
 
     @SerializedName("subjectTeacher")
-    int subjectTeacher;
-
-    @SerializedName("subjectTime")
-    int subjectTime;
-
-    @SerializedName("subjectRoom")
-    int subjectRoom;
+    String subjectTeacher;
 
     @SerializedName("subjectStudGroup")
-    int subjectStudGroup;
+    String subjectStudGroup;
 
+    @SerializedName("subjectRoom")
+    String subjectRoom;
 
-    public int getSubjectId() {
+    @SerializedName("subjectTime")
+    String subjectTime;
+
+    public SubjectModel(String subjectId, String subjectDay, String subjectName,
+                        String subjectTeacher, String subjectStudGroup,
+                        String subjectRoom, String subjectTime) {
+        this.subjectId = subjectId;
+        this.subjectDay = subjectDay;
+        this.subjectName = subjectName;
+        this.subjectTeacher = subjectTeacher;
+        this.subjectStudGroup = subjectStudGroup;
+        this.subjectRoom = subjectRoom;
+        this.subjectTime = subjectTime;
+    }
+
+    public String getSubjectId() {
         return subjectId;
     }
 
-    public void setSubjectId(int subjectId) {
+    public void setSubjectId(String subjectId) {
         this.subjectId = subjectId;
+    }
+
+    public String getSubjectDay() {
+        return subjectDay;
+    }
+
+    public void setSubjectDay(String subjectDay) {
+        this.subjectDay = subjectDay;
     }
 
     public String getSubjectName() {
@@ -46,44 +65,36 @@ public class SubjectModel {
         this.subjectName = subjectName;
     }
 
-    public int getSubjectTeacher() {
+    public String getSubjectTeacher() {
         return subjectTeacher;
     }
 
-    public void setSubjectTeacher(int subjectTeacher) {
+    public void setSubjectTeacher(String subjectTeacher) {
         this.subjectTeacher = subjectTeacher;
     }
 
-    public int getSubjectTime() {
+    public String getSubjectTime() {
         return subjectTime;
     }
 
-    public void setSubjectTime(int subjectTime) {
+    public void setSubjectTime(String subjectTime) {
         this.subjectTime = subjectTime;
     }
 
-    public int getSubjectRoom() {
+    public String getSubjectRoom() {
         return subjectRoom;
     }
 
-    public void setSubjectRoom(int subjectRoom) {
+    public void setSubjectRoom(String subjectRoom) {
         this.subjectRoom = subjectRoom;
     }
 
-    public int getSubjectStudGroup() {
+    public String getSubjectStudGroup() {
         return subjectStudGroup;
     }
 
-    public void setSubjectStudGroup(int subjectStudGroup) {
+    public void setSubjectStudGroup(String subjectStudGroup) {
         this.subjectStudGroup = subjectStudGroup;
-    }
-
-    public String getSubjectDay() {
-        return subjectDay;
-    }
-
-    public void setSubjectDay(String subjectDay) {
-        this.subjectDay = subjectDay;
     }
 
 }

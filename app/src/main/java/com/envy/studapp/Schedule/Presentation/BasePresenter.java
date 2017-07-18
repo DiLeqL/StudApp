@@ -24,11 +24,9 @@ public class BasePresenter<T> {
 
     }
 
-
     public void onStart() {
         isVisible = true;
     }
-
 
     public void onStop() {
         isVisible = false;

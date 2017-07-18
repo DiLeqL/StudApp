@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.envy.studapp.Schedule.Data.DataBase.ScheduleSQLBrite;
+import com.envy.studapp.Schedule.Data.Model.SubjectModel;
 import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
+
+import java.util.List;
 
 import rx.Observer;
 
@@ -13,15 +16,15 @@ import rx.Observer;
  * Created by ENVY on 14.06.2017.
  */
 
-public class SchedulePresenter extends BasePresenter<ScheduleView>{
-
-    ScheduleResponse scheduleResponse;
+public class SchedulePresenter extends BasePresenter<ScheduleView> {
 
     ScheduleDownloaderUseCase scheduleDownloaderUseCase;
 
     ScheduleSQLBrite scheduleSQLBrite;
 
     Object object;
+
+    List<SubjectModel> subjectModelList;
 
     public SchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase,
                              ScheduleSQLBrite scheduleSQLBrite){
@@ -37,8 +40,20 @@ public class SchedulePresenter extends BasePresenter<ScheduleView>{
             public void onNext(ScheduleResponse value) {
 
                 scheduleSQLBrite.updateScheduleDB(value);
-                //scheduleSQLBrite.getTeacherModelList();
-                scheduleSQLBrite.getSubjectModelList();
+
+                scheduleSQLBrite.createSubjectModelList();
+
+                //List<SubjectModel> scheduleList = scheduleSQLBrite.getSubjectModelList();
+
+                /*if (scheduleList != null){
+                    for (SubjectModel subjectModel: subjectModelList) {
+                        Log.d("list on presenter", subjectModel.getSubjectTeacher());
+                    }
+                }*/
+
+                /*for (SubjectModel subjectModel: subjectModelList) {
+                    Log.d("list on presenter", subjectModel.getSubjectTeacher());
+                }*/
                 if (value == null){
                     Log.d("val", "value is null");
                 }
@@ -47,7 +62,7 @@ public class SchedulePresenter extends BasePresenter<ScheduleView>{
                 }
 
                 if (isVisibleView()){
-                   // view.updateSchedule(value);
+                   view.updateSchedule(value);
                 }
             }
 
@@ -55,15 +70,25 @@ public class SchedulePresenter extends BasePresenter<ScheduleView>{
             @Override
             public void onCompleted() {
 
+                scheduleSQLBrite.createSubjectModelList();
             }
 
             @Override
             public void onError(Throwable e) {
+                Log.d("val", e.toString());
                 Log.d("val", "check connection");
             }
 
         };
         return observer;
+    }
+
+    public static void showSubjectList(List<SubjectModel> subjectModelList){
+
+        for (SubjectModel subjectModel: subjectModelList) {
+                    Log.d("list on presenter", subjectModel.getSubjectTeacher());
+        }
+        Log.d("list on presenter", "time");
     }
 
     @Override

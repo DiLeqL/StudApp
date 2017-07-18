@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.envy.studapp.Schedule.Data.DataBase.ScheduleDBHelper;
 import com.envy.studapp.Schedule.Data.DataBase.ScheduleSQLBrite;
-import com.envy.studapp.Schedule.Fragment.ScheduleFragment;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -15,7 +14,6 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import rx.Scheduler;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by ENVY on 10.07.2017.
@@ -41,8 +39,16 @@ public class DBModule {
 
     @Provides
     @Singleton
-    public ScheduleSQLBrite provideScheduleSQLBrite(BriteDatabase briteDatabase){
-        return new ScheduleSQLBrite(briteDatabase);
+    public ContentValues provideContentValues(){
+        return new ContentValues();
+    }
+
+
+    @Provides
+    @Singleton
+    public ScheduleSQLBrite provideScheduleSQLBrite(BriteDatabase briteDatabase,
+                                                    ContentValues contentValues){
+        return new ScheduleSQLBrite(briteDatabase, contentValues);
     }
 
 }
