@@ -12,7 +12,6 @@ import com.envy.studapp.Schedule.Data.Model.WeekdayModel;
 import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 import com.envy.studapp.Schedule.Data.Model.SubjectModel;
 import com.envy.studapp.Schedule.Data.Model.TeacherModel;
-import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -21,28 +20,24 @@ import java.util.List;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 
 public class ScheduleSQLBrite {
 
-    List<SubjectModel> subjectModelList;
+    // private List<SubjectModel> subjectModelList;
 
-    private Cursor cursor;
+    private ContentValues contentValues;
 
-    ContentValues contentValues;
-
-    BriteDatabase briteDatabase;
-
+    private BriteDatabase briteDatabase;
 
     public ScheduleSQLBrite(BriteDatabase briteDatabase,
-                            ContentValues contentValues){
+                            ContentValues contentValues) {
         this.briteDatabase = briteDatabase;
         this.contentValues = contentValues;
     }
 
-    private void addTeachers(ScheduleResponse scheduleResponse){
+    private void addTeachers(ScheduleResponse scheduleResponse) {
         List<TeacherModel> teacherModelList = scheduleResponse.getTeacherList();
 
         for (int i = 0; i < teacherModelList.size(); i++) {
@@ -56,7 +51,7 @@ public class ScheduleSQLBrite {
         Log.d("insert", "insert teachers done");
     }
 
-    private void addSubjects(ScheduleResponse scheduleResponse){
+    private void addSubjects(ScheduleResponse scheduleResponse) {
         List<SubjectModel> subjectModelList = scheduleResponse.getSubjectList();
         //TODO provide content values?
         for (int i = 0; i < subjectModelList.size(); i++) {
@@ -80,7 +75,7 @@ public class ScheduleSQLBrite {
         Log.d("insert", "insert subjects done");
     }
 
-    private void addGroupNums(ScheduleResponse scheduleResponse){
+    private void addGroupNums(ScheduleResponse scheduleResponse) {
         List<GroupNumModel> groupNumModelList = scheduleResponse.getGroupNumList();
 
         for (int i = 0; i < groupNumModelList.size(); i++) {
@@ -94,7 +89,7 @@ public class ScheduleSQLBrite {
         Log.d("insert", "insert groups done");
     }
 
-    private void addClassrooms(ScheduleResponse scheduleResponse){
+    private void addClassrooms(ScheduleResponse scheduleResponse) {
         List<ClassroomModel> classroomModelList = scheduleResponse.getClassroomList();
 
         for (int i = 0; i < classroomModelList.size(); i++) {
@@ -109,7 +104,7 @@ public class ScheduleSQLBrite {
         Log.d("insert", "insert classrooms done");
     }
 
-    private void addBeginningTimes(ScheduleResponse scheduleResponse){
+    private void addBeginningTimes(ScheduleResponse scheduleResponse) {
         List<BeginningTimeModel> beginningTimeModelList = scheduleResponse.getBeginningTimeList();
 
         for (int i = 0; i < beginningTimeModelList.size(); i++) {
@@ -124,7 +119,7 @@ public class ScheduleSQLBrite {
         Log.d("insert", "insert times done");
     }
 
-    private void addWeekdays(ScheduleResponse scheduleResponse){
+    private void addWeekdays(ScheduleResponse scheduleResponse) {
         List<WeekdayModel> weekdayModelList = scheduleResponse.getWeekdayList();
 
         for (int i = 0; i < weekdayModelList.size(); i++) {
@@ -139,83 +134,100 @@ public class ScheduleSQLBrite {
         Log.d("insert", "insert days done");
     }
 
-    public void createSubjectModelList(){
-        //Log.d("select", ScheduleContract.SubjectEntry.SQL_SELECT_SUBJECTSS);
+    public Observable<ScheduleResponse> getFromDatabaseObservable() {
+
         Observable<SqlBrite.Query> subjects = briteDatabase.createQuery(
-                ScheduleContract.SubjectEntry.TABLE_SUBJECTS, ScheduleContract.SubjectEntry.SQL_SELECT_SUBJECTSS);
-        subjects.subscribeOn(Schedulers.io())
+                ScheduleContract.SubjectEntry.TABLE_SUBJECTS,
+                ScheduleContract.SubjectEntry.SQL_SELECT_SUBJECTSS);
+
+        //boolean nonEmptyRecord = checkAvailabilityRecords(subjects);
+
+        return subjects.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<SqlBrite.Query>() {
-            @Override public void call(SqlBrite.Query query) {
-                cursor = query.run();
-                if (cursor != null) {
-                    subjectModelList = new ArrayList<>();
-                    try {
-                        String str = "";
-                        if (cursor.moveToFirst()) {
-                            do {
-                                String subjectID = "";
-                                String weekDay = "";
-                                String subjectName = "";
-                                String teacherName = "";
-                                String groupName = "";
-                                String roomNum = "";
-                                String time = "";
-                                for (String columnName : cursor.getColumnNames()) {
-                                    switch (columnName){
-                                        case "subjectID":
-                                            subjectID = cursor
-                                                    .getString(cursor.getColumnIndex(columnName));
-                                            break;
-                                        case "day":
-                                            weekDay = cursor
-                                                    .getString(cursor.getColumnIndex(columnName));
-                                            break;
-                                        case "subjectName":
-                                            subjectName = cursor
-                                                    .getString(cursor.getColumnIndex(columnName));
-                                            break;
-                                        case "name":
-                                            teacherName = cursor
-                                                    .getString(cursor.getColumnIndex(columnName));
-                                            break;
-                                        case "groupName":
-                                            groupName = cursor
-                                                    .getString(cursor.getColumnIndex(columnName));
-                                            break;
-                                        case "roomNum":
-                                            roomNum = cursor
-                                                    .getString(cursor.getColumnIndex(columnName));
-                                            break;
-                                        case "time":
-                                            time = cursor
-                                                    .getString(cursor.getColumnIndex(columnName));
-                                            break;
-                                    }
-                                    str = str.concat(columnName + " = " +
-                                            cursor.getString(cursor.getColumnIndex(columnName)) + "; ");
-                                }
-                                subjectModelList.add(new SubjectModel(subjectID, weekDay,
-                                        subjectName, teacherName, groupName, roomNum, time));
-                                str = str.concat("\n");
-                            } while (cursor.moveToNext());
-                            /*for (SubjectModel subjectModel: subjectModelList) {
-                                Log.d("list", subjectModel.getSubjectTeacher());
-                            }
-                            Log.d("db", str);*/
-                            SchedulePresenter.showSubjectList(subjectModelList);
-                            //scheduleList.showList(subjectModelList);
-                        }
-                    } finally {
-                        cursor.close();
-                    }
-                } else
-                    Log.d("db", "Cursor is null");
-            }
-        });
+                .map(query -> {
+                    Cursor cursor = query.run();
+                    return createSubjectModelList(cursor);
+                });
     }
 
-    private void resetDB(){
+    public boolean checkAvailabilityRecords (){
+        Observable<SqlBrite.Query> subjects = briteDatabase.createQuery(
+                ScheduleContract.SubjectEntry.TABLE_SUBJECTS,
+                ScheduleContract.SubjectEntry.SQL_SELECT_SUBJECTSS);
+        return subjects.toBlocking().first().run().getCount() > 0;
+    }
+
+
+    public static ScheduleResponse createSubjectModelList(Cursor cursor) {
+
+        List<SubjectModel> subjectModelList = new ArrayList<>();
+
+        if (cursor != null) {
+
+            cursor.getCount();
+            try {
+                String str = "";
+                if (cursor.moveToFirst()) {
+                    do {
+                        String subjectID = "";
+                        String weekDay = "";
+                        String subjectName = "";
+                        String teacherName = "";
+                        String groupName = "";
+                        String roomNum = "";
+                        String time = "";
+                        for (String columnName : cursor.getColumnNames()) {
+                            switch (columnName) {
+                                case "subjectID":
+                                    subjectID = cursor
+                                            .getString(cursor.getColumnIndex(columnName));
+                                    break;
+                                case "day":
+                                    weekDay = cursor
+                                            .getString(cursor.getColumnIndex(columnName));
+                                    break;
+                                case "subjectName":
+                                    subjectName = cursor
+                                            .getString(cursor.getColumnIndex(columnName));
+                                    break;
+                                case "name":
+                                    teacherName = cursor
+                                            .getString(cursor.getColumnIndex(columnName));
+                                    break;
+                                case "groupName":
+                                    groupName = cursor
+                                            .getString(cursor.getColumnIndex(columnName));
+                                    break;
+                                case "roomNum":
+                                    roomNum = cursor
+                                            .getString(cursor.getColumnIndex(columnName));
+                                    break;
+                                case "time":
+                                    time = cursor
+                                            .getString(cursor.getColumnIndex(columnName));
+                                    break;
+                            }
+                            str = str.concat(columnName + " = " +
+                                    cursor.getString(cursor.getColumnIndex(columnName)) + "; ");
+                        }
+                        subjectModelList.add(new SubjectModel(subjectID, weekDay,
+                                subjectName, teacherName, groupName, roomNum, time));
+                        str = str.concat("\n");
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close();
+            }
+        } else {
+            Log.d("db", "Cursor is null");
+        }
+        ScheduleResponse scheduleResponse = new ScheduleResponse();
+        scheduleResponse.setSubjectListFromDb(subjectModelList);
+        return scheduleResponse;
+    }
+
+
+    private void resetDB() {
         briteDatabase.execute(ScheduleContract.SubjectEntry.SQL_DELETE_SUBJECT_TABLE);
         briteDatabase.execute(ScheduleContract.TeachersEntry.SQL_DELETE_TEACHER_TABLE);
         briteDatabase.execute(ScheduleContract.GroupsEntry.SQL_DELETE_GROUP_TABLE);
@@ -232,26 +244,24 @@ public class ScheduleSQLBrite {
     }
 
 
-    public void updateScheduleDB(ScheduleResponse scheduleResponse){
+    public void updateScheduleDB(ScheduleResponse scheduleResponse) {
         Observable<ScheduleResponse> scheduleResponseObservable = Observable.just(scheduleResponse);
         scheduleResponseObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<ScheduleResponse>() {
-                    @Override
-                    public void call(ScheduleResponse scheduleResponse) {
-                        BriteDatabase.Transaction transaction = briteDatabase.newTransaction();
-                        try {
-                            resetDB();
-                            addTeachers(scheduleResponse);
-                            addSubjects(scheduleResponse);
-                            addGroupNums(scheduleResponse);
-                            addClassrooms(scheduleResponse);
-                            addBeginningTimes(scheduleResponse);
-                            addWeekdays(scheduleResponse);
-                            transaction.markSuccessful();
-                        } finally {
-                            transaction.end();
-                        }
+                .subscribe(scheduleResponse1 -> {
+                    BriteDatabase.Transaction transaction = briteDatabase.newTransaction();
+                    try {
+                        resetDB();
+                        addTeachers(scheduleResponse1);
+                        addSubjects(scheduleResponse1);
+                        addGroupNums(scheduleResponse1);
+                        addClassrooms(scheduleResponse1);
+                        addBeginningTimes(scheduleResponse1);
+                        addWeekdays(scheduleResponse1);
+                        transaction.markSuccessful();
+                        getFromDatabaseObservable();
+                    } finally {
+                        transaction.end();
                     }
                 });
     }

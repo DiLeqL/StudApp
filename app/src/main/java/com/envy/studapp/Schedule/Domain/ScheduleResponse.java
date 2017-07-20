@@ -36,6 +36,16 @@ public class ScheduleResponse {
     @SerializedName("weekdays")
     List<WeekdayModel> weekdayList;
 
+    public List<SubjectModel> getSubjectListFromDb() {
+        return subjectListFromDb;
+    }
+
+    public void setSubjectListFromDb(List<SubjectModel> subjectListFromDb) {
+        this.subjectListFromDb = subjectListFromDb;
+    }
+
+    List<SubjectModel> subjectListFromDb;
+
     @SerializedName("timestamp")
     String timestamp;
 

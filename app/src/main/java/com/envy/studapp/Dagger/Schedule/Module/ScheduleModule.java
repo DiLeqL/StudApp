@@ -1,5 +1,8 @@
 package com.envy.studapp.Dagger.Schedule.Module;
 
+import android.database.Cursor;
+import android.net.ConnectivityManager;
+
 import com.envy.studapp.Schedule.Data.DataBase.ScheduleSQLBrite;
 import com.envy.studapp.Schedule.Data.HttpAPIInterface.StudServiceAPI;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
@@ -23,8 +26,11 @@ public class ScheduleModule {
     @Singleton
     public ScheduleDownloaderUseCase provideScheduleDownloaderUseCase(StudServiceAPI studServiceAPI,
                                                                       @Named("backgroundScheduler") Scheduler backgroundScheduler,
-                                                                      @Named("mainScheduler")Scheduler mainScheduler){
-        return new ScheduleDownloaderUseCase(studServiceAPI, backgroundScheduler, mainScheduler);
+                                                                      @Named("mainScheduler")Scheduler mainScheduler,
+                                                                      ScheduleSQLBrite scheduleSQLBrite,
+                                                                      ConnectivityManager cm){
+        return new ScheduleDownloaderUseCase(studServiceAPI, backgroundScheduler, mainScheduler,
+                scheduleSQLBrite, cm);
     }
 
     @Provides

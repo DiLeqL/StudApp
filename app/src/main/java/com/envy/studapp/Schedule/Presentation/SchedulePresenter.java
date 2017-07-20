@@ -39,9 +39,9 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
             @Override
             public void onNext(ScheduleResponse value) {
 
-                scheduleSQLBrite.updateScheduleDB(value);
 
-                scheduleSQLBrite.createSubjectModelList();
+
+                //scheduleSQLBrite.createSubjectModelList();
 
                 //List<SubjectModel> scheduleList = scheduleSQLBrite.getSubjectModelList();
 
@@ -70,7 +70,7 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
             @Override
             public void onCompleted() {
 
-                scheduleSQLBrite.createSubjectModelList();
+                //scheduleSQLBrite.createSubjectModelList();
             }
 
             @Override
@@ -81,14 +81,6 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
 
         };
         return observer;
-    }
-
-    public static void showSubjectList(List<SubjectModel> subjectModelList){
-
-        for (SubjectModel subjectModel: subjectModelList) {
-                    Log.d("list on presenter", subjectModel.getSubjectTeacher());
-        }
-        Log.d("list on presenter", "time");
     }
 
     @Override

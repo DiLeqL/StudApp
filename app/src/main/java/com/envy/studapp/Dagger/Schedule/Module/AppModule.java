@@ -1,5 +1,8 @@
 package com.envy.studapp.Dagger.Schedule.Module;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+
 import javax.inject.Named;
 import javax.inject.Singleton;
 
@@ -17,6 +20,12 @@ import rx.schedulers.Schedulers;
 @Module
 public class AppModule {
 
+    Context context;
+
+    public AppModule(Context context){
+        this.context = context;
+    }
+
     @Provides
     @Singleton
     @Named("mainScheduler")
@@ -29,5 +38,13 @@ public class AppModule {
     @Named("backgroundScheduler")
     public Scheduler provideBackgroundScheduler(){
         return Schedulers.io();
+    }
+
+    @Provides
+    @Singleton
+    public ConnectivityManager provideConnectivityManager(){
+        ConnectivityManager cm =
+                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm;
     }
 }

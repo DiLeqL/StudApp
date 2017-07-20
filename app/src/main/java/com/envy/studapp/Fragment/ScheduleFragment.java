@@ -1,4 +1,4 @@
-package com.envy.studapp.Schedule.Fragment;
+package com.envy.studapp.Fragment;
 
 
 import android.os.Bundle;
@@ -11,9 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
+import com.envy.studapp.Dagger.Schedule.Module.AppModule;
 import com.envy.studapp.Dagger.Schedule.Module.DBModule;
 import com.envy.studapp.R;
-import com.envy.studapp.Schedule.Adapter.ScheduleRecycleViewAdapter;
+import com.envy.studapp.Adapter.ScheduleRecycleViewAdapter;
 import com.envy.studapp.Schedule.Data.Model.SubjectModel;
 import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
@@ -52,7 +53,8 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        DaggerScheduleComponent.builder().dBModule(new DBModule(getContext())).build().inject(this);
+        DaggerScheduleComponent.builder().appModule(new AppModule(getContext()))
+                .dBModule(new DBModule(getContext())).build().inject(this);
 
     }
 

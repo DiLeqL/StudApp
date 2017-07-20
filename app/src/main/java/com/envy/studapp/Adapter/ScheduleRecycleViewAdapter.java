@@ -1,4 +1,4 @@
-package com.envy.studapp.Schedule.Adapter;
+package com.envy.studapp.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.CardView;
@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import com.envy.studapp.R;
 import com.envy.studapp.Schedule.Data.Model.SubjectModel;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
