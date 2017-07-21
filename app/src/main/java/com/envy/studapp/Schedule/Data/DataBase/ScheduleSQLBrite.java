@@ -22,6 +22,7 @@ import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
@@ -55,7 +56,6 @@ public class ScheduleSQLBrite {
 
     private void addSubjects(ScheduleResponse scheduleResponse) {
         List<SubjectModel> subjectModelList = scheduleResponse.getSubjectList();
-        //TODO provide content values?
         for (int i = 0; i < subjectModelList.size(); i++) {
             contentValues.clear();
             contentValues.put(ScheduleContract.SubjectEntry.COLUMN_SUBJECT_ID,
@@ -142,12 +142,10 @@ public class ScheduleSQLBrite {
                 ScheduleContract.SubjectEntry.TABLE_SUBJECTS,
                 ScheduleContract.SubjectEntry.SQL_SELECT_SUBJECTSS);
 
-        return subjects.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(query -> {
-                    Cursor cursor = query.run();
-                    return createSubjectModelList(cursor);
-                });
+        return subjects.map(query -> {
+            Cursor cursor = query.run();
+            return createSubjectModelList(cursor);
+        });
     }
 
     public Observer<ScheduleResponse> getObserverFromDb(){
@@ -280,7 +278,6 @@ public class ScheduleSQLBrite {
                         addClassrooms(scheduleResponseFromServer);
                         addBeginningTimes(scheduleResponseFromServer);
                         addWeekdays(scheduleResponseFromServer);
-                        getFromDatabaseObservable().subscribe(getObserverFromDb());
                         transaction.markSuccessful();
                     } finally {
                         transaction.end();

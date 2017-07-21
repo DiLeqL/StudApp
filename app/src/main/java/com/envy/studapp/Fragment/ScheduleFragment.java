@@ -71,8 +71,8 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
         LinearLayoutManager llm = new LinearLayoutManager(this.getContext());
         rvSchedule.setLayoutManager(llm);
         //TODO second param should use from presenter and provide correct list
-        ScheduleRecycleViewAdapter adapter = new ScheduleRecycleViewAdapter(
-                getContext(), subjectModelList);
+       // ScheduleRecycleViewAdapter adapter = new ScheduleRecycleViewAdapter(
+        //        getContext(), subjectModelList);
         //rvSchedule.setAdapter(adapter);
         return view;
     }

@@ -27,27 +27,33 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
     List<SubjectModel> subjectModelList;
 
     public SchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase,
-                             ScheduleSQLBrite scheduleSQLBrite){
+                             ScheduleSQLBrite scheduleSQLBrite) {
         this.scheduleDownloaderUseCase = scheduleDownloaderUseCase;
         this.scheduleSQLBrite = scheduleSQLBrite;
     }
 
 
-    public Observer<ScheduleResponse> getScheduleObserver(){
+    public Observer<ScheduleResponse> getScheduleObserver() {
         Observer<ScheduleResponse> observer = new Observer<ScheduleResponse>() {
 
             @Override
             public void onNext(ScheduleResponse value) {
 
-                if (value == null){
+                if (value == null) {
                     Log.d("val", "value is null");
-                }
-                else {
+                } else {
                     Log.d("val", value.toString());
                 }
 
-                if (isVisibleView()){
-                   view.updateSchedule(value);
+                List<SubjectModel> subjectModelList = value.getSubjectListFromDb();
+                for (SubjectModel subject: subjectModelList
+                     ) {
+                    Log.d("subjectList", subject.getSubjectName());
+
+                }
+
+                if (isVisibleView()) {
+                    view.updateSchedule(value);
                 }
             }
 
@@ -61,7 +67,7 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
             @Override
             public void onError(Throwable e) {
 
-
+                Log.d("error", e.getMessage());
             }
 
         };

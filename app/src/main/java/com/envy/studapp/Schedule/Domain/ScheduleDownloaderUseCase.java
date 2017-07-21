@@ -15,6 +15,8 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.Observer;
 import rx.Scheduler;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 
 public class ScheduleDownloaderUseCase extends BaseUseCase<ScheduleResponse,
@@ -44,27 +46,17 @@ public class ScheduleDownloaderUseCase extends BaseUseCase<ScheduleResponse,
 
         if (isConnected()){
             return studServiceAPI.getSchedule().doOnNext(scheduleResponse ->
-                    scheduleSQLBrite.updateScheduleDB(scheduleResponse));
+                    scheduleSQLBrite.updateScheduleDB(scheduleResponse)
+            ).flatMap(new Func1<ScheduleResponse, Observable<ScheduleResponse>>() {
+                @Override
+                public Observable<ScheduleResponse> call(ScheduleResponse scheduleResponse) {
+                    return scheduleSQLBrite.getFromDatabaseObservable();
+                }
+            });
         }
         else {
             if (scheduleSQLBrite.checkAvailabilityRecords()){
                 return scheduleSQLBrite.getFromDatabaseObservable();
-            }
-            else{
-                Log.d("connection", "Check connection or server problems");
-                return null;
-            }
-        }
-    }
-
-    public Observer<ScheduleResponse> buildObserver(){
-        if (isConnected()){
-            return studServiceAPI.getSchedule().doOnNext(scheduleResponse ->
-                    scheduleSQLBrite.updateScheduleDB(scheduleResponse));
-        }
-        else {
-            if (scheduleSQLBrite.checkAvailabilityRecords()){
-                return scheduleSQLBrite.getObserverFromDb();
             }
             else{
                 Log.d("connection", "Check connection or server problems");
