@@ -8,10 +8,6 @@ import rx.Observer;
 import rx.Scheduler;
 
 
-/**
- * Created by ENVY on 13.06.2017.
- */
-
 public abstract class BaseUseCase<OT, IT> {
 
 

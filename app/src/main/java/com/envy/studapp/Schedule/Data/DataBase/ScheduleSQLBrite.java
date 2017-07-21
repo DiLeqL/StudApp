@@ -19,7 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observable;
+import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
 
@@ -140,8 +142,6 @@ public class ScheduleSQLBrite {
                 ScheduleContract.SubjectEntry.TABLE_SUBJECTS,
                 ScheduleContract.SubjectEntry.SQL_SELECT_SUBJECTSS);
 
-        //boolean nonEmptyRecord = checkAvailabilityRecords(subjects);
-
         return subjects.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(query -> {
@@ -150,15 +150,37 @@ public class ScheduleSQLBrite {
                 });
     }
 
-    public boolean checkAvailabilityRecords (){
+    public Observer<ScheduleResponse> getObserverFromDb(){
+        Observer<ScheduleResponse> observerFromDb = new Observer<ScheduleResponse>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(ScheduleResponse scheduleResponse) {
+                List<SubjectModel> subjectModelListFromDb = scheduleResponse.getSubjectListFromDb();
+            }
+        };
+        return observerFromDb;
+    }
+
+    public boolean checkAvailabilityRecords () {
         Observable<SqlBrite.Query> subjects = briteDatabase.createQuery(
                 ScheduleContract.SubjectEntry.TABLE_SUBJECTS,
                 ScheduleContract.SubjectEntry.SQL_SELECT_SUBJECTSS);
-        return subjects.toBlocking().first().run().getCount() > 0;
+
+        Cursor cursor = subjects.toBlocking().first().run();
+        return cursor != null && cursor.getCount() > 0;
     }
 
 
-    public static ScheduleResponse createSubjectModelList(Cursor cursor) {
+    private static ScheduleResponse createSubjectModelList(Cursor cursor) {
 
         List<SubjectModel> subjectModelList = new ArrayList<>();
 
@@ -248,18 +270,18 @@ public class ScheduleSQLBrite {
         Observable<ScheduleResponse> scheduleResponseObservable = Observable.just(scheduleResponse);
         scheduleResponseObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(scheduleResponse1 -> {
+                .subscribe(scheduleResponseFromServer -> {
                     BriteDatabase.Transaction transaction = briteDatabase.newTransaction();
                     try {
                         resetDB();
-                        addTeachers(scheduleResponse1);
-                        addSubjects(scheduleResponse1);
-                        addGroupNums(scheduleResponse1);
-                        addClassrooms(scheduleResponse1);
-                        addBeginningTimes(scheduleResponse1);
-                        addWeekdays(scheduleResponse1);
+                        addTeachers(scheduleResponseFromServer);
+                        addSubjects(scheduleResponseFromServer);
+                        addGroupNums(scheduleResponseFromServer);
+                        addClassrooms(scheduleResponseFromServer);
+                        addBeginningTimes(scheduleResponseFromServer);
+                        addWeekdays(scheduleResponseFromServer);
+                        getFromDatabaseObservable().subscribe(getObserverFromDb());
                         transaction.markSuccessful();
-                        getFromDatabaseObservable();
                     } finally {
                         transaction.end();
                     }
