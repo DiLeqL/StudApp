@@ -49,7 +49,8 @@ public class ScheduleRecycleViewAdapter extends RecyclerView.Adapter<ScheduleRec
 
     @Override
     public int getItemCount() {
-        return subjectList.size();
+        if (subjectList != null) return subjectList.size();
+        else return 0;
     }
 
     public class SubjectViewHolder extends RecyclerView.ViewHolder{

@@ -3,6 +3,7 @@ package com.envy.studapp.Schedule.Data.DataBase;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.envy.studapp.Schedule.Data.Model.BeginningTimeModel;
@@ -33,6 +34,8 @@ public class ScheduleSQLBrite {
     private ContentValues contentValues;
 
     private BriteDatabase briteDatabase;
+
+    int i;
 
     public ScheduleSQLBrite(BriteDatabase briteDatabase,
                             ContentValues contentValues) {
@@ -137,10 +140,10 @@ public class ScheduleSQLBrite {
     }
 
     public Observable<ScheduleResponse> getFromDatabaseObservable() {
-
         Observable<SqlBrite.Query> subjects = briteDatabase.createQuery(
                 ScheduleContract.SubjectEntry.TABLE_SUBJECTS,
                 ScheduleContract.SubjectEntry.SQL_SELECT_SUBJECTSS);
+
 
         return subjects.map(query -> {
             Cursor cursor = query.run();
@@ -148,25 +151,6 @@ public class ScheduleSQLBrite {
         });
     }
 
-    public Observer<ScheduleResponse> getObserverFromDb(){
-        Observer<ScheduleResponse> observerFromDb = new Observer<ScheduleResponse>() {
-            @Override
-            public void onCompleted() {
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-
-            }
-
-            @Override
-            public void onNext(ScheduleResponse scheduleResponse) {
-                List<SubjectModel> subjectModelListFromDb = scheduleResponse.getSubjectListFromDb();
-            }
-        };
-        return observerFromDb;
-    }
 
     public boolean checkAvailabilityRecords () {
         Observable<SqlBrite.Query> subjects = briteDatabase.createQuery(
@@ -178,6 +162,7 @@ public class ScheduleSQLBrite {
     }
 
 
+    @NonNull
     private static ScheduleResponse createSubjectModelList(Cursor cursor) {
 
         List<SubjectModel> subjectModelList = new ArrayList<>();

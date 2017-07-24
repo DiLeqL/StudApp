@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
 import com.envy.studapp.Dagger.Schedule.Module.AppModule;
@@ -30,11 +31,18 @@ import butterknife.ButterKnife;
 
 public class ScheduleFragment extends Fragment implements ScheduleView{
 
+
+    static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
+
     @Inject
     SchedulePresenter schedulePresenter;
 
     @BindView(R.id.schedule_rv)
     RecyclerView rvSchedule;
+
+    @BindView(R.id.schedule_progress_bar)
+    ProgressBar progressBar;
+
 
     private List<SubjectModel> subjectModelList;
 
@@ -62,18 +70,26 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
         schedulePresenter.onCreateView(this, null);
 
         ButterKnife.bind(this, view);
 
+        showProgressBar();
+
         LinearLayoutManager llm = new LinearLayoutManager(this.getContext());
         rvSchedule.setLayoutManager(llm);
-        //TODO second param should use from presenter and provide correct list
-       // ScheduleRecycleViewAdapter adapter = new ScheduleRecycleViewAdapter(
-        //        getContext(), subjectModelList);
-        //rvSchedule.setAdapter(adapter);
+
+        ScheduleRecycleViewAdapter adapter = new ScheduleRecycleViewAdapter(
+                getContext(), subjectModelList);
+
+        adapter.notifyDataSetChanged();
+
+        rvSchedule.setAdapter(adapter);
+
         return view;
     }
 
@@ -104,6 +120,27 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
     public void showResult() {
 
     }
+
+    @Override
+    public void showProgressBar() {
+        progressBar.setVisibility(ProgressBar.VISIBLE);
+    }
+
+    @Override
+    public void stopProgressBar() {
+        progressBar.setVisibility(ProgressBar.INVISIBLE);
+    }
+
+    @Override
+    public int getPageNum() {
+        return getArguments().getInt(ARGUMENT_PAGE_NUMBER);
+    }
+
+    @Override
+    public void setSubjectList(List<SubjectModel> subjectList) {
+        this.subjectModelList = subjectList;
+    }
+
 
     @Override
     public void updateSchedule(ScheduleResponse scheduleResponse) {

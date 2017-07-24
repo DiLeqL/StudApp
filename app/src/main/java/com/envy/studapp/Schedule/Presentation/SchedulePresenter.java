@@ -22,9 +22,9 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
 
     ScheduleSQLBrite scheduleSQLBrite;
 
-    Object object;
+    Object observable;
 
-    List<SubjectModel> subjectModelList;
+    static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
 
     public SchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase,
                              ScheduleSQLBrite scheduleSQLBrite) {
@@ -39,22 +39,16 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
             @Override
             public void onNext(ScheduleResponse value) {
 
-                if (value == null) {
-                    Log.d("val", "value is null");
-                } else {
-                    Log.d("val", value.toString());
-                }
 
                 List<SubjectModel> subjectModelList = value.getSubjectListFromDb();
-                for (SubjectModel subject: subjectModelList
-                     ) {
-                    Log.d("subjectList", subject.getSubjectName());
 
-                }
 
                 if (isVisibleView()) {
-                    view.updateSchedule(value);
+                    view.setSubjectList(subjectModelList);
+                    //view.updateSchedule(value);
+                    view.stopProgressBar();
                 }
+
             }
 
 
@@ -78,6 +72,6 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
     public void onCreateView(ScheduleView view, Bundle savedInstanceState) {
         super.onCreateView(view, savedInstanceState);
         Observer<ScheduleResponse> subscriber = getScheduleObserver();
-        scheduleDownloaderUseCase.subscribe(object, subscriber);
+        scheduleDownloaderUseCase.subscribe(observable, subscriber);
     }
 }
