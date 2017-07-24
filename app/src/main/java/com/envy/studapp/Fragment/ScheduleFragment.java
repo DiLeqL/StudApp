@@ -43,6 +43,7 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
     @BindView(R.id.schedule_progress_bar)
     ProgressBar progressBar;
 
+    ScheduleRecycleViewAdapter adapter;
 
     private List<SubjectModel> subjectModelList;
 
@@ -83,8 +84,10 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
         LinearLayoutManager llm = new LinearLayoutManager(this.getContext());
         rvSchedule.setLayoutManager(llm);
 
-        ScheduleRecycleViewAdapter adapter = new ScheduleRecycleViewAdapter(
+        adapter = new ScheduleRecycleViewAdapter(
                 getContext(), subjectModelList);
+
+        adapter.setSubjectList(subjectModelList);
 
         adapter.notifyDataSetChanged();
 
@@ -139,6 +142,7 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
     @Override
     public void setSubjectList(List<SubjectModel> subjectList) {
         this.subjectModelList = subjectList;
+        adapter.setSubjectList(subjectList);
     }
 
 

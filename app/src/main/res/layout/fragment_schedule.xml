@@ -4,9 +4,10 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.ScheduleFragment">
 
-    <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/schedule_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         xmlns:android="http://schemas.android.com/apk/res/android" />
 
     <ProgressBar

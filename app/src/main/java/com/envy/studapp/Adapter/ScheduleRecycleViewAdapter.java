@@ -22,11 +22,16 @@ import butterknife.ButterKnife;
 
 public class ScheduleRecycleViewAdapter extends RecyclerView.Adapter<ScheduleRecycleViewAdapter.SubjectViewHolder>{
 
+
     List<SubjectModel> subjectList;
     Context context;
 
     public ScheduleRecycleViewAdapter(Context context, List<SubjectModel> subjectList){
         this.context = context;
+        this.subjectList = subjectList;
+    }
+
+    public void setSubjectList(List<SubjectModel> subjectList) {
         this.subjectList = subjectList;
     }
 
