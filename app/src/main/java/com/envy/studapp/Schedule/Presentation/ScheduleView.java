@@ -25,5 +25,4 @@ public interface ScheduleView {
 
     //void showList(List<SubjectModel> subjectList, String day);
 
-    void updateSchedule(ScheduleResponse scheduleResponse);
 }

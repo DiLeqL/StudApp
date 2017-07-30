@@ -12,10 +12,6 @@ import java.util.List;
 
 import rx.Observer;
 
-/**
- * Created by ENVY on 14.06.2017.
- */
-
 public class SchedulePresenter extends BasePresenter<ScheduleView> {
 
     ScheduleDownloaderUseCase scheduleDownloaderUseCase;
@@ -33,17 +29,15 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
     }
 
 
-    public Observer<ScheduleResponse> getScheduleObserver() {
-        Observer<ScheduleResponse> observer = new Observer<ScheduleResponse>() {
+    private Observer<ScheduleResponse> getScheduleObserver() {
+        return new Observer<ScheduleResponse>() {
 
             @Override
             public void onNext(ScheduleResponse value) {
 
 
-                List<SubjectModel> subjectModelList = value.getSubjectListFromDb();
-
-
                 if (isVisibleView()) {
+                    List<SubjectModel> subjectModelList = value.getSubjectListFromDb();
                     view.setSubjectList(subjectModelList);
                     //view.updateSchedule(value);
                     view.stopProgressBar();
@@ -65,7 +59,6 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
             }
 
         };
-        return observer;
     }
 
     @Override

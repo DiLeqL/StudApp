@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,12 +52,6 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
         // Required empty public constructor
     }
 
-    public static ScheduleFragment newInstance()
-    {
-        ScheduleFragment myFragment = new ScheduleFragment();
-        return myFragment;
-    }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,14 +59,17 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
 
         DaggerScheduleComponent.builder().appModule(new AppModule(getContext()))
                 .dBModule(new DBModule(getContext())).build().inject(this);
+        Log.d("fragment", "onCreate");
 
     }
 
+    //TODO save list on savedInstanceState?
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
 
+        Log.d("fragment", "onCreateView");
 
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
@@ -87,9 +85,10 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
         adapter = new ScheduleRecycleViewAdapter(
                 getContext(), subjectModelList);
 
-        adapter.setSubjectList(subjectModelList);
 
         adapter.notifyDataSetChanged();
+
+        adapter.setSubjectList(subjectModelList);
 
         rvSchedule.setAdapter(adapter);
 
@@ -139,15 +138,10 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
         return getArguments().getInt(ARGUMENT_PAGE_NUMBER);
     }
 
+
     @Override
     public void setSubjectList(List<SubjectModel> subjectList) {
         this.subjectModelList = subjectList;
         adapter.setSubjectList(subjectList);
-    }
-
-
-    @Override
-    public void updateSchedule(ScheduleResponse scheduleResponse) {
-        scheduleResponse.getTeacherNames();
     }
 }

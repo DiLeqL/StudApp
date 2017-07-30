@@ -16,9 +16,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by ENVY on 18.07.2017.
- */
 
 public class ScheduleRecycleViewAdapter extends RecyclerView.Adapter<ScheduleRecycleViewAdapter.SubjectViewHolder>{
 
@@ -49,7 +46,7 @@ public class ScheduleRecycleViewAdapter extends RecyclerView.Adapter<ScheduleRec
         holder.tvBeginningTime.setText(subjectModel.getSubjectTime());
         holder.tvSubjectName.setText(subjectModel.getSubjectName());
         holder.tvTeacherName.setText(subjectModel.getSubjectTeacher());
-        holder.tvGroupName.setText(subjectModel.getSubjectStudGroup());
+        holder.tvRoomNum.setText(subjectModel.getSubjectRoom());
     }
 
     @Override
@@ -74,8 +71,8 @@ public class ScheduleRecycleViewAdapter extends RecyclerView.Adapter<ScheduleRec
         @BindView(R.id.teacher_name)
         TextView tvTeacherName;
 
-        @BindView(R.id.group_name)
-        TextView tvGroupName;
+        @BindView(R.id.room_num)
+        TextView tvRoomNum;
 
         public SubjectViewHolder(View itemView) {
             super(itemView);

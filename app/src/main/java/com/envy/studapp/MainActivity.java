@@ -10,10 +10,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.envy.studapp.Fragment.ScheduleFragment;
-
 
 
 
@@ -48,8 +48,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         item.setChecked(true);
-
-        Class fragment = null;
 
         if (id == R.id.nav_schedule) {
 

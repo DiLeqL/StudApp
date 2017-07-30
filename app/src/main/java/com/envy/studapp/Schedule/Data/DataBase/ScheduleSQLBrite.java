@@ -156,7 +156,7 @@ public class ScheduleSQLBrite {
         Observable<SqlBrite.Query> subjects = briteDatabase.createQuery(
                 ScheduleContract.SubjectEntry.TABLE_SUBJECTS,
                 ScheduleContract.SubjectEntry.SQL_SELECT_SUBJECTSS);
-
+        //TODO run() on main thread?
         Cursor cursor = subjects.toBlocking().first().run();
         return cursor != null && cursor.getCount() > 0;
     }
