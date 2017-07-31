@@ -1,8 +1,13 @@
 package com.envy.studapp.Schedule.Presentation;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 
+import com.envy.studapp.Fragment.ScheduleFragment;
+import com.envy.studapp.MainActivity;
+import com.envy.studapp.R;
 import com.envy.studapp.Schedule.Data.DataBase.ScheduleSQLBrite;
 import com.envy.studapp.Schedule.Data.Model.SubjectModel;
 import com.envy.studapp.Schedule.Domain.ScheduleResponse;

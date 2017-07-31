@@ -14,7 +14,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.envy.studapp.Fragment.ScheduleFragment;
-
+import com.envy.studapp.Schedule.Presentation.ScheduleView;
 
 
 public class MainActivity extends AppCompatActivity

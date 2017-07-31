@@ -68,7 +68,7 @@ public class ScheduleDownloaderUseCase extends BaseUseCase<ScheduleResponse,
     private boolean isConnected(){
 
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-        return activeNetwork.isConnectedOrConnecting();
+        return (activeNetwork != null && activeNetwork.isConnected());
     }
 
 

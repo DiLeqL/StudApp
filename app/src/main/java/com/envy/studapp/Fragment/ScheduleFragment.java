@@ -3,6 +3,7 @@ package com.envy.studapp.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,6 +45,9 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
     @BindView(R.id.schedule_progress_bar)
     ProgressBar progressBar;
 
+    @BindView(R.id.fab_filter)
+    FloatingActionButton fabFilter;
+
     ScheduleRecycleViewAdapter adapter;
 
     private List<SubjectModel> subjectModelList;
@@ -61,6 +65,12 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
                 .dBModule(new DBModule(getContext())).build().inject(this);
         Log.d("fragment", "onCreate");
 
+    }
+
+    public static Fragment newInstance()
+    {
+        ScheduleFragment scheduleFragment = new ScheduleFragment();
+        return scheduleFragment;
     }
 
     //TODO save list on savedInstanceState?
@@ -86,11 +96,17 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
                 getContext(), subjectModelList);
 
 
-        adapter.notifyDataSetChanged();
+
 
         adapter.setSubjectList(subjectModelList);
 
         rvSchedule.setAdapter(adapter);
+
+        fabFilter.setOnClickListener(v -> {
+            FilterFabFragment dialogFrag = FilterFabFragment.newInstance();
+            dialogFrag.setParentFab(fabFilter);
+            dialogFrag.show(getFragmentManager(), dialogFrag.getTag());
+        });
 
         return view;
     }
@@ -142,6 +158,7 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
     @Override
     public void setSubjectList(List<SubjectModel> subjectList) {
         this.subjectModelList = subjectList;
+        adapter.notifyDataSetChanged();
         adapter.setSubjectList(subjectList);
     }
 }

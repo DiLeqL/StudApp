@@ -2,14 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Fragment.ScheduleFragment">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/schedule_rv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="@color/recyclerViewBackgroundColor"/>
 
     <ProgressBar
         android:id="@+id/schedule_progress_bar"
@@ -17,4 +11,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_filter"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:scaleType="center"
+        app:backgroundTint="#512DA8"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/ic_filter"
+        android:layout_gravity="bottom|end"
+        app:elevation="4dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/schedule_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/recyclerViewBackgroundColor" />
+
 </FrameLayout>
