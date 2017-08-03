@@ -2,12 +2,10 @@ package com.envy.studapp.Dagger.Schedule.Module;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
-import com.envy.studapp.Schedule.Data.DataBase.ScheduleContract;
-import com.envy.studapp.Schedule.Data.DataBase.ScheduleDBHelper;
-import com.envy.studapp.Schedule.Data.DataBase.ScheduleSQLBrite;
+import com.envy.studapp.DataBase.ScheduleContract;
+import com.envy.studapp.DataBase.ScheduleDBHelper;
+import com.envy.studapp.DataBase.ScheduleSQLBrite;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 

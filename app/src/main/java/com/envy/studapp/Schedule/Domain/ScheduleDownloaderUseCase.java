@@ -6,17 +6,14 @@ import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.envy.studapp.BaseUseCase;
-import com.envy.studapp.Schedule.Data.DataBase.ScheduleSQLBrite;
+import com.envy.studapp.DataBase.ScheduleSQLBrite;
 import com.envy.studapp.Schedule.Data.HttpAPIInterface.StudServiceAPI;
 
 
 import javax.inject.Inject;
 
 import rx.Observable;
-import rx.Observer;
 import rx.Scheduler;
-import rx.functions.Action1;
-import rx.functions.Func1;
 
 
 public class ScheduleDownloaderUseCase extends BaseUseCase<ScheduleResponse,
@@ -47,12 +44,7 @@ public class ScheduleDownloaderUseCase extends BaseUseCase<ScheduleResponse,
         if (isConnected()){
             return studServiceAPI.getSchedule().doOnNext(scheduleResponse ->
                     scheduleSQLBrite.updateScheduleDB(scheduleResponse)
-            ).flatMap(new Func1<ScheduleResponse, Observable<ScheduleResponse>>() {
-                @Override
-                public Observable<ScheduleResponse> call(ScheduleResponse scheduleResponse) {
-                    return scheduleSQLBrite.getFromDatabaseObservable();
-                }
-            });
+            ).flatMap(scheduleResponse -> scheduleSQLBrite.getFromDatabaseObservable());
         }
         else {
             if (scheduleSQLBrite.checkAvailabilityRecords()){

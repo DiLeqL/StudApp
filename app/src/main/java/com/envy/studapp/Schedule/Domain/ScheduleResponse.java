@@ -1,7 +1,5 @@
 package com.envy.studapp.Schedule.Domain;
 
-import android.util.Log;
-
 import com.envy.studapp.Schedule.Data.Model.BeginningTimeModel;
 import com.envy.studapp.Schedule.Data.Model.ClassroomModel;
 import com.envy.studapp.Schedule.Data.Model.GroupNumModel;
@@ -36,6 +34,12 @@ public class ScheduleResponse {
     @SerializedName("weekdays")
     List<WeekdayModel> weekdayList;
 
+
+    List<SubjectModel> subjectListFromDb;
+
+    @SerializedName("timestamp")
+    String timestamp;
+
     public List<SubjectModel> getSubjectListFromDb() {
         return subjectListFromDb;
     }
@@ -44,16 +48,6 @@ public class ScheduleResponse {
         this.subjectListFromDb = subjectListFromDb;
     }
 
-    List<SubjectModel> subjectListFromDb;
-
-    @SerializedName("timestamp")
-    String timestamp;
-
-   public void getTeacherNames(){
-        for (TeacherModel teacherModel: teacherList) {
-            Log.d("json", teacherModel.getTeacherName());
-        }
-    }
 
     public List<TeacherModel> getTeacherList(){
         return teacherList;
@@ -79,8 +73,5 @@ public class ScheduleResponse {
         return weekdayList;
     }
 
-    /*public String getTimestamp(){
-        return timestamp;
-    }*/
 
 }

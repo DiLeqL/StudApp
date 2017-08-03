@@ -1,4 +1,4 @@
-package com.envy.studapp.Schedule.Data.DataBase;
+package com.envy.studapp.DataBase;
 
 
 import android.content.ContentValues;
@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.envy.studapp.Filter.Data.FilterKey;
 import com.envy.studapp.Schedule.Data.Model.BeginningTimeModel;
 import com.envy.studapp.Schedule.Data.Model.ClassroomModel;
 import com.envy.studapp.Schedule.Data.Model.GroupNumModel;
@@ -17,13 +18,11 @@ import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
-import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 
@@ -34,6 +33,8 @@ public class ScheduleSQLBrite {
     private ContentValues contentValues;
 
     private BriteDatabase briteDatabase;
+
+    FilterKey filterKey;
 
     int i;
 
@@ -144,10 +145,55 @@ public class ScheduleSQLBrite {
                 ScheduleContract.SubjectEntry.TABLE_SUBJECTS,
                 ScheduleContract.SubjectEntry.SQL_SELECT_SUBJECTSS);
 
-
         return subjects.map(query -> {
             Cursor cursor = query.run();
-            return createSubjectModelList(cursor);
+            ScheduleResponse scheduleResponse = new ScheduleResponse();
+            scheduleResponse.setSubjectListFromDb(getSubjectModelList(cursor));
+            return scheduleResponse;
+        });
+    }
+
+    public Observable<List<String>> getFilterKeyTeacherListObservable(){
+        Observable<SqlBrite.Query> teachers = briteDatabase.createQuery(
+                ScheduleContract.TeachersEntry.TABLE_TEACHERS,
+                ScheduleContract.TeachersEntry.SQL_SELECT_ALL_TEACHERS
+        );
+
+        return teachers.map(query -> {
+            Cursor cursor = query.run();
+            List<String> teacherKeyList = getTeacherKeyList(cursor);
+            //filterKey.setTeacherKeyList(getTeacherKeyList(cursor));
+            Collections.sort(teacherKeyList);
+            return teacherKeyList;
+        });
+    }
+
+    public Observable<List<String>> getFilterKeyWeekdayListObservable(){
+        Observable<SqlBrite.Query> weekdays = briteDatabase.createQuery(
+                ScheduleContract.WeekdaysEntry.TABLE_WEEKDAYS,
+                ScheduleContract.WeekdaysEntry.SQL_SELECT_ALL_WEEKDAYS
+        );
+
+        return weekdays.map(query -> {
+            Cursor cursor = query.run();
+            List<String> weekdayKeyList = getWeekdayKeyList(cursor);
+            //filterKey.setWeekdayKeyList(getWeekdayKeyList(cursor));
+            return weekdayKeyList;
+        });
+    }
+
+    public Observable<List<String>> getFilterKeyGroupNumListObservable(){
+        Observable<SqlBrite.Query> groups = briteDatabase.createQuery(
+                ScheduleContract.GroupsEntry.TABLE_GROUPS,
+                ScheduleContract.GroupsEntry.SQL_SELECT_ALL_GROUPS
+        );
+
+        return groups.map(query -> {
+            Cursor cursor = query.run();
+            List<String> groupNumKeyList = getGroupNumKeyList(cursor);
+            //filterKey.setGroupNumKeyList(getGroupNumKeyList(cursor));
+            Collections.sort(groupNumKeyList);
+            return groupNumKeyList;
         });
     }
 
@@ -161,14 +207,97 @@ public class ScheduleSQLBrite {
         return cursor != null && cursor.getCount() > 0;
     }
 
+    @NonNull
+    private static List<String> getGroupNumKeyList(Cursor cursor){
+        List<String> groupNumKeyList = new ArrayList<>();
+
+        if (cursor != null) {
+            cursor.getCount();
+            try {
+                String str = "";
+                if (cursor.moveToFirst()) {
+                    do {
+                        String groupNum;
+                        groupNum = cursor.getString(cursor.getColumnIndex(
+                                ScheduleContract.GroupsEntry.COLUMN_GROUP_NAME));
+                        groupNumKeyList.add(groupNum);
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close();
+            }
+        } else {
+            Log.d("db", "Cursor is null");
+        }
+        /*ScheduleResponse scheduleResponse = new ScheduleResponse();
+        scheduleResponse.setSubjectListFromDb(subjectModelList);
+        return scheduleResponse;*/
+        return groupNumKeyList;
+    }
+    @NonNull
+    private static List<String> getWeekdayKeyList(Cursor cursor){
+
+        List<String> weekdayKeyList = new ArrayList<>();
+
+        if (cursor != null) {
+            cursor.getCount();
+            try {
+                String str = "";
+                if (cursor.moveToFirst()) {
+                    do {
+                        String weekDay;
+                        weekDay = cursor.getString(cursor.getColumnIndex(
+                                ScheduleContract.WeekdaysEntry.COLUMN_DAY));
+                        weekdayKeyList.add(weekDay);
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close();
+            }
+        } else {
+            Log.d("db", "Cursor is null");
+        }
+        /*ScheduleResponse scheduleResponse = new ScheduleResponse();
+        scheduleResponse.setSubjectListFromDb(subjectModelList);
+        return scheduleResponse;*/
+        return weekdayKeyList;
+    }
 
     @NonNull
-    private static ScheduleResponse createSubjectModelList(Cursor cursor) {
+    private static List<String> getTeacherKeyList(Cursor cursor){
+
+        List<String> teacherKeyList = new ArrayList<>();
+
+        if (cursor != null) {
+            cursor.getCount();
+            try {
+                String str = "";
+                if (cursor.moveToFirst()) {
+                    do {
+                        String teacherName;
+                        teacherName = cursor.getString(cursor.getColumnIndex(
+                                ScheduleContract.TeachersEntry.COLUMN_TEACHER_NAME));
+                        teacherKeyList.add(teacherName);
+                    } while (cursor.moveToNext());
+                }
+            } finally {
+                cursor.close();
+            }
+        } else {
+            Log.d("db", "Cursor is null");
+        }
+        /*ScheduleResponse scheduleResponse = new ScheduleResponse();
+        scheduleResponse.setSubjectListFromDb(subjectModelList);
+        return scheduleResponse;*/
+        return teacherKeyList;
+    }
+
+    @NonNull
+    private static List<SubjectModel> getSubjectModelList(Cursor cursor) {
 
         List<SubjectModel> subjectModelList = new ArrayList<>();
 
         if (cursor != null) {
-
             cursor.getCount();
             try {
                 String str = "";
@@ -226,9 +355,10 @@ public class ScheduleSQLBrite {
         } else {
             Log.d("db", "Cursor is null");
         }
-        ScheduleResponse scheduleResponse = new ScheduleResponse();
+        /*ScheduleResponse scheduleResponse = new ScheduleResponse();
         scheduleResponse.setSubjectListFromDb(subjectModelList);
-        return scheduleResponse;
+        return scheduleResponse;*/
+        return subjectModelList;
     }
 
 

@@ -1,4 +1,4 @@
-package com.envy.studapp.Schedule.Data.DataBase;
+package com.envy.studapp.DataBase;
 
 import android.provider.BaseColumns;
 
@@ -63,6 +63,9 @@ public class ScheduleContract {
         public static final String COLUMN_TEACHER_ID = "teacherID";
         public static final String COLUMN_TEACHER_NAME = "name";
 
+        public static final String SQL_SELECT_ALL_TEACHERS = "SELECT " + COLUMN_TEACHER_NAME +
+                " FROM " + TABLE_TEACHERS;
+
         public static final String SQL_CREATE_TEACHER_TABLE =
                 "CREATE TABLE " + TABLE_TEACHERS + " (" + _ID + " INTEGER PRIMARY KEY, " +
                         COLUMN_TEACHER_ID + TEXT_TYPE + COMMA_SEP + COLUMN_TEACHER_NAME +
@@ -78,6 +81,9 @@ public class ScheduleContract {
 
         public static final String COLUMN_GROUP_ID = "groupID";
         public static final String COLUMN_GROUP_NAME = "groupName";
+
+        public static final String SQL_SELECT_ALL_GROUPS = "SELECT " + COLUMN_GROUP_NAME +
+                " FROM " + TABLE_GROUPS;
 
         public static final String SQL_CREATE_GROUP_TABLE =
                 "CREATE TABLE " + TABLE_GROUPS + " (" + _ID + " INTEGER PRIMARY KEY, " +
@@ -126,6 +132,9 @@ public class ScheduleContract {
 
         public static final String COLUMN_WEEKDAY_ID = "weekdayID";
         public static final String COLUMN_DAY = "day";
+
+        public static final String SQL_SELECT_ALL_WEEKDAYS = "SELECT " + WeekdaysEntry.COLUMN_DAY +
+                " FROM " + WeekdaysEntry.TABLE_WEEKDAYS;
 
         public static final String SQL_CREATE_WEEKDAYS_TABLE =
                 "CREATE TABLE " + TABLE_WEEKDAYS + " (" + _ID + " INTEGER PRIMARY KEY, " +

@@ -1,11 +1,7 @@
-package com.envy.studapp.Schedule.Presentation;
+package com.envy.studapp;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import com.envy.studapp.R;
 
 /**
  * Created by ENVY on 14.06.2017.
@@ -15,7 +11,7 @@ public class BasePresenter<T> {
 
     boolean isVisible;
 
-    T view;
+    protected T view;
 
 
     public void onCreateView(T view,

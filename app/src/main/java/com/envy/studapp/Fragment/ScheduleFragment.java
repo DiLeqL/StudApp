@@ -73,7 +73,6 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
         return scheduleFragment;
     }
 
-    //TODO save list on savedInstanceState?
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -92,14 +91,8 @@ public class ScheduleFragment extends Fragment implements ScheduleView{
         LinearLayoutManager llm = new LinearLayoutManager(this.getContext());
         rvSchedule.setLayoutManager(llm);
 
-        adapter = new ScheduleRecycleViewAdapter(
-                getContext(), subjectModelList);
-
-
-
-
+        adapter = new ScheduleRecycleViewAdapter(getContext(), subjectModelList);
         adapter.setSubjectList(subjectModelList);
-
         rvSchedule.setAdapter(adapter);
 
         fabFilter.setOnClickListener(v -> {

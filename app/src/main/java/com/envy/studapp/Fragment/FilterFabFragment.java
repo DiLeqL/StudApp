@@ -1,34 +1,59 @@
 package com.envy.studapp.Fragment;
 
 import android.app.Dialog;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
+import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
+import com.envy.studapp.Dagger.Schedule.Module.AppModule;
+import com.envy.studapp.Dagger.Schedule.Module.DBModule;
 import com.envy.studapp.R;
+import com.envy.studapp.Filter.Presentation.FilterPresenter;
+import com.envy.studapp.Filter.Presentation.FilterView;
 import com.google.android.flexbox.FlexboxLayout;
 
-import static com.envy.studapp.R.id.vp_types;
+import javax.inject.Inject;
 
 /**
  * Created by ENVY on 31.07.2017.
  */
 
-public class FilterFabFragment extends AAH_FabulousFragment{
+public class FilterFabFragment extends AAH_FabulousFragment implements FilterView{
+
+    @Inject
+    FilterPresenter filterPresenter;
 
     SectionsPagerAdapter mAdapter;
 
     TabLayout tabs_types;
 
+
     public static FilterFabFragment newInstance() {
         return new FilterFabFragment();
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        DaggerScheduleComponent.builder().appModule(new AppModule(getContext()))
+                .dBModule(new DBModule(getContext())).build().inject(this);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        filterPresenter.onCreateView(this, null);
+        return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
@@ -58,7 +83,7 @@ public class FilterFabFragment extends AAH_FabulousFragment{
         super.setupDialog(dialog, style); //call super at last
     }
 
-    public class SectionsPagerAdapter extends PagerAdapter {
+    private class SectionsPagerAdapter extends PagerAdapter {
 
         @Override
         public Object instantiateItem(ViewGroup collection, int position) {

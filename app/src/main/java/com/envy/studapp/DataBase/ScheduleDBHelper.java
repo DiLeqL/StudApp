@@ -1,4 +1,4 @@
-package com.envy.studapp.Schedule.Data.DataBase;
+package com.envy.studapp.DataBase;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
