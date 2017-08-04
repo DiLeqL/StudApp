@@ -47,6 +47,9 @@ public class FilterPresenter extends BasePresenter<FilterView> {
 
             @Override
             public void onNext(FilterKey filterKeyModel) {
+
+                view.setFilterKey(filterKeyModel);
+
                 for (String teacher:
                      filterKeyModel.getTeacherKeyList()) {
                     Log.d("filterKey", teacher);

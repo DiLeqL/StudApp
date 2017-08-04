@@ -8,7 +8,6 @@ import java.util.List;
 
 public class FilterKey {
 
-
     private List<String> teacherKeyList;
     private List<String> weekdayKeyList;
     private List<String> groupNumKeyList;
@@ -36,4 +35,6 @@ public class FilterKey {
     public void setGroupNumKeyList(List<String> groupNumKeyList) {
         this.groupNumKeyList = groupNumKeyList;
     }
+
+
 }
