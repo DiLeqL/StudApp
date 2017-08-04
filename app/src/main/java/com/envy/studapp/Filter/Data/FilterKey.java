@@ -1,12 +1,14 @@
 package com.envy.studapp.Filter.Data;
 
+import com.envy.studapp.BaseFilterKey;
+
 import java.util.List;
 
 /**
  * Created by ENVY on 02.08.2017.
  */
 
-public class FilterKey {
+public class FilterKey extends BaseFilterKey{
 
     private List<String> teacherKeyList;
     private List<String> weekdayKeyList;
@@ -35,6 +37,5 @@ public class FilterKey {
     public void setGroupNumKeyList(List<String> groupNumKeyList) {
         this.groupNumKeyList = groupNumKeyList;
     }
-
 
 }

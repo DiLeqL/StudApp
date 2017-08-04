@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,13 +38,15 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
 
     SectionsPagerAdapter mAdapter;
 
+    Integer previousItemIndex;
+
     FilterKey filterKey;
 
-    ArrayMap<String, List<String>> applied_filters = new ArrayMap<>();
+    ArrayMap<String, List<String>> appliedFilters = new ArrayMap<>();
 
-    List<TextView> textviews = new ArrayList<>();
+    List<TextView> textViews = new ArrayList<>();
 
-    TabLayout tabs_types;
+    TabLayout tabsTypes;
 
 
     public static FilterFabFragment newInstance() {
@@ -61,33 +64,33 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        filterPresenter.onCreateView(this, null);
+        filterPresenter.onCreateView(this, savedInstanceState);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void setupDialog(Dialog dialog, int style) {
         View contentView = View.inflate(getContext(), R.layout.schedule_filter_view, null);
-        RelativeLayout rl_content = (RelativeLayout) contentView.findViewById(R.id.rl_content);
-        LinearLayout ll_buttons = (LinearLayout) contentView.findViewById(R.id.ll_buttons);
-        ViewPager vp_types = (ViewPager) contentView.findViewById(R.id.vp_types);
-        tabs_types = (TabLayout) contentView.findViewById(R.id.tabs_types);
+        RelativeLayout rlContent = (RelativeLayout) contentView.findViewById(R.id.rl_content);
+        LinearLayout llButtons = (LinearLayout) contentView.findViewById(R.id.ll_buttons);
+        ViewPager vpTypes = (ViewPager) contentView.findViewById(R.id.vp_types);
+        tabsTypes = (TabLayout) contentView.findViewById(R.id.tabs_types);
         contentView.findViewById(R.id.imgbtn_apply).setOnClickListener(v -> closeFilter("closed"));
 
         mAdapter = new SectionsPagerAdapter();
-        vp_types.setOffscreenPageLimit(4);
-        vp_types.setAdapter(mAdapter);
+        vpTypes.setOffscreenPageLimit(4);
+        vpTypes.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
-        tabs_types.setupWithViewPager(vp_types);
+        tabsTypes.setupWithViewPager(vpTypes);
 
         //params to set
         setAnimationDuration(350); //optional; default 500ms
         setPeekHeight(300); // optional; default 400dp
 //        setCallbacks((Callbacks) getActivity()); //optional; to get back result
         //       setAnimationListener((AnimationListener) getActivity()); //optional; to get animation callbacks
-        setViewgroupStatic(ll_buttons); // optional; layout to stick at bottom on slide
+        setViewgroupStatic(llButtons); // optional; layout to stick at bottom on slide
         //setViewPager(vp_types); //optional; if you use viewpager that has scrollview
-        setViewMain(rl_content); //necessary; main bottomsheet view
+        setViewMain(rlContent); //necessary; main bottomsheet view
         setMainContentView(contentView); // necessary; call at end before super
         super.setupDialog(dialog, style); //call super at last
     }
@@ -95,8 +98,8 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
     @Override
     public void setFilterKey(FilterKey filterKey) {
         this.filterKey = filterKey;
-        mAdapter.notifyDataSetChanged();
         mAdapter.setFilterKey(filterKey);
+        mAdapter.notifyDataSetChanged();
     }
 
     private class SectionsPagerAdapter extends PagerAdapter {
@@ -107,6 +110,11 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
             this.filterKey = filterKey;
         }
 
+
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
 
         @Override
         public Object instantiateItem(ViewGroup collection, int position) {
@@ -170,12 +178,15 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
         switch (filter_category) {
             case "day":
                 keys = filterKey.getWeekdayKeyList();
+                filterKey.setSingleOption(true);
                 break;
             case "teacher":
                 keys = filterKey.getTeacherKeyList();
+                filterKey.setSingleOption(false);
                 break;
             case "group":
                 keys = filterKey.getGroupNumKeyList();
+                filterKey.setSingleOption(true);
                 break;
         }
 
@@ -185,37 +196,57 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
             tv.setText(keys.get(i));
             final int finalI = i;
             final List<String> finalKeys = keys;
-            tv.setOnClickListener(v -> {
-                if (tv.getTag() != null && tv.getTag().equals("selected")) {
-                    tv.setTag("unselected");
-                    tv.setBackgroundResource(R.drawable.chip_unselected);
-                    tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
-                    removeFromSelectedMap(filter_category, finalKeys.get(finalI));
-                } else {
-                    tv.setTag("selected");
-                    tv.setBackgroundResource(R.drawable.chip_selected);
-                    tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_header));
-                    addToSelectedMap(filter_category, finalKeys.get(finalI));
+            if (filterKey.getSingleOption()){
+                if (isItemSelected()){
+                    tv.setOnClickListener(v -> {
+                        if (previousItemIndex != null){
+                            FilterFabFragment.this.removeFromSelectedMap(filter_category,
+                                    finalKeys.get(previousItemIndex));
+                            Log.d("previous", previousItemIndex.toString());
+                        }
+                        for (TextView tvItem : textViews) {
+                            tvItem.setTag("unselected");
+                            tvItem.setBackgroundResource(R.drawable.chip_unselected);
+                            tvItem.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
+                        }
+                        //FilterFabFragment.this.removeFromSelectedMap(filter_category, finalKeys.get(finalI));
+                        Log.d("filter", finalKeys.get(finalI));
+                        //appliedFilters.clear();
+                        tv.setTag("selected");
+                        tv.setBackgroundResource(R.drawable.chip_selected);
+                        tv.setTextColor(ContextCompat.getColor(FilterFabFragment.this.getContext(),
+                                R.color.filters_header));
+                        FilterFabFragment.this.addToSelectedMap(filter_category, finalKeys.get(finalI));
+                        previousItemIndex = finalI;
+                    });
                 }
-            });
-            /*try {
-                Log.d("k9res", "key: " + filter_category + " |val:" + keys.get(finalI));
-                Log.d("k9res", "applied_filters != null: " + (applied_filters != null));
-                Log.d("k9res", "applied_filters.get(key) != null: " + (applied_filters.get(filter_category) != null));
-                Log.d("k9res", "applied_filters.get(key).contains(keys.get(finalI)): " + (applied_filters.get(filter_category).contains(keys.get(finalI))));
-            } catch (Exception e) {
+            }
+            else {
+                tv.setOnClickListener(v -> {
+                    if (tv.getTag() != null && tv.getTag().equals("selected")) {
+                        tv.setTag("unselected");
+                        tv.setBackgroundResource(R.drawable.chip_unselected);
+                        tv.setTextColor(ContextCompat.getColor(FilterFabFragment.this.getContext(), R.color.filters_chips));
+                        FilterFabFragment.this.removeFromSelectedMap(filter_category, finalKeys.get(finalI));
+                    } else {
+                        tv.setTag("selected");
+                        tv.setBackgroundResource(R.drawable.chip_selected);
+                        tv.setTextColor(ContextCompat.getColor(FilterFabFragment.this.getContext(), R.color.filters_header));
+                        FilterFabFragment.this.addToSelectedMap(filter_category, finalKeys.get(finalI));
+                    }
+                });
+            }
 
-            }*/
-            if (applied_filters != null && applied_filters.get(filter_category) != null &&
-                    applied_filters.get(filter_category).contains(keys.get(finalI))) {
+            /*if (appliedFilters != null && appliedFilters.get(filter_category) != null &&
+                    appliedFilters.get(filter_category).contains(keys.get(finalI))) {
                 tv.setTag("selected");
                 tv.setBackgroundResource(R.drawable.chip_selected);
                 tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_header));
             } else {
                 tv.setBackgroundResource(R.drawable.chip_unselected);
                 tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
-            }
-            textviews.add(tv);
+            }*/
+            textViews.add(tv);
 
             fbl.addView(subChild);
         }
@@ -223,21 +254,25 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
     }
 
     private void addToSelectedMap(String key, String value) {
-        if (applied_filters.get(key) != null && !applied_filters.get(key).contains(value)) {
-            applied_filters.get(key).add(value);
+        if (appliedFilters.get(key) != null && !appliedFilters.get(key).contains(value)) {
+            appliedFilters.get(key).add(value);
         } else {
             List<String> temp = new ArrayList<>();
             temp.add(value);
-            applied_filters.put(key, temp);
+            appliedFilters.put(key, temp);
         }
     }
 
     private void removeFromSelectedMap(String key, String value) {
-        if (applied_filters.get(key).size() == 1) {
-            applied_filters.remove(key);
+        if (appliedFilters.get(key).size() == 1) {
+            appliedFilters.remove(key);
         } else {
-            applied_filters.get(key).remove(value);
+            appliedFilters.get(key).remove(value);
         }
+    }
+
+    private boolean isItemSelected(){
+        return textViews.size() >= 0;
     }
 
 
