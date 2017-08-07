@@ -1,7 +1,9 @@
 package com.envy.studapp.Filter.Data;
 
 import com.envy.studapp.BaseFilterKey;
+import com.envy.studapp.Schedule.Data.Model.SubjectModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +27,43 @@ public class FilterKey extends BaseFilterKey{
     public List<String> getGroupNumKeyList() {
         return groupNumKeyList;
     }
+
+    public List<SubjectModel> getTeacherFilteredSubjectList(List<String> teacherKeyList, List<SubjectModel> mList) {
+        List<SubjectModel> tempList = new ArrayList<>();
+        for (SubjectModel subject : mList) {
+            for (String g : teacherKeyList) {
+                if (subject.getSubjectTeacher().equalsIgnoreCase(g)) {
+                    tempList.add(subject);
+                }
+            }
+        }
+        return tempList;
+    }
+
+    public List<SubjectModel> getWeekdayFilteredSubjectList(List<String> weekdayKeyList, List<SubjectModel> mList) {
+        List<SubjectModel> tempList = new ArrayList<>();
+        for (SubjectModel subject : mList) {
+            for (String g : weekdayKeyList) {
+                if (subject.getSubjectDay().equalsIgnoreCase(g)) {
+                    tempList.add(subject);
+                }
+            }
+        }
+        return tempList;
+    }
+
+    public List<SubjectModel> getGroupNumFilteredSubjectList(List<String> groupNumKeyList, List<SubjectModel> mList) {
+        List<SubjectModel> tempList = new ArrayList<>();
+        for (SubjectModel subject : mList) {
+            for (String g : groupNumKeyList) {
+                if (subject.getSubjectStudGroup().equalsIgnoreCase(g)) {
+                    tempList.add(subject);
+                }
+            }
+        }
+        return tempList;
+    }
+
 
     public void setTeacherKeyList(List<String> teacherKeyList) {
         this.teacherKeyList = teacherKeyList;

@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,6 +40,8 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
     SectionsPagerAdapter mAdapter;
 
     Integer previousItemIndex;
+
+    ImageButton imgBtnApply;
 
     FilterKey filterKey;
 
@@ -75,8 +78,9 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
         LinearLayout llButtons = (LinearLayout) contentView.findViewById(R.id.ll_buttons);
         ViewPager vpTypes = (ViewPager) contentView.findViewById(R.id.vp_types);
         tabsTypes = (TabLayout) contentView.findViewById(R.id.tabs_types);
-        contentView.findViewById(R.id.imgbtn_apply).setOnClickListener(v -> closeFilter("closed"));
-
+        //contentView.findViewById(R.id.imgbtn_apply).setOnClickListener(v -> closeFilter(appliedFilters));
+        imgBtnApply = (ImageButton) contentView.findViewById(R.id.imgbtn_apply);
+        imgBtnApply.setOnClickListener(v -> closeFilter(appliedFilters));
         mAdapter = new SectionsPagerAdapter();
         vpTypes.setOffscreenPageLimit(4);
         vpTypes.setAdapter(mAdapter);
@@ -86,10 +90,10 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
         //params to set
         setAnimationDuration(350); //optional; default 500ms
         setPeekHeight(300); // optional; default 400dp
-//        setCallbacks((Callbacks) getActivity()); //optional; to get back result
+        setCallbacks((Callbacks) getFragmentManager().findFragmentById(R.id.schedule_fragment)); //optional; to get back result
         //       setAnimationListener((AnimationListener) getActivity()); //optional; to get animation callbacks
         setViewgroupStatic(llButtons); // optional; layout to stick at bottom on slide
-        //setViewPager(vp_types); //optional; if you use viewpager that has scrollview
+        setViewPager(vpTypes); //optional; if you use viewpager that has scrollview
         setViewMain(rlContent); //necessary; main bottomsheet view
         setMainContentView(contentView); // necessary; call at end before super
         super.setupDialog(dialog, style); //call super at last
@@ -274,6 +278,4 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
     private boolean isItemSelected(){
         return textViews.size() >= 0;
     }
-
-
 }
