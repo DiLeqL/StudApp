@@ -1,15 +1,19 @@
 package com.envy.studapp.Schedule.Presentation;
 
 import android.os.Bundle;
+import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
+import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 import com.envy.studapp.BasePresenter;
 import com.envy.studapp.DataBase.ScheduleSQLBrite;
+import com.envy.studapp.Filter.Data.FilterKey;
 import com.envy.studapp.Schedule.Data.Model.SubjectModel;
 import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
 
 import java.util.List;
+import java.util.Map;
 
 import rx.Observer;
 
@@ -20,6 +24,8 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
     ScheduleSQLBrite scheduleSQLBrite;
 
     Object observable;
+
+
 
     static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
 
@@ -40,6 +46,7 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
                 if (isVisibleView()) {
                     List<SubjectModel> subjectModelList = value.getSubjectListFromDb();
                     view.setSubjectList(subjectModelList);
+                    subjectModelList = subjectModelList;
                     //view.updateSchedule(value);
                     view.stopProgressBar();
                 }
@@ -68,4 +75,6 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
         Observer<ScheduleResponse> subscriber = getScheduleObserver();
         scheduleDownloaderUseCase.subscribe(observable, subscriber);
     }
+
+
 }

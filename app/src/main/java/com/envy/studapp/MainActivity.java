@@ -10,15 +10,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.envy.studapp.Fragment.ScheduleFragment;
-import com.envy.studapp.Schedule.Presentation.ScheduleView;
+import com.envy.studapp.Schedule.Data.Model.SubjectModel;
+
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, FilterHandler {
 
 
     @Override
@@ -88,4 +89,8 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
     }
 
+    @Override
+    public void updateResult(List<SubjectModel> subjectModelList) {
+
+    }
 }

@@ -22,9 +22,11 @@ import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
 import com.envy.studapp.Dagger.Schedule.Module.AppModule;
 import com.envy.studapp.Dagger.Schedule.Module.DBModule;
 import com.envy.studapp.Filter.Data.FilterKey;
+import com.envy.studapp.FilterHandler;
 import com.envy.studapp.R;
 import com.envy.studapp.Filter.Presentation.FilterPresenter;
 import com.envy.studapp.Filter.Presentation.FilterView;
+import com.envy.studapp.Schedule.Data.Model.SubjectModel;
 import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.ArrayList;
@@ -32,25 +34,27 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-public class FilterFabFragment extends AAH_FabulousFragment implements FilterView {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class FilterFabFragment extends AAH_FabulousFragment implements FilterView, ViewPager.OnPageChangeListener {
 
     @Inject
     FilterPresenter filterPresenter;
 
     SectionsPagerAdapter mAdapter;
 
-    Integer previousItemIndex;
-
     ImageButton imgBtnApply;
 
     FilterKey filterKey;
+
+    Integer previousItemIndex;
 
     ArrayMap<String, List<String>> appliedFilters = new ArrayMap<>();
 
     List<TextView> textViews = new ArrayList<>();
 
     TabLayout tabsTypes;
-
 
     public static FilterFabFragment newInstance() {
         return new FilterFabFragment();
@@ -86,14 +90,32 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
         vpTypes.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
         tabsTypes.setupWithViewPager(vpTypes);
-
+        //(MainActivity) getActivity().
         //params to set
         setAnimationDuration(350); //optional; default 500ms
         setPeekHeight(300); // optional; default 400dp
-        setCallbacks((Callbacks) getFragmentManager().findFragmentById(R.id.schedule_fragment)); //optional; to get back result
+        setCallbacks(filterPresenter);
+        //setCallbacks((Callbacks) getFragmentManager().findFragmentById(R.id.schedule_fragment));//optional; to get back result
+        //Log.d("fragment", getFragmentManager().findFragmentById(R.id.schedule_fragment).toString());
         //       setAnimationListener((AnimationListener) getActivity()); //optional; to get animation callbacks
         setViewgroupStatic(llButtons); // optional; layout to stick at bottom on slide
         setViewPager(vpTypes); //optional; if you use viewpager that has scrollview
+        vpTypes.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                previousItemIndex = null;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
         setViewMain(rlContent); //necessary; main bottomsheet view
         setMainContentView(contentView); // necessary; call at end before super
         super.setupDialog(dialog, style); //call super at last
@@ -106,7 +128,28 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
         mAdapter.notifyDataSetChanged();
     }
 
-    private class SectionsPagerAdapter extends PagerAdapter {
+    @Override
+    public void updateSubjectList(List<SubjectModel> subjectList) {
+        ((FilterHandler) getActivity()).updateResult(subjectList);
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        Log.d("pageChange", "page change");
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+
+    private class SectionsPagerAdapter extends PagerAdapter{
 
         FilterKey filterKey;
 
@@ -241,7 +284,7 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
                 });
             }
 
-            /*if (appliedFilters != null && appliedFilters.get(filter_category) != null &&
+            if (appliedFilters != null && appliedFilters.get(filter_category) != null &&
                     appliedFilters.get(filter_category).contains(keys.get(finalI))) {
                 tv.setTag("selected");
                 tv.setBackgroundResource(R.drawable.chip_selected);
@@ -249,7 +292,7 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
             } else {
                 tv.setBackgroundResource(R.drawable.chip_unselected);
                 tv.setTextColor(ContextCompat.getColor(getContext(), R.color.filters_chips));
-            }*/
+            }
             textViews.add(tv);
 
             fbl.addView(subChild);
@@ -268,6 +311,13 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
     }
 
     private void removeFromSelectedMap(String key, String value) {
+        if (appliedFilters == null){
+            Log.d("filter", "filterNull");
+        }
+        if (key == null){
+            Log.d("filter", "keyNull");
+        }
+        Log.d("previous", appliedFilters.get(key).toString());
         if (appliedFilters.get(key).size() == 1) {
             appliedFilters.remove(key);
         } else {

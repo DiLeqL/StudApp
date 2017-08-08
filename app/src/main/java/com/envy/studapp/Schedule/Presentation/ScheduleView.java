@@ -21,6 +21,8 @@ public interface ScheduleView {
 
     int getPageNum();
 
+    void notifyAdapter();
+
     void setSubjectList(List<SubjectModel> subjectList);
 
     //void showList(List<SubjectModel> subjectList, String day);

@@ -37,7 +37,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class ScheduleFragment extends Fragment implements ScheduleView, AAH_FabulousFragment.Callbacks {
+public class ScheduleFragment extends Fragment implements ScheduleView {
 
 
     static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
@@ -79,11 +79,11 @@ public class ScheduleFragment extends Fragment implements ScheduleView, AAH_Fabu
 
     }
 
-    public static Fragment newInstance()
+    /*public static Fragment newInstance()
     {
         ScheduleFragment scheduleFragment = new ScheduleFragment();
         return scheduleFragment;
-    }
+    }*/
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -118,45 +118,7 @@ public class ScheduleFragment extends Fragment implements ScheduleView, AAH_Fabu
         return view;
     }
 
-    @Override
-    public void onResult(Object result) {
-        Log.d("k9res", "onResult: " + result.toString());
-        if (result.toString().equalsIgnoreCase("swiped_down")) {
-            //do something or nothing
-        } else {
-            if (result != null) {
-                fullSubjectModelList.addAll(subjectModelList);
-                ArrayMap<String, List<String>> appliedFilters = (ArrayMap<String, List<String>>) result;
-                if (appliedFilters.size() != 0) {
-                    List<SubjectModel> filteredList = subjectModelList;
-                    //iterate over arraymap
-                    for (Map.Entry<String, List<String>> entry : appliedFilters.entrySet()) {
-                        Log.d("k9res", "entry.key: " + entry.getKey());
-                        switch (entry.getKey()) {
-                            case "teacher":
-                                filteredList = filterKey.getTeacherFilteredSubjectList(entry.getValue(), filteredList);
-                                break;
-                            case "weekday":
-                                filteredList = filterKey.getWeekdayFilteredSubjectList(entry.getValue(), filteredList);
-                                break;
-                            case "group":
-                                filteredList = filterKey.getGroupNumFilteredSubjectList(entry.getValue(), filteredList);
-                                break;
-                        }
-                    }
-                    Log.d("k9res", "new size: " + filteredList.size());
-                    subjectModelList.clear();
-                    subjectModelList.addAll(filteredList);
-                    adapter.notifyDataSetChanged();
 
-                } else {
-                    subjectModelList.addAll(fullSubjectModelList);
-                    adapter.notifyDataSetChanged();
-                }
-            }
-            //handle result
-        }
-    }
 
     /*public ArrayMap<String, List<String>> getApplied_filters() {
         return appliedFilters;
@@ -203,6 +165,11 @@ public class ScheduleFragment extends Fragment implements ScheduleView, AAH_Fabu
     @Override
     public int getPageNum() {
         return getArguments().getInt(ARGUMENT_PAGE_NUMBER);
+    }
+
+    @Override
+    public void notifyAdapter() {
+        adapter.notifyDataSetChanged();
     }
 
 
