@@ -22,12 +22,11 @@ public class NetWorkModule {
     @Singleton
     public Retrofit provideRetrofit(){
 
-        Retrofit retrofit = new Retrofit.Builder()
+        return new Retrofit.Builder()
                 .baseUrl("http://10.0.3.2:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
-        return retrofit;
     }
 
     @Provides

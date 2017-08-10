@@ -13,9 +13,6 @@ import rx.Observable;
 import rx.Scheduler;
 import rx.functions.Func3;
 
-/**
- * Created by ENVY on 02.08.2017.
- */
 
 public class FilterKeyUseCase extends BaseUseCase<FilterKey, Object>{
 

@@ -23,25 +23,21 @@ public class ScheduleDownloaderUseCase extends BaseUseCase<ScheduleResponse,
 
     ScheduleSQLBrite scheduleSQLBrite;
 
-    ConnectivityManager connectivityManager;
-
 
     @Inject
     public ScheduleDownloaderUseCase(StudServiceAPI studServiceAPI, Scheduler backgroundScheduler,
-                                     Scheduler uiScheduler, ScheduleSQLBrite scheduleSQLBrite,
-                                     ConnectivityManager connectivityManager) {
+                                     Scheduler uiScheduler, ScheduleSQLBrite scheduleSQLBrite) {
 
         super(backgroundScheduler, uiScheduler);
         this.studServiceAPI = studServiceAPI;
         this.scheduleSQLBrite = scheduleSQLBrite;
-        this.connectivityManager = connectivityManager;
     }
 
 
     @Override
     public Observable<ScheduleResponse> buildObservable(Object object) {
 
-        if (isConnected()){
+        /*if (isConnected()){
             return studServiceAPI.getSchedule().doOnNext(scheduleResponse ->
                     scheduleSQLBrite.updateScheduleDB(scheduleResponse)
             ).flatMap(scheduleResponse -> scheduleSQLBrite.getFromDatabaseObservable());
@@ -54,13 +50,11 @@ public class ScheduleDownloaderUseCase extends BaseUseCase<ScheduleResponse,
                 Log.d("connection", "Check connection or server problems");
                 return null;
             }
-        }
-    }
+        }*/
 
-    private boolean isConnected(){
-
-        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-        return (activeNetwork != null && activeNetwork.isConnected());
+        return studServiceAPI.getSchedule().doOnNext(scheduleResponse ->
+                scheduleSQLBrite.updateScheduleDB(scheduleResponse))
+                .flatMap(scheduleResponse -> scheduleSQLBrite.getFromDatabaseObservable());
     }
 
 

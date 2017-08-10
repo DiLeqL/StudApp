@@ -76,6 +76,12 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        filterPresenter.onDestroyView();
+    }
+
+    @Override
     public void setupDialog(Dialog dialog, int style) {
         View contentView = View.inflate(getContext(), R.layout.schedule_filter_view, null);
         RelativeLayout rlContent = (RelativeLayout) contentView.findViewById(R.id.rl_content);
@@ -130,6 +136,7 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
 
     @Override
     public void updateSubjectList(List<SubjectModel> subjectList) {
+        Log.d("list", "update in FilterFragment");
         ((FilterHandler) getActivity()).updateResult(subjectList);
     }
 
@@ -311,12 +318,6 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
     }
 
     private void removeFromSelectedMap(String key, String value) {
-        if (appliedFilters == null){
-            Log.d("filter", "filterNull");
-        }
-        if (key == null){
-            Log.d("filter", "keyNull");
-        }
         Log.d("previous", appliedFilters.get(key).toString());
         if (appliedFilters.get(key).size() == 1) {
             appliedFilters.remove(key);

@@ -21,6 +21,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FilterHandler {
 
+    final String SCHEDULE_FRAGMENT_TAG = "Schedule";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        showFragment(ScheduleFragment.class);
+        showFragment(ScheduleFragment.class, SCHEDULE_FRAGMENT_TAG);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_schedule) {
 
-            showFragment(ScheduleFragment.class);
+            showFragment(ScheduleFragment.class, SCHEDULE_FRAGMENT_TAG);
 
         } else if (id == R.id.nav_teacher_schedule){
 
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-    private void showFragment(Class fragmentClass) {
+    private void showFragment(Class fragmentClass, String fragmentTag) {
         Fragment fragment = null;
         try {
             fragment = (Fragment) fragmentClass.newInstance();
@@ -86,11 +87,13 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent, fragment, fragmentTag).commit();
     }
 
     @Override
     public void updateResult(List<SubjectModel> subjectModelList) {
-
+        ScheduleFragment scheduleFragment = (ScheduleFragment)
+                getSupportFragmentManager().findFragmentByTag(SCHEDULE_FRAGMENT_TAG);
+        scheduleFragment.setSubjectList(subjectModelList);
     }
 }

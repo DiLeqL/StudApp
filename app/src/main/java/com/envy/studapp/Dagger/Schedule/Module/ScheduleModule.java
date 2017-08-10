@@ -7,6 +7,7 @@ import com.envy.studapp.Filter.Domain.FilterKeyUseCase;
 import com.envy.studapp.Schedule.Data.HttpAPIInterface.StudServiceAPI;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
 import com.envy.studapp.Filter.Presentation.FilterPresenter;
+import com.envy.studapp.Schedule.Domain.ScheduleFromDbUseCase;
 import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
 
 import javax.inject.Named;
@@ -28,31 +29,26 @@ public class ScheduleModule {
     public ScheduleDownloaderUseCase provideScheduleDownloaderUseCase(StudServiceAPI studServiceAPI,
                                                                       @Named("backgroundScheduler") Scheduler backgroundScheduler,
                                                                       @Named("mainScheduler")Scheduler mainScheduler,
-                                                                      ScheduleSQLBrite scheduleSQLBrite,
-                                                                      ConnectivityManager cm){
+                                                                      ScheduleSQLBrite scheduleSQLBrite){
         return new ScheduleDownloaderUseCase(studServiceAPI, backgroundScheduler, mainScheduler,
-                scheduleSQLBrite, cm);
+                scheduleSQLBrite);
+    }
+
+    @Provides
+    @Singleton
+    public ScheduleFromDbUseCase provideScheduleFromDbUseCase(@Named("backgroundScheduler") Scheduler backgroundScheduler,
+                                                              @Named("mainScheduler")Scheduler mainScheduler,
+                                                                  ScheduleSQLBrite scheduleSQLBrite){
+        return new ScheduleFromDbUseCase(backgroundScheduler, mainScheduler,
+                scheduleSQLBrite);
     }
 
     @Provides
     @Singleton
     public SchedulePresenter provideSchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase,
-                                                      ScheduleSQLBrite scheduleSQLBrite){
-        return new SchedulePresenter(scheduleDownloaderUseCase, scheduleSQLBrite);
+                                                      ScheduleFromDbUseCase scheduleFromDbUseCase,
+                                                      ScheduleSQLBrite scheduleSQLBrite, ConnectivityManager cm){
+        return new SchedulePresenter(scheduleDownloaderUseCase, scheduleFromDbUseCase, scheduleSQLBrite, cm);
     }
 
-    @Provides
-    @Singleton
-    public FilterKeyUseCase provideFilterUseCase(@Named("backgroundScheduler") Scheduler backgroundScheduler,
-                                                             @Named("mainScheduler")Scheduler mainScheduler,
-                                                             ScheduleSQLBrite scheduleSQLBrite){
-        return new FilterKeyUseCase(backgroundScheduler, mainScheduler, scheduleSQLBrite);
-    }
-
-    @Provides
-    @Singleton
-    public FilterPresenter provideFilterPresenter(FilterKeyUseCase filterKeyUseCase,
-                                                  ScheduleSQLBrite scheduleSQLBrite) {
-        return new FilterPresenter(filterKeyUseCase, scheduleSQLBrite);
-    }
 }

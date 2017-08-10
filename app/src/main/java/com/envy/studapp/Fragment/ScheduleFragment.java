@@ -175,6 +175,7 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
 
     @Override
     public void setSubjectList(List<SubjectModel> subjectList) {
+        //this.subjectModelList.clear();
         this.subjectModelList = subjectList;
         adapter.notifyDataSetChanged();
         adapter.setSubjectList(subjectList);
