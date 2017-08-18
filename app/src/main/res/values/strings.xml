@@ -14,4 +14,8 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <string name="welcome_to_stud_app">Welcome to StudApp!</string>
+    <string name="group_choose">Please, select your group</string>
+    <string name="accept">Accept</string>
+
 </resources>

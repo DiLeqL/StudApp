@@ -2,6 +2,7 @@ package com.envy.studapp;
 
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
@@ -12,8 +13,10 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.envy.studapp.Fragment.FirstTimeOpenFragment;
 import com.envy.studapp.Fragment.ScheduleFragment;
 import com.envy.studapp.Schedule.Data.Model.SubjectModel;
+import com.envy.studapp.Schedule.ScheduleCalendarManager;
 
 import java.util.List;
 
@@ -22,6 +25,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, FilterHandler {
 
     final String SCHEDULE_FRAGMENT_TAG = "Schedule";
+
+    DialogFragment firstTimeOpenDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,11 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         showFragment(ScheduleFragment.class, SCHEDULE_FRAGMENT_TAG);
+        //showFragment(FirstTimeOpenFragment.class, FIRST_TIME_OPEN_FRAGMENT_TAG);
+
+        //TODO 1st time condition
+        //firstTimeOpenDialogFragment = new FirstTimeOpenFragment();
+        //firstTimeOpenDialogFragment.show(getSupportFragmentManager(), FIRST_TIME_OPEN_FRAGMENT_TAG);
     }
 
     @Override

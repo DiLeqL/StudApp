@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.envy.studapp.Filter.Data.FilterKey;
+
 import com.envy.studapp.Schedule.Data.Model.BeginningTimeModel;
 import com.envy.studapp.Schedule.Data.Model.ClassroomModel;
 import com.envy.studapp.Schedule.Data.Model.GroupNumModel;
@@ -33,10 +33,6 @@ public class ScheduleSQLBrite {
     private ContentValues contentValues;
 
     private BriteDatabase briteDatabase;
-
-    FilterKey filterKey;
-
-    int i;
 
     public ScheduleSQLBrite(BriteDatabase briteDatabase,
                             ContentValues contentValues) {
@@ -76,6 +72,8 @@ public class ScheduleSQLBrite {
                     subjectModelList.get(i).getSubjectRoom());
             contentValues.put(ScheduleContract.SubjectEntry.COLUMN_SUBJECT_STUD_GROUP,
                     subjectModelList.get(i).getSubjectStudGroup());
+            contentValues.put(ScheduleContract.SubjectEntry.COLUMN_SUBJECT_NUMERATOR,
+                    subjectModelList.get(i).getNumerator());
             briteDatabase.insert(ScheduleContract.SubjectEntry.TABLE_SUBJECTS, contentValues);
         }
         Log.d("insert", "insert subjects done");
@@ -140,10 +138,10 @@ public class ScheduleSQLBrite {
         Log.d("insert", "insert days done");
     }
 
-    public Observable<ScheduleResponse> getFromDatabaseObservable() {
+    public Observable<ScheduleResponse> getFromDatabaseObservable(String queryToDb) {
         Observable<SqlBrite.Query> subjects = briteDatabase.createQuery(
                 ScheduleContract.SubjectEntry.TABLE_SUBJECTS,
-                ScheduleContract.SubjectEntry.SQL_SELECT_SUBJECTSS);
+                queryToDb);
 
         return subjects.map(query -> {
             Cursor cursor = query.run();
@@ -176,9 +174,9 @@ public class ScheduleSQLBrite {
 
         return weekdays.map(query -> {
             Cursor cursor = query.run();
-            List<String> weekdayKeyList = getWeekdayKeyList(cursor);
+            return getWeekdayKeyList(cursor);
             //filterKey.setWeekdayKeyList(getWeekdayKeyList(cursor));
-            return weekdayKeyList;
+            //return weekdayKeyList;
         });
     }
 
@@ -201,7 +199,7 @@ public class ScheduleSQLBrite {
     public boolean checkAvailabilityRecords () {
         Observable<SqlBrite.Query> subjects = briteDatabase.createQuery(
                 ScheduleContract.SubjectEntry.TABLE_SUBJECTS,
-                ScheduleContract.SubjectEntry.SQL_SELECT_SUBJECTSS);
+                ScheduleContract.SubjectEntry.SQL_SELECT_NUMERATOR_SUBJECTS);
         Cursor cursor = subjects.toBlocking().first().run();
         return cursor != null && cursor.getCount() > 0;
     }
@@ -213,7 +211,6 @@ public class ScheduleSQLBrite {
         if (cursor != null) {
             cursor.getCount();
             try {
-                String str = "";
                 if (cursor.moveToFirst()) {
                     do {
                         String groupNum;
@@ -241,7 +238,6 @@ public class ScheduleSQLBrite {
         if (cursor != null) {
             cursor.getCount();
             try {
-                String str = "";
                 if (cursor.moveToFirst()) {
                     do {
                         String weekDay;
@@ -270,7 +266,6 @@ public class ScheduleSQLBrite {
         if (cursor != null) {
             cursor.getCount();
             try {
-                String str = "";
                 if (cursor.moveToFirst()) {
                     do {
                         String teacherName;
@@ -309,6 +304,8 @@ public class ScheduleSQLBrite {
                         String groupName = "";
                         String roomNum = "";
                         String time = "";
+                        String numerator = "";
+
                         for (String columnName : cursor.getColumnNames()) {
                             switch (columnName) {
                                 case "subjectID":
@@ -339,12 +336,14 @@ public class ScheduleSQLBrite {
                                     time = cursor
                                             .getString(cursor.getColumnIndex(columnName));
                                     break;
+                                case "subjectNumerator":
+                                    numerator = cursor.getString(cursor.getColumnIndex(columnName));
                             }
                             str = str.concat(columnName + " = " +
                                     cursor.getString(cursor.getColumnIndex(columnName)) + "; ");
                         }
                         subjectModelList.add(new SubjectModel(subjectID, weekDay,
-                                subjectName, teacherName, groupName, roomNum, time));
+                                subjectName, teacherName, groupName, roomNum, time, numerator));
                         str = str.concat("\n");
                     } while (cursor.moveToNext());
                 }

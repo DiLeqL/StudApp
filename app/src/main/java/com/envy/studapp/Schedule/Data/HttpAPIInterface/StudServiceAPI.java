@@ -9,7 +9,6 @@ import rx.Observable;
 
 public interface StudServiceAPI {
 
-    //TODO what is observer observe?
     @GET("/json/schedule.json")
     Observable<ScheduleResponse> getSchedule();
 

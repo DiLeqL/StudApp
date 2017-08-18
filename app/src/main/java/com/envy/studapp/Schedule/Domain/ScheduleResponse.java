@@ -10,9 +10,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-/**
- * Created by ENVY on 14.06.2017.
- */
 
 public class ScheduleResponse {
 
@@ -33,7 +30,6 @@ public class ScheduleResponse {
 
     @SerializedName("weekdays")
     List<WeekdayModel> weekdayList;
-
 
     List<SubjectModel> subjectListFromDb;
 

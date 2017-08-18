@@ -19,6 +19,7 @@ import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
 import com.envy.studapp.Dagger.Schedule.Module.AppModule;
 import com.envy.studapp.Dagger.Schedule.Module.DBModule;
+import com.envy.studapp.Dagger.Schedule.Module.ScheduleModule;
 import com.envy.studapp.Filter.Data.FilterKey;
 import com.envy.studapp.R;
 import com.envy.studapp.Adapter.ScheduleRecycleViewAdapter;
@@ -74,7 +75,8 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
         super.onCreate(savedInstanceState);
 
         DaggerScheduleComponent.builder().appModule(new AppModule(getContext()))
-                .dBModule(new DBModule(getContext())).build().inject(this);
+                .dBModule(new DBModule(getContext())).scheduleModule(
+                        new ScheduleModule(getFragmentManager())).build().inject(this);
         Log.d("fragment", "onCreate");
 
     }
@@ -108,6 +110,7 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
         adapter.setSubjectList(subjectModelList);
 
         rvSchedule.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         fabFilter.setOnClickListener(v -> {
             FilterFabFragment dialogFrag = FilterFabFragment.newInstance();
@@ -179,5 +182,6 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
         this.subjectModelList = subjectList;
         adapter.notifyDataSetChanged();
         adapter.setSubjectList(subjectList);
+        schedulePresenter.openDialog();
     }
 }

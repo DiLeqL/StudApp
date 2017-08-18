@@ -29,9 +29,12 @@ public class SubjectModel {
     @SerializedName("subjectTime")
     String subjectTime;
 
+    @SerializedName("numerator")
+    String numerator;
+
     public SubjectModel(String subjectId, String subjectDay, String subjectName,
                         String subjectTeacher, String subjectStudGroup,
-                        String subjectRoom, String subjectTime) {
+                        String subjectRoom, String subjectTime, String numerator) {
         this.subjectId = subjectId;
         this.subjectDay = subjectDay;
         this.subjectName = subjectName;
@@ -39,6 +42,15 @@ public class SubjectModel {
         this.subjectStudGroup = subjectStudGroup;
         this.subjectRoom = subjectRoom;
         this.subjectTime = subjectTime;
+        this.numerator = numerator;
+    }
+
+    public String getNumerator() {
+        return numerator;
+    }
+
+    public void setNumerator(String numerator) {
+        this.numerator = numerator;
     }
 
     public String getSubjectId() {

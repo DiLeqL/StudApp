@@ -33,17 +33,19 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
 
     ConnectivityManager connectivityManager;
 
-    CompositeSubscription compositeSubscription;
+    DialogCreator dialogCreator;
 
-    static final String ARGUMENT_PAGE_NUMBER = "arg_page_number";
+    CompositeSubscription compositeSubscription;
 
     public SchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase,
                              ScheduleFromDbUseCase scheduleFromDbUseCase,
-                             ScheduleSQLBrite scheduleSQLBrite, ConnectivityManager cm) {
+                             ScheduleSQLBrite scheduleSQLBrite, ConnectivityManager cm,
+                             DialogCreator dialogCreator) {
         this.scheduleDownloaderUseCase = scheduleDownloaderUseCase;
         this.scheduleFromDbUseCase = scheduleFromDbUseCase;
         this.scheduleSQLBrite = scheduleSQLBrite;
         this.connectivityManager = cm;
+        this.dialogCreator = dialogCreator;
     }
 
 
@@ -60,6 +62,10 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
             @Override
             public void onNext(ScheduleResponse value) {
 
+                for (SubjectModel subject: value.getSubjectListFromDb()) {
+                    Log.d("numerator", subject.getNumerator());
+                }
+                Log.d("numerator", "real values");
                 if (value != null) {
                     if (isVisibleView()) {
                         List<SubjectModel> subjectModelList = value.getSubjectListFromDb();
@@ -81,7 +87,7 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
             @Override
             public void onError(Throwable e) {
 
-                Log.d("error", e.getMessage());
+                Log.d("errorSchedule", e.getMessage());
             }
 
         };
@@ -104,5 +110,9 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
     public void onDestroyView() {
         super.onDestroyView();
         //compositeSubscription.unsubscribe();
+    }
+
+    public void openDialog(){
+        dialogCreator.createDialog();
     }
 }
