@@ -2,9 +2,6 @@ package com.envy.studapp.Schedule.Data.Model;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by ENVY on 15.07.2017.
- */
 
 public class WeekdayModel {
 

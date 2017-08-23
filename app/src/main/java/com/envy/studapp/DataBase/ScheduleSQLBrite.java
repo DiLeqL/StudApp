@@ -378,7 +378,21 @@ public class ScheduleSQLBrite {
 
 
     public void updateScheduleDB(ScheduleResponse scheduleResponse) {
-        Observable<ScheduleResponse> scheduleResponseObservable = Observable.just(scheduleResponse);
+
+        BriteDatabase.Transaction transaction = briteDatabase.newTransaction();
+        try {
+            resetDB();
+            addTeachers(scheduleResponse);
+            addSubjects(scheduleResponse);
+            addGroupNums(scheduleResponse);
+            addClassrooms(scheduleResponse);
+            addBeginningTimes(scheduleResponse);
+            addWeekdays(scheduleResponse);
+            transaction.markSuccessful();
+        } finally {
+            transaction.end();
+        }
+        /*Observable<ScheduleResponse> scheduleResponseObservable = Observable.just(scheduleResponse);
         scheduleResponseObservable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(scheduleResponseFromServer -> {
@@ -395,7 +409,7 @@ public class ScheduleSQLBrite {
                     } finally {
                         transaction.end();
                     }
-                });
+                });*/
     }
 
 }

@@ -18,9 +18,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
+import com.envy.studapp.Dagger.Schedule.Injection.DaggerFilterComponent;
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
 import com.envy.studapp.Dagger.Schedule.Module.AppModule;
 import com.envy.studapp.Dagger.Schedule.Module.DBModule;
+import com.envy.studapp.Dagger.Schedule.Module.FilterModule;
+import com.envy.studapp.Dagger.Schedule.Module.ScheduleModule;
 import com.envy.studapp.Filter.Data.FilterKey;
 import com.envy.studapp.FilterHandler;
 import com.envy.studapp.R;
@@ -63,8 +66,10 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        DaggerScheduleComponent.builder().appModule(new AppModule(getContext()))
-                .dBModule(new DBModule(getContext())).build().inject(this);
+        DaggerFilterComponent.builder().appModule(new AppModule(getContext()))
+                .scheduleModule(new ScheduleModule(getFragmentManager()))
+                .dBModule(new DBModule(getContext()))
+                .filterModule(new FilterModule()).build().inject(this);
     }
 
     @Nullable

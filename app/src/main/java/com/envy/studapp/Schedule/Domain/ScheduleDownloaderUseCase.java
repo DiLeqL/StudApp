@@ -39,7 +39,6 @@ public class ScheduleDownloaderUseCase extends BaseUseCase<ScheduleResponse,
 
     @Override
     public Observable<ScheduleResponse> buildObservable(Object object) {
-
         return studServiceAPI.getSchedule().doOnNext(scheduleResponse ->
                 scheduleSQLBrite.updateScheduleDB(scheduleResponse))
                 .flatMap(scheduleResponse -> {
@@ -51,6 +50,5 @@ public class ScheduleDownloaderUseCase extends BaseUseCase<ScheduleResponse,
                             ScheduleContract.SubjectEntry.SQL_SELECT_NOT_NUMENATOR_SUBJECTSS);
                 });
     }
-
 
 }

@@ -3,39 +3,32 @@ package com.envy.studapp.Schedule.Presentation;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
-import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 import com.envy.studapp.BasePresenter;
 import com.envy.studapp.DataBase.ScheduleSQLBrite;
-import com.envy.studapp.Filter.Data.FilterKey;
 import com.envy.studapp.Schedule.Data.Model.SubjectModel;
 import com.envy.studapp.Schedule.Domain.ScheduleFromDbUseCase;
 import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
 
 import java.util.List;
-import java.util.Map;
 
 import rx.Observer;
-import rx.subscriptions.CompositeSubscription;
 
 public class SchedulePresenter extends BasePresenter<ScheduleView> {
 
-    ScheduleDownloaderUseCase scheduleDownloaderUseCase;
+    private ScheduleDownloaderUseCase scheduleDownloaderUseCase;
 
-    ScheduleFromDbUseCase scheduleFromDbUseCase;
+    private ScheduleFromDbUseCase scheduleFromDbUseCase;
 
     ScheduleSQLBrite scheduleSQLBrite;
 
-    Object observable;
+    private ConnectivityManager connectivityManager;
 
-    ConnectivityManager connectivityManager;
+    private DialogCreator dialogCreator;
 
-    DialogCreator dialogCreator;
-
-    CompositeSubscription compositeSubscription;
+    //CompositeSubscription compositeSubscription;
 
     public SchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase,
                              ScheduleFromDbUseCase scheduleFromDbUseCase,
@@ -62,17 +55,14 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
             @Override
             public void onNext(ScheduleResponse value) {
 
-                for (SubjectModel subject: value.getSubjectListFromDb()) {
-                    Log.d("numerator", subject.getNumerator());
-                }
-                Log.d("numerator", "real values");
                 if (value != null) {
                     if (isVisibleView()) {
                         List<SubjectModel> subjectModelList = value.getSubjectListFromDb();
-                        view.setSubjectList(subjectModelList);
+                        view.updateSubjectList(subjectModelList);
                         subjectModelList = subjectModelList;
                         //view.updateSchedule(value);
                         view.stopProgressBar();
+                        openDialog();
                     }
                 }
             }
@@ -80,8 +70,7 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
 
             @Override
             public void onCompleted() {
-
-
+                //Log.d("onComplete", "times");
             }
 
             @Override
@@ -96,6 +85,7 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
     @Override
     public void onCreateView(ScheduleView view, Bundle savedInstanceState) {
         super.onCreateView(view, savedInstanceState);
+        Object observable = new Object();
         Observer<ScheduleResponse> subscriber = getScheduleObserver();
         if (isConnected()) {
            scheduleDownloaderUseCase.subscribe(observable, subscriber);

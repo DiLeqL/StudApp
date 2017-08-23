@@ -52,7 +52,7 @@ public class FilterPresenter extends BasePresenter<FilterView> implements AAH_Fa
                     subjectList = value.getSubjectListFromDb();
                    /* if (isVisibleView()) {
                         subjectList = value.getSubjectListFromDb();
-                        //view.setSubjectList(subjectModelList);
+                        //view.updateSubjectList(subjectModelList);
                         //subjectModelList = subjectModelList;
                         //view.updateSchedule(value);
                         //view.stopProgressBar();
@@ -152,11 +152,11 @@ public class FilterPresenter extends BasePresenter<FilterView> implements AAH_Fa
                 subjectList.addAll(filteredList);
                 view.updateSubjectList(subjectList);
                 //(MainActivity)
-//                    view.setSubjectList(subjectList);
+//                    view.updateSubjectList(subjectList);
 //                    view.notifyAdapter();
             } else {
                 view.updateSubjectList(subjectList);
-//                    view.setSubjectList(subjectList);
+//                    view.updateSubjectList(subjectList);
 //                    view.notifyAdapter();
             }
             //handle result

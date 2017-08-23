@@ -1,5 +1,7 @@
 package com.envy.studapp.Schedule.Domain;
 
+import android.util.Log;
+
 import com.envy.studapp.BaseUseCase;
 import com.envy.studapp.DataBase.ScheduleContract;
 import com.envy.studapp.DataBase.ScheduleSQLBrite;
@@ -8,9 +10,6 @@ import com.envy.studapp.Schedule.ScheduleCalendarManager;
 import rx.Observable;
 import rx.Scheduler;
 
-/**
- * Created by ENVY on 09.08.2017.
- */
 
 public class ScheduleFromDbUseCase extends BaseUseCase<ScheduleResponse, Object>{
 

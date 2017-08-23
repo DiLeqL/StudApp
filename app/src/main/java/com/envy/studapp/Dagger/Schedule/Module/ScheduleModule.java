@@ -1,15 +1,12 @@
 package com.envy.studapp.Dagger.Schedule.Module;
 
-import android.content.Context;
 import android.net.ConnectivityManager;
 import android.support.v4.app.FragmentManager;
 
 import com.envy.studapp.DataBase.ScheduleSQLBrite;
-import com.envy.studapp.Filter.Domain.FilterKeyUseCase;
-import com.envy.studapp.Fragment.FirstTimeOpenFragment;
+import com.envy.studapp.Fragment.FirstLaunchFragment;
 import com.envy.studapp.Schedule.Data.HttpAPIInterface.StudServiceAPI;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
-import com.envy.studapp.Filter.Presentation.FilterPresenter;
 import com.envy.studapp.Schedule.Domain.ScheduleFromDbUseCase;
 import com.envy.studapp.Schedule.Presentation.DialogCreator;
 import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
@@ -22,9 +19,6 @@ import dagger.Module;
 import dagger.Provides;
 import rx.Scheduler;
 
-/**
- * Created by ENVY on 19.06.2017.
- */
 
 @Module
 public class ScheduleModule {
@@ -47,8 +41,8 @@ public class ScheduleModule {
     @Singleton
     public DialogCreator provideDialogCreator(){
         return () -> {
-            FirstTimeOpenFragment firstTimeOpenFragment = new FirstTimeOpenFragment();
-            firstTimeOpenFragment.show(fragmentManager, FIRST_TIME_OPEN_FRAGMENT_TAG);
+            FirstLaunchFragment firstLaunchFragment = new FirstLaunchFragment();
+            firstLaunchFragment.show(fragmentManager, FIRST_TIME_OPEN_FRAGMENT_TAG);
         };
     }
 

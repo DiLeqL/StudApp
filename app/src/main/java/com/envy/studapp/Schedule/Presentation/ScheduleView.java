@@ -5,9 +5,6 @@ import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 
 import java.util.List;
 
-/**
- * Created by ENVY on 14.06.2017.
- */
 
 public interface ScheduleView {
 
@@ -23,7 +20,7 @@ public interface ScheduleView {
 
     void notifyAdapter();
 
-    void setSubjectList(List<SubjectModel> subjectList);
+    void updateSubjectList(List<SubjectModel> subjectList);
 
     //void showList(List<SubjectModel> subjectList, String day);
 

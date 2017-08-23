@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
-import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
 import com.envy.studapp.Dagger.Schedule.Module.AppModule;
 import com.envy.studapp.Dagger.Schedule.Module.DBModule;
@@ -96,7 +95,7 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
 
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        schedulePresenter.onCreateView(this, null);
+        schedulePresenter.onCreateView(this, savedInstanceState);
 
         ButterKnife.bind(this, view);
 
@@ -120,8 +119,6 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
 
         return view;
     }
-
-
 
     /*public ArrayMap<String, List<String>> getApplied_filters() {
         return appliedFilters;
@@ -177,11 +174,10 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
 
 
     @Override
-    public void setSubjectList(List<SubjectModel> subjectList) {
+    public void updateSubjectList(List<SubjectModel> subjectList) {
         //this.subjectModelList.clear();
         this.subjectModelList = subjectList;
-        adapter.notifyDataSetChanged();
         adapter.setSubjectList(subjectList);
-        schedulePresenter.openDialog();
+        adapter.notifyDataSetChanged();
     }
 }
