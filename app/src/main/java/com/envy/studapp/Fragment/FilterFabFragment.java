@@ -40,6 +40,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class FilterFabFragment extends AAH_FabulousFragment implements FilterView, ViewPager.OnPageChangeListener {
 
     @Inject
@@ -67,7 +69,8 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DaggerFilterComponent.builder().appModule(new AppModule(getContext()))
-                .scheduleModule(new ScheduleModule(getFragmentManager()))
+                .scheduleModule(new ScheduleModule(getFragmentManager(), this.getActivity()
+                        .getSharedPreferences("mypref", MODE_PRIVATE)))
                 .dBModule(new DBModule(getContext()))
                 .filterModule(new FilterModule()).build().inject(this);
     }

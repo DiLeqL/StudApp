@@ -1,5 +1,6 @@
 package com.envy.studapp;
 
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.DialogFragment;
@@ -13,10 +14,17 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
+import com.envy.studapp.Dagger.Schedule.Module.AppModule;
+import com.envy.studapp.Dagger.Schedule.Module.DBModule;
+import com.envy.studapp.Dagger.Schedule.Module.ScheduleModule;
 import com.envy.studapp.Fragment.ScheduleFragment;
 import com.envy.studapp.Schedule.Data.Model.SubjectModel;
+import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 
 public class MainActivity extends AppCompatActivity
@@ -24,7 +32,7 @@ public class MainActivity extends AppCompatActivity
 
     final String SCHEDULE_FRAGMENT_TAG = "Schedule";
 
-    DialogFragment firstTimeOpenDialogFragment;
+    //DialogFragment firstTimeOpenDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +53,6 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         showFragment(ScheduleFragment.class, SCHEDULE_FRAGMENT_TAG);
-        //showFragment(FirstLaunchFragment.class, FIRST_TIME_OPEN_FRAGMENT_TAG);
-
-        //TODO 1st time condition
-        //firstTimeOpenDialogFragment = new FirstLaunchFragment();
-        //firstTimeOpenDialogFragment.show(getSupportFragmentManager(), FIRST_TIME_OPEN_FRAGMENT_TAG);
     }
 
     @Override

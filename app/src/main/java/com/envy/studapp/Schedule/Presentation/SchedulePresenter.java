@@ -1,12 +1,12 @@
 package com.envy.studapp.Schedule.Presentation;
 
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.envy.studapp.BasePresenter;
-import com.envy.studapp.DataBase.ScheduleSQLBrite;
 import com.envy.studapp.Schedule.Data.Model.SubjectModel;
 import com.envy.studapp.Schedule.Domain.ScheduleFromDbUseCase;
 import com.envy.studapp.Schedule.Domain.ScheduleResponse;
@@ -22,23 +22,24 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
 
     private ScheduleFromDbUseCase scheduleFromDbUseCase;
 
-    ScheduleSQLBrite scheduleSQLBrite;
-
     private ConnectivityManager connectivityManager;
 
     private DialogCreator dialogCreator;
 
+    private SharedPreferences sharedPreferences;
+
+    private boolean isFirstLaunch = true;
+
     //CompositeSubscription compositeSubscription;
 
     public SchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase,
-                             ScheduleFromDbUseCase scheduleFromDbUseCase,
-                             ScheduleSQLBrite scheduleSQLBrite, ConnectivityManager cm,
-                             DialogCreator dialogCreator) {
+                             ScheduleFromDbUseCase scheduleFromDbUseCase, ConnectivityManager cm,
+                             DialogCreator dialogCreator, SharedPreferences sharedPreferences) {
         this.scheduleDownloaderUseCase = scheduleDownloaderUseCase;
         this.scheduleFromDbUseCase = scheduleFromDbUseCase;
-        this.scheduleSQLBrite = scheduleSQLBrite;
         this.connectivityManager = cm;
         this.dialogCreator = dialogCreator;
+        this.sharedPreferences = sharedPreferences;
     }
 
 
@@ -62,7 +63,8 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
                         subjectModelList = subjectModelList;
                         //view.updateSchedule(value);
                         view.stopProgressBar();
-                        openDialog();
+
+                        firstStartOpenDialog(sharedPreferences);
                     }
                 }
             }
@@ -102,7 +104,20 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
         //compositeSubscription.unsubscribe();
     }
 
-    public void openDialog(){
+    private void openDialog(){
+
         dialogCreator.createDialog();
+
+    }
+
+    private void firstStartOpenDialog(SharedPreferences pref){
+
+        if(pref.getBoolean("firststart", true)){
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putBoolean("firststart", false);
+            editor.apply();
+
+            openDialog();
+        }
     }
 }

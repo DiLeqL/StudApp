@@ -18,7 +18,6 @@ import com.envy.studapp.FirstLaunch.Presentation.FirstLaunchPresenter;
 import com.envy.studapp.FirstLaunch.Presentation.FirstLaunchView;
 import com.envy.studapp.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -47,10 +46,12 @@ public class FirstLaunchFragment extends DialogFragment implements FirstLaunchVi
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        groupList = new ArrayList<>();
+        //groupList = new ArrayList<>();
+
         DaggerFirstLaunchComponent.builder().appModule(new AppModule(getContext()))
                 .firstLaunchModule(new FirstLaunchModule())
                 .dBModule(new DBModule(getContext())).build().inject(this);
+
         //setStyle(DialogFragment.STYLE_NO_TITLE, R.style.MyDialog);
     }
 
@@ -65,7 +66,7 @@ public class FirstLaunchFragment extends DialogFragment implements FirstLaunchVi
 
         adapter = new GroupListAdapter(getContext(), android.R.layout.simple_spinner_item, groupList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        adapter.setGroupList(groupList);
+        //adapter.setGroupList(groupList);
         spinner.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 

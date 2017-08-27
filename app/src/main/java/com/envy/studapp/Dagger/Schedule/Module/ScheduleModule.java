@@ -1,5 +1,6 @@
 package com.envy.studapp.Dagger.Schedule.Module;
 
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.support.v4.app.FragmentManager;
 
@@ -23,12 +24,15 @@ import rx.Scheduler;
 @Module
 public class ScheduleModule {
 
-    FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
 
-    final String FIRST_TIME_OPEN_FRAGMENT_TAG = "FirstTimeOpen";
+    private SharedPreferences sharedPreferences;
 
-    public ScheduleModule(FragmentManager fragmentManager){
+    private final String FIRST_TIME_OPEN_FRAGMENT_TAG = "FirstTimeOpen";
+
+    public ScheduleModule(FragmentManager fragmentManager, SharedPreferences sharedPreferences){
         this.fragmentManager = fragmentManager;
+        this.sharedPreferences = sharedPreferences;
     }
 
     @Provides
@@ -70,10 +74,8 @@ public class ScheduleModule {
     @Provides
     @Singleton
     public SchedulePresenter provideSchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase,
-                                                      ScheduleFromDbUseCase scheduleFromDbUseCase,
-                                                      ScheduleSQLBrite scheduleSQLBrite, ConnectivityManager cm,
+                                                      ScheduleFromDbUseCase scheduleFromDbUseCase, ConnectivityManager cm,
                                                       DialogCreator dialogCreator){
-        return new SchedulePresenter(scheduleDownloaderUseCase, scheduleFromDbUseCase,
-                scheduleSQLBrite, cm, dialogCreator);
+        return new SchedulePresenter(scheduleDownloaderUseCase, scheduleFromDbUseCase, cm, dialogCreator, sharedPreferences);
     }
 }

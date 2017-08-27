@@ -7,6 +7,7 @@ import com.envy.studapp.Dagger.Schedule.Module.ScheduleModule;
 import com.envy.studapp.Dagger.Schedule.Module.NetWorkModule;
 import com.envy.studapp.Fragment.FilterFabFragment;
 import com.envy.studapp.Fragment.ScheduleFragment;
+import com.envy.studapp.MainActivity;
 
 import javax.inject.Singleton;
 
@@ -22,6 +23,8 @@ import dagger.Component;
 public interface ScheduleComponent {
 
     void inject(ScheduleFragment fragment);
+
+    void inject(MainActivity activity);
 
     //void inject(FilterFabFragment fragment);
 }

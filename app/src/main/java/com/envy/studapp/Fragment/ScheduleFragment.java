@@ -36,6 +36,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class ScheduleFragment extends Fragment implements ScheduleView {
 
@@ -74,10 +76,10 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
         super.onCreate(savedInstanceState);
 
         DaggerScheduleComponent.builder().appModule(new AppModule(getContext()))
-                .dBModule(new DBModule(getContext())).scheduleModule(
-                        new ScheduleModule(getFragmentManager())).build().inject(this);
+                .dBModule(new DBModule(getContext()))
+                .scheduleModule(new ScheduleModule(getFragmentManager(), this.getActivity()
+                                .getSharedPreferences("mypref", MODE_PRIVATE))).build().inject(this);
         Log.d("fragment", "onCreate");
-
     }
 
     /*public static Fragment newInstance()

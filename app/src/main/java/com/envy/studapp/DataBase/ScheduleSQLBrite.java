@@ -188,10 +188,9 @@ public class ScheduleSQLBrite {
 
         return groups.map(query -> {
             Cursor cursor = query.run();
-            List<String> groupNumKeyList = getGroupNumKeyList(cursor);
+            return getGroupNumKeyList(cursor);
             //filterKey.setGroupNumKeyList(getGroupNumKeyList(cursor));
-            Collections.sort(groupNumKeyList);
-            return groupNumKeyList;
+            //Collections.sort(groupNumKeyList);
         });
     }
 
