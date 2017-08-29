@@ -20,17 +20,24 @@
         style="@style/smallText"
         android:textColor="@color/black"/>
 
-    <Spinner
+    <!--<Spinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_group_choose" />
+        android:layout_below="@+id/tv_group_choose" />-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_group_list"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@id/tv_group_choose">
+    </android.support.v7.widget.RecyclerView>
 
     <Button
         android:id="@+id/button_accept"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/spinner"
+        android:layout_below="@+id/rv_group_list"
         android:text="@string/accept"/>
 
 </RelativeLayout>

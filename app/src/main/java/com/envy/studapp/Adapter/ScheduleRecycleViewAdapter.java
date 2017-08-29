@@ -20,8 +20,8 @@ import butterknife.ButterKnife;
 public class ScheduleRecycleViewAdapter extends RecyclerView.Adapter<ScheduleRecycleViewAdapter.SubjectViewHolder>{
 
 
-    List<SubjectModel> subjectList;
-    Context context;
+    private List<SubjectModel> subjectList;
+    private Context context;
 
     public ScheduleRecycleViewAdapter(Context context, List<SubjectModel> subjectList){
         this.context = context;
@@ -55,7 +55,7 @@ public class ScheduleRecycleViewAdapter extends RecyclerView.Adapter<ScheduleRec
         else return 0;
     }
 
-    public class SubjectViewHolder extends RecyclerView.ViewHolder{
+    class SubjectViewHolder extends RecyclerView.ViewHolder{
 
         CardView cvScheduleItem;
 
@@ -74,7 +74,7 @@ public class ScheduleRecycleViewAdapter extends RecyclerView.Adapter<ScheduleRec
         @BindView(R.id.room_num)
         TextView tvRoomNum;
 
-        public SubjectViewHolder(View itemView) {
+        SubjectViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             cvScheduleItem = (CardView) itemView.findViewById(R.id.cv_schedule);

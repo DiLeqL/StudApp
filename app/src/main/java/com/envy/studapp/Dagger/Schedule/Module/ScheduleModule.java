@@ -75,7 +75,8 @@ public class ScheduleModule {
     @Singleton
     public SchedulePresenter provideSchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase,
                                                       ScheduleFromDbUseCase scheduleFromDbUseCase, ConnectivityManager cm,
-                                                      DialogCreator dialogCreator){
-        return new SchedulePresenter(scheduleDownloaderUseCase, scheduleFromDbUseCase, cm, dialogCreator, sharedPreferences);
+                                                      DialogCreator dialogCreator, ScheduleCalendarManager scm){
+        return new SchedulePresenter(scheduleDownloaderUseCase, scheduleFromDbUseCase,
+                                        cm, dialogCreator, sharedPreferences, scm);
     }
 }

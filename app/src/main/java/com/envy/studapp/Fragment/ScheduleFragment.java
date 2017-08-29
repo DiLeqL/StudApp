@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
 import com.envy.studapp.Dagger.Schedule.Module.AppModule;
@@ -52,6 +53,9 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
 
     @BindView(R.id.schedule_progress_bar)
     ProgressBar progressBar;
+
+    @BindView(R.id.tv_day_and_week_num_info)
+    TextView tvDayAndWeek;
 
     List<SubjectModel> fullSubjectModelList;
 
@@ -102,6 +106,11 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
         ButterKnife.bind(this, view);
 
         showProgressBar();
+
+        String currentDayAndWeek = schedulePresenter.getCurrentDay() + " / " +
+                schedulePresenter.getCurrentWeek();
+
+        tvDayAndWeek.setText(currentDayAndWeek);
 
         LinearLayoutManager llm = new LinearLayoutManager(this.getContext());
         rvSchedule.setLayoutManager(llm);

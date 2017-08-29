@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import java.util.List;
 
 
-public class GroupListAdapter extends ArrayAdapter {
+public class GroupListArrayAdapter extends ArrayAdapter {
 
     private List<String> groupList;
 
@@ -27,7 +27,7 @@ public class GroupListAdapter extends ArrayAdapter {
         else return 0;
     }
 
-    public GroupListAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<String> objects) {
+    public GroupListArrayAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<String> objects) {
         super(context, resource, objects);
     }
 

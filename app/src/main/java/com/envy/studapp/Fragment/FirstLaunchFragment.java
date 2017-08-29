@@ -3,13 +3,16 @@ package com.envy.studapp.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Spinner;
 
-import com.envy.studapp.Adapter.GroupListAdapter;
+import com.envy.studapp.Adapter.GroupListArrayAdapter;
+import com.envy.studapp.Adapter.GroupRecycleViewAdapter;
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerFirstLaunchComponent;
 import com.envy.studapp.Dagger.Schedule.Module.AppModule;
 import com.envy.studapp.Dagger.Schedule.Module.DBModule;
@@ -28,17 +31,24 @@ import butterknife.OnClick;
 
 public class FirstLaunchFragment extends DialogFragment implements FirstLaunchView{
 
-    @BindView(R.id.spinner)
-    Spinner spinner;
+    /*@BindView(R.id.spinner)
+    Spinner spinner;*/
+
+    @BindView(R.id.rv_group_list)
+    RecyclerView rvGroupList;
 
     @OnClick(R.id.button_accept)
     public void accept(){
+        //String selected = spinner.getSelectedItem().toString();
+        //Log.d("selected", selected);
         dismiss();
     }
 
     List<String> groupList;
 
-    GroupListAdapter adapter;
+    GroupRecycleViewAdapter groupListAdapter;
+
+    //GroupListArrayAdapter adapter;
 
     @Inject
     FirstLaunchPresenter firstLaunchPresenter;
@@ -64,11 +74,16 @@ public class FirstLaunchFragment extends DialogFragment implements FirstLaunchVi
 
         ButterKnife.bind(this, view);
 
-        adapter = new GroupListAdapter(getContext(), android.R.layout.simple_spinner_item, groupList);
+        LinearLayoutManager llm = new LinearLayoutManager(this.getContext());
+        rvGroupList.setLayoutManager(llm);
+
+        groupListAdapter = new GroupRecycleViewAdapter(getContext(), groupList);
+        rvGroupList.setAdapter(groupListAdapter);
+        /*adapter = new GroupListArrayAdapter(getContext(), android.R.layout.simple_spinner_item, groupList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         //adapter.setGroupList(groupList);
         spinner.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();*/
 
         return view;
     }
@@ -81,8 +96,10 @@ public class FirstLaunchFragment extends DialogFragment implements FirstLaunchVi
     @Override
     public void updateGroupList(List<String> groupList) {
         this.groupList = groupList;
-        adapter.setGroupList(groupList);
-        adapter.notifyDataSetChanged();
+        groupListAdapter.setGroupList(groupList);
+        groupListAdapter.notifyDataSetChanged();
+        //adapter.setGroupList(groupList);
+        //adapter.notifyDataSetChanged();
         for (String group: groupList)  {
             Log.d("groups", group);
         }

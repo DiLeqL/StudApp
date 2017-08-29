@@ -11,6 +11,7 @@ import com.envy.studapp.Schedule.Data.Model.SubjectModel;
 import com.envy.studapp.Schedule.Domain.ScheduleFromDbUseCase;
 import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
+import com.envy.studapp.Schedule.ScheduleCalendarManager;
 
 import java.util.List;
 
@@ -28,18 +29,22 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
 
     private SharedPreferences sharedPreferences;
 
+    private ScheduleCalendarManager calendarManager;
+
     private boolean isFirstLaunch = true;
 
     //CompositeSubscription compositeSubscription;
 
     public SchedulePresenter(ScheduleDownloaderUseCase scheduleDownloaderUseCase,
                              ScheduleFromDbUseCase scheduleFromDbUseCase, ConnectivityManager cm,
-                             DialogCreator dialogCreator, SharedPreferences sharedPreferences) {
+                             DialogCreator dialogCreator, SharedPreferences sharedPreferences,
+                             ScheduleCalendarManager scheduleCalendarManager) {
         this.scheduleDownloaderUseCase = scheduleDownloaderUseCase;
         this.scheduleFromDbUseCase = scheduleFromDbUseCase;
         this.connectivityManager = cm;
         this.dialogCreator = dialogCreator;
         this.sharedPreferences = sharedPreferences;
+        this.calendarManager = scheduleCalendarManager;
     }
 
 
@@ -110,14 +115,28 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
 
     }
 
+    public String getCurrentDay(){
+        return calendarManager.getCurrentDay();
+    }
+
+    public String getCurrentWeek(){
+        if (calendarManager.isNumerator()){
+            return "Numerator";
+        }
+        else{
+            return "Not numerator";
+        }
+    }
+
     private void firstStartOpenDialog(SharedPreferences pref){
 
-        if(pref.getBoolean("firststart", true)){
+        openDialog();
+        /*if(pref.getBoolean("firststart", true)){
             SharedPreferences.Editor editor = pref.edit();
             editor.putBoolean("firststart", false);
             editor.apply();
 
             openDialog();
-        }
+        }*/
     }
 }
