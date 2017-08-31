@@ -15,18 +15,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
 import com.envy.studapp.Dagger.Schedule.Module.AppModule;
 import com.envy.studapp.Dagger.Schedule.Module.DBModule;
 import com.envy.studapp.Dagger.Schedule.Module.ScheduleModule;
 import com.envy.studapp.Filter.Data.FilterKey;
+import com.envy.studapp.FirstLaunch.GroupSelectEvent;
 import com.envy.studapp.R;
 import com.envy.studapp.Adapter.ScheduleRecycleViewAdapter;
 import com.envy.studapp.Schedule.Data.Model.SubjectModel;
 import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 import com.envy.studapp.Schedule.Presentation.SchedulePresenter;
 import com.envy.studapp.Schedule.Presentation.ScheduleView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +87,7 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
         DaggerScheduleComponent.builder().appModule(new AppModule(getContext()))
                 .dBModule(new DBModule(getContext()))
                 .scheduleModule(new ScheduleModule(getFragmentManager(), this.getActivity()
-                                .getSharedPreferences("mypref", MODE_PRIVATE))).build().inject(this);
+                        .getSharedPreferences("mypref", MODE_PRIVATE))).build().inject(this);
         Log.d("fragment", "onCreate");
     }
 
@@ -137,20 +142,34 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
 
     @Override
     public void onStart() {
-        super.onStart();
+        EventBus.getDefault().register(this);
         schedulePresenter.onStart();
+        super.onStart();
     }
 
     @Override
     public void onStop() {
-        super.onStop();
+        EventBus.getDefault().unregister(this);
         schedulePresenter.onStop();
+        super.onStop();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         schedulePresenter.onDestroyView();
+    }
+
+    @Subscribe
+    public void handleSelectedGroup(GroupSelectEvent event) {
+
+        List<SubjectModel> filteredSubjectList = schedulePresenter.filterScheduleByGroup(subjectModelList,
+                event.getSelectedGroup());
+
+        adapter.setSubjectList(filteredSubjectList);
+        adapter.notifyDataSetChanged();
+        Log.d("selectedGroup", event.getSelectedGroup());
+
     }
 
     @Override

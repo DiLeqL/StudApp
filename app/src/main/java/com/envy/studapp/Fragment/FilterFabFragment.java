@@ -19,7 +19,6 @@ import android.widget.TextView;
 
 import com.allattentionhere.fabulousfilter.AAH_FabulousFragment;
 import com.envy.studapp.Dagger.Schedule.Injection.DaggerFilterComponent;
-import com.envy.studapp.Dagger.Schedule.Injection.DaggerScheduleComponent;
 import com.envy.studapp.Dagger.Schedule.Module.AppModule;
 import com.envy.studapp.Dagger.Schedule.Module.DBModule;
 import com.envy.studapp.Dagger.Schedule.Module.FilterModule;
@@ -37,12 +36,10 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class FilterFabFragment extends AAH_FabulousFragment implements FilterView, ViewPager.OnPageChangeListener {
+public class FilterFabFragment extends AAH_FabulousFragment implements FilterView{
 
     @Inject
     FilterPresenter filterPresenter;
@@ -147,22 +144,6 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
         Log.d("list", "update in FilterFragment");
         ((FilterHandler) getActivity()).updateResult(subjectList);
     }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        Log.d("pageChange", "page change");
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
 
     private class SectionsPagerAdapter extends PagerAdapter{
 

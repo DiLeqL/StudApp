@@ -5,17 +5,24 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.envy.studapp.BasePresenter;
+import com.envy.studapp.FirstLaunch.GroupSelectEvent;
 import com.envy.studapp.Schedule.Data.Model.SubjectModel;
 import com.envy.studapp.Schedule.Domain.ScheduleFromDbUseCase;
 import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
 import com.envy.studapp.Schedule.ScheduleCalendarManager;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observer;
+import rx.subjects.Subject;
 
 public class SchedulePresenter extends BasePresenter<ScheduleView> {
 
@@ -64,11 +71,10 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
                 if (value != null) {
                     if (isVisibleView()) {
                         List<SubjectModel> subjectModelList = value.getSubjectListFromDb();
-                        view.updateSubjectList(subjectModelList);
+                        view.updateSubjectList(filterScheduleByDay(subjectModelList));
                         subjectModelList = subjectModelList;
                         //view.updateSchedule(value);
                         view.stopProgressBar();
-
                         firstStartOpenDialog(sharedPreferences);
                     }
                 }
@@ -101,6 +107,32 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
             scheduleFromDbUseCase.subscribe(observable, subscriber);
             //compositeSubscription.add(scheduleFromDbUseCase.getSubscription());
         }
+    }
+
+    private List<SubjectModel> filterScheduleByDay(List<SubjectModel> subjectList){
+
+        List<SubjectModel> filteredList = new ArrayList<>();
+
+        for (SubjectModel subject: subjectList) {
+            if (subject.getSubjectDay().equals(calendarManager.getCurrentDay())){
+                filteredList.add(subject);
+                Log.d("filteredSubjectsByDay", subject.getSubjectName());
+            }
+        }
+        return filteredList;
+    }
+
+    public List<SubjectModel> filterScheduleByGroup(List<SubjectModel> subjectModelList,
+                                                    String selectedGroup){
+        List<SubjectModel> filteredList = new ArrayList<>();
+
+        for (SubjectModel subject: subjectModelList) {
+            if (subject.getSubjectStudGroup().equals(selectedGroup)){
+                filteredList.add(subject);
+                Log.d("filteredSubjects", subject.getSubjectName());
+            }
+        }
+        return filteredList;
     }
 
     @Override

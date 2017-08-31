@@ -41,6 +41,7 @@ public class FirstLaunchFragment extends DialogFragment implements FirstLaunchVi
     public void accept(){
         //String selected = spinner.getSelectedItem().toString();
         //Log.d("selected", selected);
+        groupListAdapter.getSelectedItem();
         dismiss();
     }
 

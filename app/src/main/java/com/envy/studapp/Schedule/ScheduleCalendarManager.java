@@ -21,6 +21,13 @@ public class ScheduleCalendarManager {
         return getWeekNumber() % 2 == 1;
     }
 
+    public String getNumeratorAsString(){
+        if (isNumerator()){
+            return "true";
+        }
+        return "false";
+    }
+
     public String getCurrentDay(){
         int day = calendar.get(Calendar.DAY_OF_WEEK);
 

@@ -2,8 +2,6 @@ package com.envy.studapp.Adapter;
 
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +10,10 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.envy.studapp.FirstLaunch.GroupSelectEvent;
 import com.envy.studapp.R;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
 
     @Override
     public GroupRecycleViewAdapter.GroupViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.group_item_card_view, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.group_item, parent, false);
         return new GroupRecycleViewAdapter.GroupViewHolder(v);
     }
 
@@ -52,8 +53,14 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
         //Set the position tag to both radio button and label
         holder.radioButton.setTag(position);
         holder.tvGroupName.setTag(position);
-        holder.radioButton.setOnClickListener(this::itemCheckChanged);
-        holder.tvGroupName.setOnClickListener(this::itemCheckChanged);
+        holder.radioButton.setOnClickListener(v -> {
+            GroupRecycleViewAdapter.this.itemCheckChanged(v);
+            EventBus.getDefault().post(new GroupSelectEvent(getSelectedItem()));
+        });
+        holder.tvGroupName.setOnClickListener(v -> {
+            GroupRecycleViewAdapter.this.itemCheckChanged(v);
+            EventBus.getDefault().post(new GroupSelectEvent(getSelectedItem()));
+        });
     }
 
     @Override
@@ -77,7 +84,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
 
     class GroupViewHolder extends RecyclerView.ViewHolder{
 
-        CardView groupItem;
+        //CardView groupItem;
 
         @BindView(R.id.tv_group_name)
         TextView tvGroupName;
@@ -88,7 +95,7 @@ public class GroupRecycleViewAdapter extends RecyclerView.Adapter<GroupRecycleVi
         GroupViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            groupItem = (CardView) itemView.findViewById(R.id.cv_group_item);
+            //groupItem = (CardView) itemView.findViewById(R.id.cv_group_item);
         }
     }
 }
