@@ -5,24 +5,18 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.envy.studapp.BasePresenter;
-import com.envy.studapp.FirstLaunch.GroupSelectEvent;
 import com.envy.studapp.Schedule.Data.Model.SubjectModel;
 import com.envy.studapp.Schedule.Domain.ScheduleFromDbUseCase;
 import com.envy.studapp.Schedule.Domain.ScheduleResponse;
 import com.envy.studapp.Schedule.Domain.ScheduleDownloaderUseCase;
 import com.envy.studapp.Schedule.ScheduleCalendarManager;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import rx.Observer;
-import rx.subjects.Subject;
 
 public class SchedulePresenter extends BasePresenter<ScheduleView> {
 
@@ -34,11 +28,11 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
 
     private DialogCreator dialogCreator;
 
+    private String SAVED_GROUP = "saved group";
+
     private SharedPreferences sharedPreferences;
 
     private ScheduleCalendarManager calendarManager;
-
-    private boolean isFirstLaunch = true;
 
     //CompositeSubscription compositeSubscription;
 
@@ -71,9 +65,10 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
                 if (value != null) {
                     if (isVisibleView()) {
                         List<SubjectModel> subjectModelList = value.getSubjectListFromDb();
-                        view.updateSubjectList(filterScheduleByDay(subjectModelList));
-                        subjectModelList = subjectModelList;
-                        //view.updateSchedule(value);
+                        subjectModelList = filterScheduleByDay(subjectModelList);
+                        List<SubjectModel> filteredList = filterScheduleByGroup(subjectModelList,
+                                sharedPreferences.getString(SAVED_GROUP, ""));
+                        view.updateSubjectList(filterScheduleByDay(filteredList));
                         view.stopProgressBar();
                         firstStartOpenDialog(sharedPreferences);
                     }
@@ -83,7 +78,7 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
 
             @Override
             public void onCompleted() {
-                //Log.d("onComplete", "times");
+
             }
 
             @Override
@@ -125,11 +120,22 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
     public List<SubjectModel> filterScheduleByGroup(List<SubjectModel> subjectModelList,
                                                     String selectedGroup){
         List<SubjectModel> filteredList = new ArrayList<>();
-
-        for (SubjectModel subject: subjectModelList) {
-            if (subject.getSubjectStudGroup().equals(selectedGroup)){
-                filteredList.add(subject);
-                Log.d("filteredSubjects", subject.getSubjectName());
+        Log.d("save", sharedPreferences.getString(SAVED_GROUP, "no save"));
+        if (sharedPreferences.contains(SAVED_GROUP)){
+            for (SubjectModel subject: subjectModelList) {
+                if (subject.getSubjectStudGroup().equals(sharedPreferences.getString(SAVED_GROUP, ""))){
+                    Log.d("save", sharedPreferences.getString(SAVED_GROUP, ""));
+                    filteredList.add(subject);
+                    Log.d("filteredSubjects", subject.getSubjectName());
+                }
+            }
+        }
+        else {
+            for (SubjectModel subject: subjectModelList) {
+                if (subject.getSubjectStudGroup().equals(selectedGroup)){
+                    filteredList.add(subject);
+                    Log.d("filteredSubjects", subject.getSubjectName());
+                }
             }
         }
         return filteredList;
@@ -160,15 +166,22 @@ public class SchedulePresenter extends BasePresenter<ScheduleView> {
         }
     }
 
+    public void saveGroup(String selectedGroup){
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        if (sharedPreferences.contains(SAVED_GROUP)){
+            editor.remove(SAVED_GROUP);
+        }
+        editor.putString(SAVED_GROUP, selectedGroup);
+        editor.apply();
+    }
+
     private void firstStartOpenDialog(SharedPreferences pref){
 
-        openDialog();
-        /*if(pref.getBoolean("firststart", true)){
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putBoolean("firststart", false);
-            editor.apply();
+        //openDialog();
 
+        if (!pref.contains(SAVED_GROUP)){
             openDialog();
-        }*/
+        }
     }
 }

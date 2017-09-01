@@ -166,10 +166,11 @@ public class ScheduleFragment extends Fragment implements ScheduleView {
         List<SubjectModel> filteredSubjectList = schedulePresenter.filterScheduleByGroup(subjectModelList,
                 event.getSelectedGroup());
 
+        schedulePresenter.saveGroup(event.getSelectedGroup());
+
         adapter.setSubjectList(filteredSubjectList);
         adapter.notifyDataSetChanged();
         Log.d("selectedGroup", event.getSelectedGroup());
-
     }
 
     @Override

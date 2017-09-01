@@ -1,6 +1,7 @@
 package com.envy.studapp.Fragment;
 
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -29,6 +30,7 @@ import com.envy.studapp.R;
 import com.envy.studapp.Filter.Presentation.FilterPresenter;
 import com.envy.studapp.Filter.Presentation.FilterView;
 import com.envy.studapp.Schedule.Data.Model.SubjectModel;
+import com.envy.studapp.Schedule.ScheduleCalendarManager;
 import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.ArrayList;
@@ -69,7 +71,8 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
                 .scheduleModule(new ScheduleModule(getFragmentManager(), this.getActivity()
                         .getSharedPreferences("mypref", MODE_PRIVATE)))
                 .dBModule(new DBModule(getContext()))
-                .filterModule(new FilterModule()).build().inject(this);
+                .filterModule(new FilterModule(this.getActivity()
+                        .getSharedPreferences("mypref", MODE_PRIVATE))).build().inject(this);
     }
 
     @Nullable
@@ -95,7 +98,19 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
         tabsTypes = (TabLayout) contentView.findViewById(R.id.tabs_types);
         //contentView.findViewById(R.id.imgbtn_apply).setOnClickListener(v -> closeFilter(appliedFilters));
         imgBtnApply = (ImageButton) contentView.findViewById(R.id.imgbtn_apply);
-        imgBtnApply.setOnClickListener(v -> closeFilter(appliedFilters));
+        imgBtnApply.setOnClickListener(v -> {
+            if (appliedFilters.isEmpty()){
+                putDefaultDay();
+                putDefaultGroup();
+            }
+            if (appliedFilters.get("day") == null){
+                putDefaultDay();
+            }
+            if (appliedFilters.get("group") == null){
+                putDefaultGroup();
+            }
+            closeFilter(appliedFilters);
+        });
         mAdapter = new SectionsPagerAdapter();
         vpTypes.setOffscreenPageLimit(4);
         vpTypes.setAdapter(mAdapter);
@@ -314,6 +329,20 @@ public class FilterFabFragment extends AAH_FabulousFragment implements FilterVie
             appliedFilters.get(key).remove(value);
         }
     }
+
+    private void putDefaultGroup(){
+        List<String> groupList = new ArrayList<>();
+        groupList.add(filterPresenter.getSavedGroup());
+        appliedFilters.put("group", groupList);
+    }
+
+    private void putDefaultDay(){
+        ScheduleCalendarManager calendarManager = new ScheduleCalendarManager();
+        List<String> dayList = new ArrayList<>();
+        dayList.add(calendarManager.getCurrentDay());
+        appliedFilters.put("day", dayList);
+    }
+
 
     private boolean isItemSelected(){
         return textViews.size() >= 0;

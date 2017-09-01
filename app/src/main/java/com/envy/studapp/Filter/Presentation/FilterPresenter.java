@@ -1,6 +1,8 @@
 package com.envy.studapp.Filter.Presentation;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.print.PrintHelper;
 import android.support.v4.util.ArrayMap;
 import android.util.Log;
 
@@ -29,6 +31,10 @@ public class FilterPresenter extends BasePresenter<FilterView> implements AAH_Fa
 
     private List<SubjectModel> subjectList;
 
+    private String SAVED_GROUP = "saved group";
+
+    private SharedPreferences sharedPreferences;
+
     //private List<SubjectModel> fullSubjectModelList = new ArrayList<>();
 
     private FilterKey filterKey = new FilterKey();
@@ -36,9 +42,11 @@ public class FilterPresenter extends BasePresenter<FilterView> implements AAH_Fa
     //CompositeSubscription compositeSubscription;
 
     public FilterPresenter(FilterKeyUseCase filterKeyUseCase,
-                           ScheduleFromDbUseCase scheduleFromDbUseCase) {
+                           ScheduleFromDbUseCase scheduleFromDbUseCase,
+                           SharedPreferences sharedPreferences) {
         this.filterKeyUseCase = filterKeyUseCase;
         this.scheduleFromDbUseCase = scheduleFromDbUseCase;
+        this.sharedPreferences = sharedPreferences;
     }
 
     private Observer<ScheduleResponse> getScheduleObserver() {
@@ -118,6 +126,10 @@ public class FilterPresenter extends BasePresenter<FilterView> implements AAH_Fa
         //compositeSubscription.
         Observer<ScheduleResponse> scheduleResponseSubscriber = getScheduleObserver();
         scheduleFromDbUseCase.subscribe(observable, scheduleResponseSubscriber);
+    }
+
+    public String getSavedGroup(){
+        return sharedPreferences.getString(SAVED_GROUP, "");
     }
 
 
